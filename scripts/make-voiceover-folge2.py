@@ -1,13 +1,15 @@
 """Erzeugt public/voiceover-folge2.mp3 + src/folge2/timing.json aus voiceover-folge2.txt.
 
 Stimme: edge-tts, de-DE-FlorianMultilingualNeural, normales Tempo, normale Tonhöhe.
-Jede Szene wird einzeln gesprochen, dann mit kurzen Pausen zusammengefügt.
+Jede Szene wird am Stück gesprochen (natürliche Betonung), zu lange Pausen werden gekürzt.
 So kennen wir die genaue Länge jeder Szene und die Zeit jedes Wortes (für die Untertitel).
 
 Falls schon eine eigene Aufnahme in public/voiceover-folge2.mp3 liegt, wird sie NICHT überschrieben
 (außer mit --force). Dann werden nur die Szenenlängen gleichmäßig auf die Aufnahme verteilt.
 """
-import asyncio, json, os, re, ssl, subprocess, sys, tempfile
+import asyncio, json, os, re, ssl, subprocess, sys, tempfile, wave
+
+import numpy as np
 
 import edge_tts
 import edge_tts.communicate as comm
@@ -18,7 +20,8 @@ MP3 = os.path.join(ROOT, "public", "voiceover-folge2.mp3")
 TIMING = os.path.join(ROOT, "src", "folge2", "timing.json")
 VOICE, RATE, PITCH = "de-DE-FlorianMultilingualNeural", "+0%", "+0Hz"
 PAUSE = 0.35  # Sekunden Pause zwischen den Szenen
-GAP = 0.25    # Sekunden Pause zwischen zwei Sätzen
+MAX_PAUSE = 0.4  # längere Pausen innerhalb einer Szene werden auf diese Länge gekürzt
+SR = 24000
 TAIL = 0.12   # Nachklang nach dem letzten Wort eines Satzes
 LEAD = 0.2  # Sekunden Stille ganz am Anfang
 # So soll die Stimme bestimmte Wörter aussprechen (der Untertitel zeigt weiter das Original)
@@ -28,6 +31,11 @@ SPEAK_AS = {"1920ern": "Neunzehnhundertzwanzigern"}
 ca = os.environ.get("SSL_CERT_FILE") or ("/root/.ccr/ca-bundle.crt" if os.path.exists("/root/.ccr/ca-bundle.crt") else None)
 if ca:
     comm._SSL_CTX = ssl.create_default_context(cafile=ca)
+
+# edge-tts schickt fest xml:lang='en-US' mit. Florian ist eine mehrsprachige Stimme
+# und würde dann kurze Sätze evtl. mit englischem Akzent lesen -> auf Deutsch stellen.
+_orig_mkssml = comm.mkssml
+comm.mkssml = lambda tc, text: _orig_mkssml(tc, text).replace("xml:lang='en-US'", "xml:lang='de-DE'")
 
 
 def read_scenes():
@@ -103,37 +111,59 @@ async def main():
     subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono", "-t", str(LEAD), os.path.join(tmp, "lead.wav")], check=True)
     subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono", "-t", str(PAUSE), os.path.join(tmp, "pause.wav")], check=True)
     parts.append(os.path.join(tmp, "lead.wav"))
-    subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono", "-t", str(GAP), os.path.join(tmp, "gap.wav")], check=True)
     n = 0
     for i, text in enumerate(texts):
-        # jeden Satz einzeln sprechen -> Pausen zwischen Sätzen sind kurz und gleichmäßig
-        sentences = [x for x in re.split(r"(?<=[.?!])\s+", text) if x]
-        scene_start, words = t, []
-        for k, sent in enumerate(sentences):
-            mp3 = os.path.join(tmp, f"p{n}.mp3")
-            wav = os.path.join(tmp, f"p{n}.wav")
-            n += 1
-            spoken = sent
-            for k_, v_ in SPEAK_AS.items():
-                spoken = spoken.replace(k_, v_)
-            marks = await speak(spoken, mp3)
-            # Stille vorne/hinten abschneiden (Wortgrenzen von edge-tts)
-            cut_a = max(0.0, marks[0]["start"] - 0.06)
-            cut_b = marks[-1]["end"] + TAIL
-            subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", mp3, "-ss", f"{cut_a:.3f}", "-to", f"{cut_b:.3f}",
-                            "-af", "afade=t=out:st=%.3f:d=0.05" % (cut_b - cut_a - 0.05), "-ar", "24000", "-ac", "1", wav], check=True)
-            d = duration(wav)
-            words += align(sent, marks, t - cut_a)
-            parts.append(wav)
-            t += d
-            if k < len(sentences) - 1:
-                parts.append(os.path.join(tmp, "gap.wav"))
-                t += GAP
-        scenes.append({"text": text, "start": round(scene_start, 3), "speechEnd": round(t, 3), "words": words})
+        # Die ganze Szene am Stück sprechen -> natürliche Betonung über die Sätze hinweg.
+        # Danach werden nur zu lange Pausen gekürzt.
+        mp3 = os.path.join(tmp, f"s{i}.mp3")
+        wav = os.path.join(tmp, f"s{i}.wav")
+        spoken = text
+        for k_, v_ in SPEAK_AS.items():
+            spoken = spoken.replace(k_, v_)
+        marks = await speak(spoken, mp3)
+        pcm = subprocess.check_output(["ffmpeg", "-v", "error", "-i", mp3, "-f", "s16le", "-ac", "1", "-ar", str(SR), "-"])
+        x = np.frombuffer(pcm, np.int16)
+        # Abschnitte, die behalten werden: vom ersten bis zum letzten Wort, lange Pausen gekürzt
+        keep = []
+        seg_a = max(0.0, marks[0]["start"] - 0.06)
+        for j in range(len(marks) - 1):
+            gap_a, gap_b = marks[j]["end"], marks[j + 1]["start"]
+            if gap_b - gap_a > MAX_PAUSE:
+                keep.append((seg_a, gap_a + MAX_PAUSE * 0.6))
+                seg_a = gap_b - MAX_PAUSE * 0.4
+        keep.append((seg_a, marks[-1]["end"] + TAIL))
+
+        def remap(tt):  # alte Zeit -> neue Zeit (nach dem Kürzen)
+            acc = 0.0
+            for ka, kb in keep:
+                if tt <= kb:
+                    return acc + max(0.0, tt - ka)
+                acc += kb - ka
+            return acc
+
+        pieces = []
+        fade = int(0.01 * SR)
+        for ka, kb in keep:
+            seg = x[int(ka * SR):int(kb * SR)].astype(np.float64)
+            env = np.ones(len(seg))
+            env[:fade] = np.linspace(0, 1, min(fade, len(seg)))[: len(env[:fade])]
+            env[-fade:] = np.linspace(1, 0, min(fade, len(seg)))[-len(env[-fade:]):]
+            pieces.append(seg * env)
+        y = np.concatenate(pieces).astype(np.int16)
+        with wave.open(wav, "wb") as w:
+            w.setnchannels(1)
+            w.setsampwidth(2)
+            w.setframerate(SR)
+            w.writeframes(y.tobytes())
+        mapped = [{**m, "start": remap(m["start"]), "end": remap(m["end"])} for m in marks]
+        d = len(y) / SR
+        scenes.append({"text": text, "start": round(t, 3), "speechEnd": round(t + d, 3), "words": align(text, mapped, t)})
+        parts.append(wav)
+        t += d
         if i < len(texts) - 1:
             parts.append(os.path.join(tmp, "pause.wav"))
             t += PAUSE
-        print(f"Szene {i + 1}: {t - scene_start:.2f} s")
+        print(f"Szene {i + 1}: {d:.2f} s")
     lst = os.path.join(tmp, "list.txt")
     with open(lst, "w") as f:
         f.writelines(f"file '{p}'\n" for p in parts)
