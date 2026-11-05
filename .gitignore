@@ -6,3 +6,4 @@ dist
 # Ignore the output video from Git but not videos you import into src/.
 out/*
 !out/folge2-fruehstueck.mp4
+!out/folge2-fruehstueck-ohne-ton.mp4
