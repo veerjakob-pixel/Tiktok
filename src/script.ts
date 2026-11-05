@@ -93,7 +93,11 @@ export const timeWords = (scene: TimedScene): TimedWord[] => {
   let t = scene.from + lead;
   return words.map((w) => {
     const len = (w.weight / total) * usable;
-    const word = { text: w.text, start: Math.round(t), end: Math.round(t + len) };
+    const word = {
+      text: w.text,
+      start: Math.round(t),
+      end: Math.round(t + len),
+    };
     t += len;
     return word;
   });

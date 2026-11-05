@@ -130,19 +130,151 @@ const Title: React.FC<{
 };
 
 // =============== Szene 1 – HOOK ===============
-export const S1_STAMP_WORD = 11; // "Werbefirma"
+// "Du wurdest angelogen. | Frühstück ist die wichtigste Mahlzeit des Tages? |
+//  Das hat sich eine Werbefirma ausgedacht. | Und der Trick funktioniert bis heute."
+export const S1_STAMP_WORD = 14; // "Werbefirma"
 
 export const Scene1: React.FC<P> = ({ scene }) => {
-  const cut = at(scene, 7); // "Das hat dir ..."
+  const c1 = at(scene, 3); // "Frühstück ist ..."
+  const c2 = at(scene, 10); // "Das hat sich ..."
+  const c3 = at(scene, 16); // "Und der Trick ..."
   return (
     <AbsoluteFill>
       <ModernBg a="#F4A259" b="#9C3D10" />
-      <Cut from={0} to={cut}>
+      <Cut from={0} to={c1}>
+        <Lied />
+      </Cut>
+      <Cut from={c1} to={c2}>
         <HookPlate />
       </Cut>
-      <Cut from={cut} to={scene.duration}>
-        <HookStamp stampAt={at(scene, S1_STAMP_WORD, 0) - cut} />
+      <Cut from={c2} to={c3}>
+        <HookStamp stampAt={at(scene, S1_STAMP_WORD, 0) - c2} />
       </Cut>
+      <Cut from={c3} to={scene.duration}>
+        <StillToday todayAt={at(scene, 21) - c3} />
+      </Cut>
+    </AbsoluteFill>
+  );
+};
+
+// Erstes Bild: sofort sichtbar (kein Einblenden), damit niemand weiterwischt
+const Lied: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const s = interpolate(
+    spring({ frame, fps, config: { damping: 14, stiffness: 220 } }),
+    [0, 1],
+    [1.12, 1],
+  );
+  const glitch = frame % 9 < 2 ? 6 : 0;
+  return (
+    <AbsoluteFill
+      style={{
+        background:
+          "radial-gradient(circle at 50% 35%, #3A0B0B 0%, #0B0505 80%)",
+        transform: `${shake(frame, 0, 12, 14)} scale(1.06)`,
+      }}
+    >
+      <Stage style={{ transform: `scale(${s})` }}>
+        <div
+          style={{
+            fontFamily: FONT_BOLD,
+            fontSize: 150,
+            color: COLORS.cream,
+            lineHeight: 1,
+            textAlign: "center",
+          }}
+        >
+          DU WURDEST
+        </div>
+        <div style={{ position: "relative", marginTop: 10 }}>
+          <div
+            style={{
+              position: "absolute",
+              left: glitch,
+              top: 0,
+              fontFamily: FONT_BOLD,
+              fontSize: 200,
+              color: "#00E5FF",
+              lineHeight: 1,
+              opacity: glitch ? 0.7 : 0,
+            }}
+          >
+            ANGELOGEN
+          </div>
+          <div
+            style={{
+              position: "relative",
+              fontFamily: FONT_BOLD,
+              fontSize: 200,
+              lineHeight: 1,
+              color: "#FF2D2D",
+              textShadow: "0 0 40px rgba(255,45,45,0.6)",
+            }}
+          >
+            ANGELOGEN
+          </div>
+        </div>
+        <div
+          style={{
+            marginTop: 50,
+            transform: `rotate(${Math.sin(frame / 6) * 3}deg)`,
+          }}
+        >
+          <BreakfastPlate size={520} />
+        </div>
+      </Stage>
+    </AbsoluteFill>
+  );
+};
+
+// Offene Schleife: "der Trick funktioniert bis heute" -> man will wissen, wo
+const StillToday: React.FC<{ todayAt: number }> = ({ todayAt }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const t = pop(frame, fps, Math.max(0, todayAt - 2));
+  const eyes = 1 + 0.08 * Math.sin(frame / 3);
+  return (
+    <AbsoluteFill
+      style={{
+        background:
+          "radial-gradient(circle at 50% 35%, #2B3A55 0%, #0E1424 80%)",
+      }}
+    >
+      <Stage style={{ transform: `scale(${punch(frame, fps, 1.25)})` }}>
+        <div
+          style={{
+            fontFamily: FONT_BOLD,
+            fontSize: 120,
+            color: COLORS.cream,
+            textAlign: "center",
+            lineHeight: 1.02,
+          }}
+        >
+          DER TRICK
+          <br />
+          FUNKTIONIERT
+        </div>
+        <div
+          style={{
+            marginTop: 30,
+            fontFamily: FONT_BOLD,
+            fontSize: 170,
+            color: "#111",
+            background: COLORS.yellow,
+            padding: "0 40px",
+            borderRadius: 16,
+            transform: `scale(${t}) rotate(-3deg)`,
+          }}
+        >
+          BIS HEUTE
+        </div>
+        <div
+          style={{ fontSize: 150, marginTop: 40, transform: `scale(${eyes})` }}
+        >
+          👀
+        </div>
+      </Stage>
     </AbsoluteFill>
   );
 };

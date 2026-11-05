@@ -16,9 +16,21 @@ export const FONT_SUB = "Montserrat";
 export const FONT_BOLD = "Anton";
 export const FONT_VINTAGE = "Abril Fatface";
 
-loadFont({ family: FONT_SUB, url: staticFile("fonts/Montserrat.woff2"), weight: "100 900" });
-loadFont({ family: FONT_BOLD, url: staticFile("fonts/Anton.woff2"), weight: "400" });
-loadFont({ family: FONT_VINTAGE, url: staticFile("fonts/AbrilFatface.woff2"), weight: "400" });
+loadFont({
+  family: FONT_SUB,
+  url: staticFile("fonts/Montserrat.woff2"),
+  weight: "100 900",
+});
+loadFont({
+  family: FONT_BOLD,
+  url: staticFile("fonts/Anton.woff2"),
+  weight: "400",
+});
+loadFont({
+  family: FONT_VINTAGE,
+  url: staticFile("fonts/AbrilFatface.woff2"),
+  weight: "400",
+});
 
 // Bildschirm-Wackeln: gibt einen CSS-Transform zurück.
 export const shake = (frame: number, start: number, length = 10, amp = 26) => {
@@ -33,7 +45,15 @@ export const shake = (frame: number, start: number, length = 10, amp = 26) => {
 
 // Schneller "Punch-In"-Zoom am Anfang eines Schnitts.
 export const punch = (frame: number, fps: number, from = 1.25) =>
-  interpolate(spring({ frame, fps, config: { damping: 14, stiffness: 180 } }), [0, 1], [from, 1]);
+  interpolate(
+    spring({ frame, fps, config: { damping: 14, stiffness: 180 } }),
+    [0, 1],
+    [from, 1],
+  );
 
 export const pop = (frame: number, fps: number, delay = 0) =>
-  spring({ frame: frame - delay, fps, config: { damping: 10, stiffness: 200 } });
+  spring({
+    frame: frame - delay,
+    fps,
+    config: { damping: 10, stiffness: 200 },
+  });

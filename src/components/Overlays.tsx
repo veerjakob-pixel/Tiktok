@@ -1,10 +1,19 @@
 import React from "react";
-import { AbsoluteFill, interpolate, random, useCurrentFrame, useVideoConfig } from "remotion";
+import {
+  AbsoluteFill,
+  interpolate,
+  random,
+  useCurrentFrame,
+  useVideoConfig,
+} from "remotion";
 import { COLORS, FONT_SUB } from "../theme";
 import { pageWords, TimedWord } from "../script";
 
 // ---------- 1920er-Look: Sepia, Filmkorn, Flackern, Kratzer, Vignette ----------
-export const Vintage: React.FC<{ children: React.ReactNode; strength?: number }> = ({ children, strength = 1 }) => {
+export const Vintage: React.FC<{
+  children: React.ReactNode;
+  strength?: number;
+}> = ({ children, strength = 1 }) => {
   const frame = useCurrentFrame();
   const flicker = 0.93 + random(`f${frame}`) * 0.1;
   const jitterY = (random(`j${frame}`) - 0.5) * 4 * strength;
@@ -22,10 +31,18 @@ export const Vintage: React.FC<{ children: React.ReactNode; strength?: number }>
         {children}
       </AbsoluteFill>
       {/* Filmkorn */}
-      <AbsoluteFill style={{ mixBlendMode: "overlay", opacity: 0.55 * strength }}>
+      <AbsoluteFill
+        style={{ mixBlendMode: "overlay", opacity: 0.55 * strength }}
+      >
         <svg width="1080" height="1920">
           <filter id={`grain${seed}`}>
-            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed={seed} stitchTiles="stitch" />
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.9"
+              numOctaves="2"
+              seed={seed}
+              stitchTiles="stitch"
+            />
             <feColorMatrix type="saturate" values="0" />
           </filter>
           <rect width="1080" height="1920" filter={`url(#grain${seed})`} />
@@ -34,7 +51,16 @@ export const Vintage: React.FC<{ children: React.ReactNode; strength?: number }>
       {/* Kratzer + Staub */}
       <AbsoluteFill style={{ opacity: 0.6 * strength }}>
         {showScratch && (
-          <div style={{ position: "absolute", left: scratchX, top: 0, width: 2, height: 1920, background: "rgba(255,255,240,0.6)" }} />
+          <div
+            style={{
+              position: "absolute",
+              left: scratchX,
+              top: 0,
+              width: 2,
+              height: 1920,
+              background: "rgba(255,255,240,0.6)",
+            }}
+          />
         )}
         {Array.from({ length: 6 }).map((_, i) => (
           <div
@@ -46,7 +72,8 @@ export const Vintage: React.FC<{ children: React.ReactNode; strength?: number }>
               width: 3 + random(`ds${frame}-${i}`) * 6,
               height: 3 + random(`dh${frame}-${i}`) * 6,
               borderRadius: "50%",
-              background: i % 2 ? "rgba(30,20,10,0.7)" : "rgba(255,250,230,0.7)",
+              background:
+                i % 2 ? "rgba(30,20,10,0.7)" : "rgba(255,250,230,0.7)",
             }}
           />
         ))}
@@ -98,8 +125,15 @@ export const Subtitles: React.FC<{ words: TimedWord[] }> = ({ words }) => {
       >
         {page.map((w, i) => {
           // Kommende Wörter sind schon da (unsichtbar), damit die Zeile nicht hin- und herspringt
-          const active = frame >= w.start && (i === page.length - 1 ? true : frame < page[i + 1].start);
-          const appear = frame < w.start ? 0 : interpolate(frame, [w.start, w.start + 3], [0.5, 1], { extrapolateRight: "clamp" });
+          const active =
+            frame >= w.start &&
+            (i === page.length - 1 ? true : frame < page[i + 1].start);
+          const appear =
+            frame < w.start
+              ? 0
+              : interpolate(frame, [w.start, w.start + 3], [0.5, 1], {
+                  extrapolateRight: "clamp",
+                });
           return (
             <span
               key={i}
@@ -133,8 +167,24 @@ export const ProgressBar: React.FC = () => {
   const { durationInFrames } = useVideoConfig();
   const p = Math.min(1, frame / (durationInFrames - 1));
   return (
-    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 10, background: "rgba(255,248,231,0.35)" }}>
-      <div style={{ width: `${p * 100}%`, height: "100%", background: COLORS.red, boxShadow: "0 0 12px rgba(214,40,40,0.8)" }} />
+    <div
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 10,
+        background: "rgba(255,248,231,0.35)",
+      }}
+    >
+      <div
+        style={{
+          width: `${p * 100}%`,
+          height: "100%",
+          background: COLORS.red,
+          boxShadow: "0 0 12px rgba(214,40,40,0.8)",
+        }}
+      />
     </div>
   );
 };
@@ -142,6 +192,12 @@ export const ProgressBar: React.FC = () => {
 // ---------- kurzer weißer Blitz beim Szenenwechsel ----------
 export const Flash: React.FC = () => {
   const frame = useCurrentFrame();
-  const o = interpolate(frame, [0, 4], [0.85, 0], { extrapolateRight: "clamp" });
-  return <AbsoluteFill style={{ background: "#fff", opacity: o, pointerEvents: "none" }} />;
+  const o = interpolate(frame, [0, 4], [0.85, 0], {
+    extrapolateRight: "clamp",
+  });
+  return (
+    <AbsoluteFill
+      style={{ background: "#fff", opacity: o, pointerEvents: "none" }}
+    />
+  );
 };

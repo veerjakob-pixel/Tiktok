@@ -89,6 +89,7 @@ export const Folge2Fruehstueck: React.FC = () => {
       {s.slice(1).map((scene, i) => (
         <Sfx key={`w${i}`} at={scene.from - 4} file="whoosh" volume={0.35} />
       ))}
+      <Sfx at={0} file="knall" volume={0.45} />
       <Sfx
         at={s[0].from + at(s[0], S1_STAMP_WORD, 0)}
         file="knall"

@@ -4,7 +4,7 @@ Erzeugen: python3 scripts/make-voiceover-folge2.py  ->  public/voiceover-folge2.
 Aussprache: "1920ern" wird als "Neunzehnhundertzwanzigern" gesprochen (SPEAK_AS im Skript).
 
 [Szene 1 – Hook]
-Frühstück ist die wichtigste Mahlzeit des Tages? Das hat dir eine Werbefirma erzählt.
+Du wurdest angelogen. Frühstück ist die wichtigste Mahlzeit des Tages? Das hat sich eine Werbefirma ausgedacht. Und der Trick funktioniert bis heute.
 
 [Szene 2]
 In den 1920ern haben viele Amerikaner morgens nur Kaffee und Toast gegessen. Schlecht für Firmen, die Speck verkaufen.
