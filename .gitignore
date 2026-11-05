@@ -7,3 +7,4 @@ dist
 out/*
 !out/folge2-fruehstueck.mp4
 !out/folge2-fruehstueck-ohne-ton.mp4
+!out/folge2-story.png
