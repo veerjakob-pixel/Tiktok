@@ -8,6 +8,8 @@ import { SceneProps } from "./scenes/helpers";
 
 export type AppleADayProps = {
   voiceoverSeconds: number | null;
+  sceneSeconds: number[] | null;
+  wordStarts: number[][] | null;
   hasVoiceover: boolean;
   hasMusic: boolean;
 };
@@ -28,18 +30,38 @@ export const calculateMetadata: CalculateMetadataFunction<AppleADayProps> = asyn
       voiceoverSeconds = null;
     }
   }
+  // Optional: genaue Szenenlängen passend zur Aufnahme
+  let sceneSeconds: number[] | null = null;
+  let wordStarts: number[][] | null = null;
+  if (hasVoiceover && hasFile("voiceover-timing.json")) {
+    try {
+      const json = await fetch(staticFile("voiceover-timing.json")).then((r) => r.json());
+      if (Array.isArray(json.sceneSeconds)) sceneSeconds = json.sceneSeconds;
+      if (Array.isArray(json.wordStarts)) wordStarts = json.wordStarts;
+    } catch {
+      sceneSeconds = null;
+    }
+  }
   const hasMusic = hasFile("music.mp3");
   // kleine Pause (0,4 s) am Ende, damit das letzte Wort nicht abgeschnitten wird
   const totalSeconds = voiceoverSeconds ? voiceoverSeconds + 0.4 : BASE_SECONDS;
+  if (sceneSeconds) {
+    // Rest (Pause am Ende) der letzten Szene geben, damit kein schwarzes Bild bleibt
+    const sum = sceneSeconds.reduce((a, b) => a + b, 0);
+    sceneSeconds = sceneSeconds.map((x, i) => (i === sceneSeconds!.length - 1 ? x + Math.max(0, totalSeconds - sum) : x));
+  }
   return {
     durationInFrames: Math.round(totalSeconds * FPS),
-    props: { ...props, voiceoverSeconds: voiceoverSeconds ? totalSeconds : null, hasVoiceover, hasMusic },
+    props: { ...props, voiceoverSeconds: voiceoverSeconds ? totalSeconds : null, sceneSeconds, wordStarts, hasVoiceover, hasMusic },
   };
 };
 
-export const AppleADay: React.FC<AppleADayProps> = ({ voiceoverSeconds, hasVoiceover, hasMusic }) => {
-  const timeline = React.useMemo(() => buildTimeline(voiceoverSeconds), [voiceoverSeconds]);
-  const words = React.useMemo(() => timeline.flatMap((s) => timeWords(s)), [timeline]);
+export const AppleADay: React.FC<AppleADayProps> = ({ voiceoverSeconds, sceneSeconds, wordStarts, hasVoiceover, hasMusic }) => {
+  const timeline = React.useMemo(() => buildTimeline(voiceoverSeconds, sceneSeconds), [voiceoverSeconds, sceneSeconds]);
+  const words = React.useMemo(
+    () => timeline.flatMap((s, i) => timeWords(s, wordStarts?.[i])),
+    [timeline, wordStarts],
+  );
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#000" }}>

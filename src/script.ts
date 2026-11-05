@@ -56,14 +56,19 @@ export const BASE_SECONDS = SCENES.reduce((s, x) => s + x.seconds, 0);
 
 export type TimedScene = SceneDef & { from: number; duration: number };
 
-// Rechnet die Szenen in Frames um. totalSeconds = Länge der Sprachaufnahme (oder null).
-export const buildTimeline = (totalSeconds: number | null): TimedScene[] => {
-  const factor = totalSeconds ? totalSeconds / BASE_SECONDS : 1;
+// Rechnet die Szenen in Frames um.
+// sceneSeconds = genaue Länge jeder Szene aus public/voiceover-timing.json (falls vorhanden),
+// sonst totalSeconds = Länge der Sprachaufnahme (alle Szenen werden gleichmäßig gestreckt), sonst Standard.
+export const buildTimeline = (totalSeconds: number | null, sceneSeconds: number[] | null = null): TimedScene[] => {
+  const useExact = sceneSeconds && sceneSeconds.length === SCENES.length;
+  const factor = totalSeconds && !useExact ? totalSeconds / BASE_SECONDS : 1;
   let from = 0;
-  return SCENES.map((s) => {
-    const duration = Math.round(s.seconds * factor * FPS);
-    const scene = { ...s, from, duration };
-    from += duration;
+  return SCENES.map((s, i) => {
+    const secs = useExact ? sceneSeconds[i] : s.seconds * factor;
+    // Szenengrenzen auf ganze Frames runden, ohne dass sich Fehler aufaddieren
+    const end = Math.round((from / FPS + secs) * FPS);
+    const scene = { ...s, from, duration: end - from };
+    from = end;
     return scene;
   });
 };
@@ -74,7 +79,7 @@ const isOnlyPunctuation = (w: string) => !/[\p{L}\p{N}]/u.test(w);
 
 // Verteilt die Wörter einer Szene über die Szenenlänge.
 // Lange Wörter bekommen mehr Zeit, nach Satzzeichen gibt's eine kleine Pause.
-export const timeWords = (scene: TimedScene): TimedWord[] => {
+export const timeWords = (scene: TimedScene, exactStarts?: number[] | null): TimedWord[] => {
   const raw = scene.text.split(/\s+/).filter(Boolean);
   const words: { text: string; weight: number }[] = [];
   for (const w of raw) {
@@ -86,6 +91,15 @@ export const timeWords = (scene: TimedScene): TimedWord[] => {
     if (/[.:!?]$/.test(w)) weight += 4;
     else if (/[,]$/.test(w)) weight += 2;
     words.push({ text: w, weight });
+  }
+  // Echte Wortzeiten aus der Sprachaufnahme (Sekunden ab Videostart), falls vorhanden
+  if (exactStarts && exactStarts.length === words.length) {
+    const sceneEnd = scene.from + scene.duration;
+    return words.map((w, i) => {
+      const start = Math.min(sceneEnd - 1, Math.max(scene.from, Math.round(exactStarts[i] * FPS)));
+      const next = i + 1 < words.length ? Math.round(exactStarts[i + 1] * FPS) : sceneEnd;
+      return { text: w.text, start, end: Math.max(start + 1, Math.min(next, sceneEnd)) };
+    });
   }
   const lead = 3; // Frames Vorlauf
   const usable = scene.duration - lead - 2;
