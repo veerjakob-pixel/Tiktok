@@ -32,3 +32,23 @@ npx remotion render AppleADay out/apple-a-day.mp4
 - `src/components/Poster.tsx` – Werbeplakate im 1920er-Stil
 - `src/components/Overlays.tsx` – Sepia/Filmkorn, Untertitel, Fortschrittsbalken
 - `public/fonts/` – Schriften (Montserrat, Anton, Abril Fatface; Google Fonts, OFL), lokal, damit das Rendern auch offline klappt
+
+---
+
+# Folge 2 – „Frühstück ist die wichtigste Mahlzeit“ (Komposition `Folge2Fruehstueck`)
+
+1080 × 1920, 30 fps, ca. 47 s (Länge kommt aus der Sprachaufnahme). Fertiges Video: `out/folge2-fruehstueck.mp4`.
+
+```bash
+python3 scripts/make-voiceover-folge2.py   # Stimme + Wortzeiten (edge-tts, de-DE-ConradNeural, -8 %, -4 Hz)
+python3 scripts/make-audio-folge2.py       # Musik + Soundeffekte per Code
+npx remotion render Folge2Fruehstueck out/folge2-fruehstueck.mp4
+ffprobe -v error -show_entries stream=codec_type out/folge2-fruehstueck.mp4   # muss "audio" zeigen
+```
+
+- `voiceover-folge2.txt` – Sprechtext. Eigene Aufnahme? Als `public/voiceover-folge2.mp3` ablegen – das Skript überschreibt sie nicht.
+  (Dann aber auch `src/folge2/timing.json` anpassen, weil die Wortzeiten von edge-tts kommen.)
+- `src/folge2/timing.json` – echte Wortzeiten der Aufnahme; Szenen, Schnitte und Untertitel hängen daran.
+- `src/folge2/timeline.ts` – Szenen + Untertitel-Gruppen (3–5 Wörter, max. 2 Zeilen, mind. 1 s sichtbar)
+- `src/folge2/Scenes2.tsx`, `Graphics2.tsx`, `Subtitles2.tsx` – Szenen, SVG-Grafiken, Untertitel
+- `public/music-folge2.mp3` (Lautstärke 0.12), `public/sfx/` (Wusch, Knall, Klick) – alles per Code erzeugt

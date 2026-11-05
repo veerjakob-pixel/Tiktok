@@ -317,9 +317,9 @@ const CoffeeToast: React.FC<{ coffeeAt: number; toastAt: number }> = ({
         style={{
           fontFamily: FONT_BOLD,
           fontSize: 90,
-          color: COLORS.cream,
+          color: COLORS.ink,
           marginTop: 40,
-          textShadow: "0 5px 0 rgba(0,0,0,0.4)",
+          textShadow: "0 3px 0 rgba(251,246,233,0.8)",
         }}
       >
         <span style={{ opacity: c }}>KAFFEE</span>
