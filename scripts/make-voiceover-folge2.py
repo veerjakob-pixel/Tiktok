@@ -1,6 +1,6 @@
 """Erzeugt public/voiceover-folge2.mp3 + src/folge2/timing.json aus voiceover-folge2.txt.
 
-Stimme: edge-tts, de-DE-FlorianMultilingualNeural, normales Tempo, normale Tonhöhe.
+Stimme: edge-tts, de-DE-KillianNeural, normales Tempo, normale Tonhöhe.
 Jede Szene wird am Stück gesprochen (natürliche Betonung), zu lange Pausen werden gekürzt.
 So kennen wir die genaue Länge jeder Szene und die Zeit jedes Wortes (für die Untertitel).
 
@@ -18,7 +18,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TXT = os.path.join(ROOT, "voiceover-folge2.txt")
 MP3 = os.path.join(ROOT, "public", "voiceover-folge2.mp3")
 TIMING = os.path.join(ROOT, "src", "folge2", "timing.json")
-VOICE, RATE, PITCH = "de-DE-FlorianMultilingualNeural", "+0%", "+0Hz"
+VOICE, RATE, PITCH = "de-DE-KillianNeural", "+0%", "+0Hz"
 PAUSE = 0.35  # Sekunden Pause zwischen den Szenen
 MAX_PAUSE = 0.4  # längere Pausen innerhalb einer Szene werden auf diese Länge gekürzt
 SR = 24000
@@ -32,8 +32,8 @@ ca = os.environ.get("SSL_CERT_FILE") or ("/root/.ccr/ca-bundle.crt" if os.path.e
 if ca:
     comm._SSL_CTX = ssl.create_default_context(cafile=ca)
 
-# edge-tts schickt fest xml:lang='en-US' mit. Florian ist eine mehrsprachige Stimme
-# und würde dann kurze Sätze evtl. mit englischem Akzent lesen -> auf Deutsch stellen.
+# edge-tts schickt fest xml:lang='en-US' mit. Mehrsprachige Stimmen (z. B. Florian)
+# würde dann mit Akzent lesen -> sicherheitshalber immer auf Deutsch stellen.
 _orig_mkssml = comm.mkssml
 comm.mkssml = lambda tc, text: _orig_mkssml(tc, text).replace("xml:lang='en-US'", "xml:lang='de-DE'")
 

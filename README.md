@@ -40,7 +40,7 @@ npx remotion render AppleADay out/apple-a-day.mp4
 1080 × 1920, 30 fps, ca. 50 s (Länge kommt aus der Sprachaufnahme). Fertiges Video: `out/folge2-fruehstueck.mp4`.
 
 ```bash
-python3 scripts/make-voiceover-folge2.py   # Stimme + Wortzeiten (edge-tts, de-DE-FlorianMultilingualNeural, normales Tempo)
+python3 scripts/make-voiceover-folge2.py   # Stimme + Wortzeiten (edge-tts, de-DE-KillianNeural, normales Tempo)
 python3 scripts/make-audio-folge2.py       # Musik + Soundeffekte per Code
 npx remotion render Folge2Fruehstueck out/folge2-fruehstueck.mp4
 ffprobe -v error -show_entries stream=codec_type out/folge2-fruehstueck.mp4   # muss "audio" zeigen
