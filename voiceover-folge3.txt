@@ -1,4 +1,4 @@
-Sprechtext für Folge 3 – "Der Diamant-Trick" (ca. 45 Sekunden)
+Sprechtext für Folge 3 – "Der Diamant-Trick" (ca. 48 Sekunden, Stimme: Florian)
 Aufnahme: public/voiceover-folge3.mp3 (eigene Aufnahme einfach unter diesem Namen speichern
 und public/voiceover-folge3-timing.json löschen – dann passt sich das Video gleichmäßig an).
 

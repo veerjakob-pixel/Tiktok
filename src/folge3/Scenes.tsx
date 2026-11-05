@@ -158,11 +158,11 @@ export const Scene1: React.FC<SceneProps> = ({ dur }) => {
         <HookRing flipAt={T(0.6) - T(0.3)} />
       </Cut>
       {/* 2,2–4,1 s: Preisschild groß, Stempel WERBUNG knallt */}
-      <Cut T={T} a={2.2} b={4.1}>
+      <Cut T={T} a={2.2} b={3.85}>
         <HookTag stampAt={T(2.5) - T(2.2)} />
       </Cut>
       {/* 4,1 s – Ende: fast jeder macht mit */}
-      <Cut T={T} a={4.1} b={SCENES[0].seconds}>
+      <Cut T={T} a={3.85} b={SCENES[0].seconds}>
         <HookEveryone />
       </Cut>
     </AbsoluteFill>
@@ -260,19 +260,19 @@ export const Scene2: React.FC<SceneProps> = ({ dur }) => {
   const T = useT(1, dur);
   return (
     <AbsoluteFill>
-      <Cut T={T} a={0} b={2.9}>
+      <Cut T={T} a={0} b={3.4}>
         <Vintage>
           <EarlierShot />
         </Vintage>
       </Cut>
-      <Cut T={T} a={2.9} b={5.5}>
+      <Cut T={T} a={3.4} b={5.8}>
         <Vintage>
-          <EmptyShopShot typeAt={[T(3.5), T(3.62), T(3.74)].map((x) => x - T(2.9))} />
+          <EmptyShopShot typeAt={[T(4.0), T(4.12), T(4.24)].map((x) => x - T(3.4))} />
         </Vintage>
       </Cut>
-      <Cut T={T} a={5.5} b={SCENES[1].seconds}>
+      <Cut T={T} a={5.8} b={SCENES[1].seconds}>
         <Vintage>
-          <CrisisChartShot len={T(SCENES[1].seconds) - T(5.5)} />
+          <CrisisChartShot len={T(SCENES[1].seconds) - T(5.8)} />
         </Vintage>
       </Cut>
     </AbsoluteFill>
@@ -352,19 +352,19 @@ export const Scene3: React.FC<SceneProps> = ({ dur }) => {
   const T = useT(2, dur);
   return (
     <AbsoluteFill>
-      <Cut T={T} a={0} b={2.8}>
+      <Cut T={T} a={0} b={2.7}>
         <Vintage>
           <HQShot />
         </Vintage>
       </Cut>
-      <Cut T={T} a={2.8} b={6.85}>
+      <Cut T={T} a={2.7} b={7.0}>
         <Vintage>
-          <CampaignShot yearAt={T(4.0) - T(2.8)} step={T(4.09) - T(4.0)} />
+          <CampaignShot yearAt={T(4.25) - T(2.7)} step={T(4.34) - T(4.25)} />
         </Vintage>
       </Cut>
-      <Cut T={T} a={6.85} b={SCENES[2].seconds}>
+      <Cut T={T} a={7.0} b={SCENES[2].seconds}>
         <Vintage strength={0.55}>
-          <PosterShot writeAt={T(6.95) - T(6.85)} transAt={T(8.97) - T(6.85)} />
+          <PosterShot writeAt={T(7.08) - T(7.0)} transAt={T(8.71) - T(7.0)} />
         </Vintage>
       </Cut>
     </AbsoluteFill>
@@ -518,11 +518,11 @@ export const Scene4: React.FC<SceneProps> = ({ dur }) => {
   const T = useT(3, dur);
   return (
     <AbsoluteFill>
-      <Cut T={T} a={0} b={3.8}>
-        <MergeShot mergeAt={T(0.9)} infAt={T(1.4)} />
+      <Cut T={T} a={0} b={4.1}>
+        <MergeShot mergeAt={T(0.96)} infAt={T(1.5)} />
       </Cut>
-      <Cut T={T} a={3.8} b={SCENES[3].seconds}>
-        <PawnShot crossAt={T(5.1) - T(3.8)} breakAt={T(6.0) - T(3.8)} />
+      <Cut T={T} a={4.1} b={SCENES[3].seconds}>
+        <PawnShot crossAt={T(5.6) - T(4.1)} breakAt={T(6.6) - T(4.1)} />
       </Cut>
     </AbsoluteFill>
   );
@@ -595,14 +595,14 @@ export const Scene5: React.FC<SceneProps> = ({ dur }) => {
   const T = useT(4, dur);
   return (
     <AbsoluteFill>
-      <Cut T={T} a={0} b={2.4}>
-        <PayslipShot at={[T(0.35), T(0.85), T(1.35)]} />
+      <Cut T={T} a={0} b={2.3}>
+        <PayslipShot at={[T(0.4), T(1.0), T(1.5)]} />
       </Cut>
-      <Cut T={T} a={2.4} b={4.6}>
-        <RulePriceShot stampAt={T(3.96) - T(2.4)} />
+      <Cut T={T} a={2.3} b={5.2}>
+        <RulePriceShot stampAt={T(4.3) - T(2.3)} />
       </Cut>
-      <Cut T={T} a={4.6} b={SCENES[4].seconds}>
-        <FeelingShot bigAt={T(5.5) - T(4.6)} crossAt={T(6.74) - T(4.6)} />
+      <Cut T={T} a={5.2} b={SCENES[4].seconds}>
+        <FeelingShot bigAt={T(6.4) - T(5.2)} crossAt={T(7.7) - T(5.2)} />
       </Cut>
     </AbsoluteFill>
   );
@@ -731,7 +731,7 @@ export const Scene6: React.FC<SceneProps> = ({ dur }) => {
   const frame = useCurrentFrame();
   const pulse = 1 + Math.sin((frame / 30) * Math.PI * 2 * 1.4) * 0.06;
   const bp = useSpring(0, 260, 12);
-  const teaserCut = T(1.3);
+  const teaserCut = T(1.6);
   return (
     <AbsoluteFill>
       <LuxBg a="#3A0CA3" b="#0A0420" />

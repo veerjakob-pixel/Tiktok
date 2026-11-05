@@ -10,32 +10,32 @@ export const SCENES: SceneDef[] = [
   {
     id: "hook",
     text: "Eine einzige Firma hat entschieden, was dein Verlobungsring kosten soll. Und fast jeder hält sich bis heute dran.",
-    seconds: 6.801,
+    seconds: 6.891,
   },
   {
     id: "krise",
     text: "Früher waren Diamant-Verlobungsringe gar nicht so normal. Und in den 1930ern wollte in der Wirtschaftskrise kaum jemand Diamanten kaufen.",
-    seconds: 8.468,
+    seconds: 8.773,
   },
   {
     id: "debeers",
     text: "Die Diamanten-Firma De Beers startete eine riesige Werbekampagne. 1947 kam der Slogan: „A Diamond is Forever“ – ein Diamant ist für immer.",
-    seconds: 10.468,
+    seconds: 10.483,
   },
   {
     id: "botschaft",
     text: "Die Botschaft: Liebe ist für immer, also muss der Ring es auch sein. Und wer einen Diamanten wieder verkauft, verkauft seine Liebe.",
-    seconds: 7.316,
+    seconds: 8.088,
   },
   {
     id: "gefuehl",
     text: "Sogar die Regel, wie viele Monatsgehälter ein Ring kosten soll, kam aus der Werbung. Der Trick: ein Gefühl verkaufen, nicht einen Stein.",
-    seconds: 7.911,
+    seconds: 8.962,
   },
   {
     id: "folgen",
     text: "Folg mir für Teil 4: Wie die Zucker-Industrie Forscher bezahlt hat.",
-    seconds: 4.029,
+    seconds: 4.331,
   },
 ];
 
@@ -45,15 +45,15 @@ export const BASE_SECONDS = SCENES.reduce((s, x) => s + x.seconds, 0);
 export type Sfx = { t: number; type: "whoosh" | "boom" | "click" };
 export const SFX: Sfx[][] = [
   [{ t: 0, type: "boom" }, { t: 0.3, type: "whoosh" }, { t: 2.5, type: "boom" }],
-  [3.5, 3.62, 3.74].map((t) => ({ t, type: "click" as const })),
+  [4.0, 4.12, 4.24].map((t) => ({ t, type: "click" as const })),
   // Jahreszähler 1938 -> 1947
-  Array.from({ length: 10 }, (_, i) => ({ t: 4.0 + i * 0.09, type: "click" as const })),
+  Array.from({ length: 10 }, (_, i) => ({ t: 4.25 + i * 0.09, type: "click" as const })),
   [],
   [
-    ...[0.35, 0.85, 1.35].map((t) => ({ t, type: "click" as const })),
-    { t: 3.96, type: "boom" as const },
+    ...[0.4, 1.0, 1.5].map((t) => ({ t, type: "click" as const })),
+    { t: 4.3, type: "boom" as const },
   ],
-  [{ t: 1.3, type: "click" }],
+  [{ t: 1.6, type: "click" }],
 ];
 
 export type TimedScene = SceneDef & { from: number; duration: number };

@@ -6,7 +6,7 @@ G = sys.argv[1]; OUTJSON = sys.argv[2]
 PARTS = [
  [("de","Eine einzige Firma hat entschieden, was dein Verlobungsring kosten soll. Und fast jeder hält sich bis heute dran.")],
  [("de","Früher waren Diamant-Verlobungsringe gar nicht so normal. Und in den neunzehnhundertdreißigern wollte in der Wirtschaftskrise kaum jemand Diamanten kaufen.")],
- [("de","Die Diamanten-Firma De Biers startete eine riesige Werbekampagne. Neunzehnhundertsiebenundvierzig kam der Slogan:"),("en","A diamond is forever."),("de","Ein Diamant ist für immer.")],
+ [("de","Die Diamanten-Firma De Beers startete eine riesige Werbekampagne. Neunzehnhundertsiebenundvierzig kam der Slogan:"),("en","A diamond is forever."),("de","Ein Diamant ist für immer.")],
  [("de","Die Botschaft: Liebe ist für immer, also muss der Ring es auch sein. Und wer einen Diamanten wieder verkauft, verkauft seine Liebe.")],
  [("de","Sogar die Regel, wie viele Monatsgehälter ein Ring kosten soll, kam aus der Werbung. Der Trick: ein Gefühl verkaufen, nicht einen Stein.")],
  [("de","Folg mir für Teil vier: Wie die Zucker-Industrie Forscher bezahlt hat.")],

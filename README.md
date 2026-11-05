@@ -41,7 +41,7 @@ npx remotion render AppleADay out/apple-a-day.mp4
 
 # Folge3Diamant – „Werbelügen #3“: Der Diamant-Trick
 
-Hochformat (1080 × 1920, 30 fps, ca. 45 s) darüber, wie De Beers mit „A Diamond is Forever“ den Verlobungsring erfunden hat.
+Hochformat (1080 × 1920, 30 fps, ca. 48 s) darüber, wie De Beers mit „A Diamond is Forever“ den Verlobungsring erfunden hat.
 
 ```bash
 npx remotion render Folge3Diamant out/folge3-diamant.mp4
@@ -55,6 +55,7 @@ ffprobe -v error -show_entries stream=codec_type -of csv out/folge3-diamant.mp4 
 - `public/voiceover-folge3-timing.json` – Länge jeder Szene + Startzeit jedes Worts (per Whisper gemessen)
 - `public/music-folge3.mp3` – ruhige Hintergrundmusik (per Code erzeugt), Lautstärke 0.12
 - `public/sfx-*.mp3` – Wusch, Knall, Klick (per Code erzeugt)
-- Stimme: Piper-TTS „Thorsten“ (Deutsch) + „Ryan“ für den englischen Slogan, etwas tiefer und langsamer
+- Stimme: „Florian“ (Microsoft de-DE-FlorianMultilingualNeural über edge-tts), Tempo -5 %, Tonhöhe -6 Hz → ruhig und leicht tief.
+  Neu erzeugen: `EDGE_TTS_CA=/root/.ccr/ca-bundle.crt python3 scripts/folge3/make_voice.py x tmp/` (CA nur hinter dem Cloud-Proxy nötig)
 - Skripte zum Neu-Erzeugen: `scripts/folge3/` (`make_voice.py`, `align.py`, `make_sounds.py`)
 - Code: `src/Folge3Diamant.tsx`, `src/folge3/` (Szenen, Grafiken, Untertitel)
