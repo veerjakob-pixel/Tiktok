@@ -1,0 +1,21 @@
+Sprechtext für Folge 2 – "Frühstück ist die wichtigste Mahlzeit" (ca. 42 Sekunden)
+Stimme: edge-tts, de-DE-ConradNeural, --rate=-8% --pitch=-4Hz (ruhig, leicht tief)
+Erzeugen: python3 scripts/make-voiceover-folge2.py  ->  public/voiceover-folge2.mp3
+
+[Szene 1 – Hook]
+Frühstück ist die wichtigste Mahlzeit des Tages? Das hat dir eine Werbefirma erzählt.
+
+[Szene 2]
+In den 1920ern haben viele Amerikaner morgens nur Kaffee und Toast gegessen. Schlecht für Firmen, die Speck verkaufen.
+
+[Szene 3]
+Also holte ein Speck-Hersteller Edward Bernays – den Vater der PR. Seine Idee: Er fragte Ärzte, ob ein kräftiges Frühstück gesund ist. Tausende sagten ja.
+
+[Szene 4]
+Daraus wurden Zeitungsartikel: Ärzte empfehlen ein großes Frühstück. Und was ist ein großes Frühstück? Speck und Eier.
+
+[Szene 5]
+Der Trick: Keine Werbung für Speck – sondern eine 'Gesundheitsnachricht'. Genau das macht PR bis heute.
+
+[Szene 6 – Folgen-Aufruf]
+Folg mir für Teil 3: Warum Verlobungsringe einen Diamanten haben.
