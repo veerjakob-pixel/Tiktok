@@ -20,7 +20,9 @@ VOICE, RATE, PITCH = "de-DE-FlorianMultilingualNeural", "+0%", "+0Hz"
 PAUSE = 0.35  # Sekunden Pause zwischen den Szenen
 GAP = 0.25    # Sekunden Pause zwischen zwei Sätzen
 TAIL = 0.12   # Nachklang nach dem letzten Wort eines Satzes
-LEAD = 0.2   # Sekunden Stille ganz am Anfang
+LEAD = 0.2  # Sekunden Stille ganz am Anfang
+# So soll die Stimme bestimmte Wörter aussprechen (der Untertitel zeigt weiter das Original)
+SPEAK_AS = {"1920ern": "Neunzehnhundertzwanzigern"}
 
 # Hinter einem Firmen-Proxy braucht edge-tts evtl. ein eigenes CA-Zertifikat.
 ca = os.environ.get("SSL_CERT_FILE") or ("/root/.ccr/ca-bundle.crt" if os.path.exists("/root/.ccr/ca-bundle.crt") else None)
@@ -111,7 +113,10 @@ async def main():
             mp3 = os.path.join(tmp, f"p{n}.mp3")
             wav = os.path.join(tmp, f"p{n}.wav")
             n += 1
-            marks = await speak(sent, mp3)
+            spoken = sent
+            for k_, v_ in SPEAK_AS.items():
+                spoken = spoken.replace(k_, v_)
+            marks = await speak(spoken, mp3)
             # Stille vorne/hinten abschneiden (Wortgrenzen von edge-tts)
             cut_a = max(0.0, marks[0]["start"] - 0.06)
             cut_b = marks[-1]["end"] + TAIL
