@@ -1,5 +1,5 @@
 Sprechtext für Folge 2 – "Frühstück ist die wichtigste Mahlzeit" (ca. 42 Sekunden)
-Stimme: edge-tts, de-DE-ConradNeural, --rate=+5% --pitch=-2Hz (wach, aber gelassen)
+Stimme: edge-tts, de-DE-FlorianMultilingualNeural (normales Tempo, normale Tonhöhe)
 Erzeugen: python3 scripts/make-voiceover-folge2.py  ->  public/voiceover-folge2.mp3
 
 [Szene 1 – Hook]

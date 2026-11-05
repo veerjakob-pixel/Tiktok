@@ -1,533 +1,533 @@
 {
- "voice": "de-DE-ConradNeural",
- "rate": "+5%",
- "pitch": "-2Hz",
- "total": 40.333,
+ "voice": "de-DE-FlorianMultilingualNeural",
+ "rate": "+0%",
+ "pitch": "+0Hz",
+ "total": 44.8,
  "scenes": [
   {
    "text": "Frühstück ist die wichtigste Mahlzeit des Tages? Das hat dir eine Werbefirma erzählt.",
    "start": 0.2,
-   "speechEnd": 5.107,
+   "speechEnd": 5.51,
    "words": [
     {
      "text": "Frühstück",
      "start": 0.26,
-     "end": 0.784
+     "end": 0.823
     },
     {
      "text": "ist",
-     "start": 0.843,
-     "end": 0.962
+     "start": 0.823,
+     "end": 0.997
     },
     {
      "text": "die",
-     "start": 0.986,
-     "end": 1.046
+     "start": 0.997,
+     "end": 1.123
     },
     {
      "text": "wichtigste",
-     "start": 1.081,
-     "end": 1.546
+     "start": 1.123,
+     "end": 1.623
     },
     {
      "text": "Mahlzeit",
-     "start": 1.569,
-     "end": 2.07
+     "start": 1.623,
+     "end": 2.135
     },
     {
      "text": "des",
-     "start": 2.093,
-     "end": 2.248
+     "start": 2.135,
+     "end": 2.297
     },
     {
      "text": "Tages?",
-     "start": 2.296,
-     "end": 2.772
+     "start": 2.297,
+     "end": 2.91
     },
     {
      "text": "Das",
-     "start": 3.202,
-     "end": 3.404
+     "start": 3.34,
+     "end": 3.503
     },
     {
      "text": "hat",
-     "start": 3.428,
-     "end": 3.523
+     "start": 3.503,
+     "end": 3.678
     },
     {
      "text": "dir",
-     "start": 3.547,
-     "end": 3.654
+     "start": 3.678,
+     "end": 3.89
     },
     {
      "text": "eine",
-     "start": 3.714,
-     "end": 3.881
+     "start": 3.89,
+     "end": 4.103
     },
     {
      "text": "Werbefirma",
-     "start": 3.904,
-     "end": 4.452
+     "start": 4.103,
+     "end": 4.74
     },
     {
      "text": "erzählt.",
-     "start": 4.5,
-     "end": 4.988
+     "start": 4.74,
+     "end": 5.39
     }
    ]
   },
   {
    "text": "In den 1920ern haben viele Amerikaner morgens nur Kaffee und Toast gegessen. Schlecht für Firmen, die Speck verkaufen.",
-   "start": 5.457,
-   "speechEnd": 12.698,
+   "start": 5.86,
+   "speechEnd": 13.398,
    "words": [
     {
      "text": "In",
-     "start": 5.517,
-     "end": 5.648
+     "start": 5.91,
+     "end": 6.085
     },
     {
      "text": "den",
-     "start": 5.672,
-     "end": 5.791
+     "start": 6.085,
+     "end": 6.21
     },
     {
      "text": "1920ern",
-     "start": 5.803,
-     "end": 6.91
+     "start": 6.21,
+     "end": 7.26
     },
     {
      "text": "haben",
-     "start": 6.922,
-     "end": 7.207
+     "start": 7.26,
+     "end": 7.535
     },
     {
      "text": "viele",
-     "start": 7.219,
-     "end": 7.481
+     "start": 7.535,
+     "end": 7.835
     },
     {
      "text": "Amerikaner",
-     "start": 7.553,
-     "end": 8.1
+     "start": 7.835,
+     "end": 8.422
     },
     {
      "text": "morgens",
-     "start": 8.124,
-     "end": 8.517
+     "start": 8.422,
+     "end": 8.86
     },
     {
      "text": "nur",
-     "start": 8.541,
-     "end": 8.66
+     "start": 8.86,
+     "end": 9.035
     },
     {
      "text": "Kaffee",
-     "start": 8.707,
-     "end": 9.017
+     "start": 9.035,
+     "end": 9.51
     },
     {
      "text": "und",
-     "start": 9.1,
-     "end": 9.267
+     "start": 9.522,
+     "end": 9.685
     },
     {
      "text": "Toast",
-     "start": 9.279,
-     "end": 9.541
+     "start": 9.685,
+     "end": 9.96
     },
     {
      "text": "gegessen.",
-     "start": 9.6,
-     "end": 10.017
+     "start": 9.96,
+     "end": 10.51
     },
     {
      "text": "Schlecht",
-     "start": 10.447,
-     "end": 10.828
+     "start": 10.94,
+     "end": 11.328
     },
     {
      "text": "für",
-     "start": 10.864,
-     "end": 11.007
+     "start": 11.328,
+     "end": 11.49
     },
     {
      "text": "Firmen,",
-     "start": 11.018,
-     "end": 11.483
+     "start": 11.49,
+     "end": 11.977
     },
     {
      "text": "die",
-     "start": 11.685,
-     "end": 11.768
+     "start": 12.215,
+     "end": 12.352
     },
     {
      "text": "Speck",
-     "start": 11.816,
-     "end": 12.018
+     "start": 12.352,
+     "end": 12.615
     },
     {
      "text": "verkaufen.",
-     "start": 12.054,
-     "end": 12.578
+     "start": 12.615,
+     "end": 13.277
     }
    ]
   },
   {
    "text": "Also holte ein Speck-Hersteller Edward Bernays – den Vater der PR. Seine Idee: Er fragte Ärzte, ob ein kräftiges Frühstück gesund ist. Tausende sagten ja.",
-   "start": 13.048,
-   "speechEnd": 22.527,
+   "start": 13.748,
+   "speechEnd": 24.433,
    "words": [
     {
      "text": "Also",
-     "start": 13.108,
-     "end": 13.441
+     "start": 13.798,
+     "end": 14.148
     },
     {
      "text": "holte",
-     "start": 13.477,
-     "end": 13.739
+     "start": 14.148,
+     "end": 14.46
     },
     {
      "text": "ein",
-     "start": 13.798,
-     "end": 13.941
+     "start": 14.46,
+     "end": 14.598
     },
     {
      "text": "Speck-Hersteller",
-     "start": 13.953,
-     "end": 14.644
+     "start": 14.598,
+     "end": 15.41
     },
     {
      "text": "Edward",
-     "start": 14.703,
-     "end": 14.977
+     "start": 15.41,
+     "end": 15.723
     },
     {
      "text": "Bernays",
-     "start": 15.048,
-     "end": 15.453
+     "start": 15.723,
+     "end": 16.235
     },
     {
      "text": "den",
-     "start": 15.62,
-     "end": 15.798
+     "start": 16.585,
+     "end": 16.748
     },
     {
      "text": "Vater",
-     "start": 15.822,
-     "end": 16.132
+     "start": 16.748,
+     "end": 17.136
     },
     {
      "text": "der",
-     "start": 16.179,
-     "end": 16.275
+     "start": 17.136,
+     "end": 17.248
     },
     {
      "text": "PR.",
-     "start": 16.322,
-     "end": 16.668
+     "start": 17.248,
+     "end": 17.748
     },
     {
      "text": "Seine",
-     "start": 17.097,
-     "end": 17.43
+     "start": 18.168,
+     "end": 18.58
     },
     {
      "text": "Idee:",
-     "start": 17.49,
-     "end": 17.752
+     "start": 18.58,
+     "end": 18.98
     },
     {
      "text": "Er",
-     "start": 17.954,
-     "end": 18.085
+     "start": 19.505,
+     "end": 19.655
     },
     {
      "text": "fragte",
-     "start": 18.097,
-     "end": 18.466
+     "start": 19.655,
+     "end": 20.043
     },
     {
      "text": "Ärzte,",
-     "start": 18.537,
-     "end": 18.954
+     "start": 20.043,
+     "end": 20.543
     },
     {
      "text": "ob",
-     "start": 19.121,
-     "end": 19.216
+     "start": 20.718,
+     "end": 20.843
     },
     {
      "text": "ein",
-     "start": 19.276,
-     "end": 19.43
+     "start": 20.843,
+     "end": 20.968
     },
     {
      "text": "kräftiges",
-     "start": 19.478,
-     "end": 19.942
+     "start": 20.968,
+     "end": 21.505
     },
     {
      "text": "Frühstück",
-     "start": 19.978,
-     "end": 20.347
+     "start": 21.505,
+     "end": 21.93
     },
     {
      "text": "gesund",
-     "start": 20.383,
-     "end": 20.668
+     "start": 21.93,
+     "end": 22.268
     },
     {
      "text": "ist.",
-     "start": 20.716,
-     "end": 20.906
+     "start": 22.268,
+     "end": 22.593
     },
     {
      "text": "Tausende",
-     "start": 21.336,
-     "end": 21.8
+     "start": 23.013,
+     "end": 23.6
     },
     {
      "text": "sagten",
-     "start": 21.824,
-     "end": 22.181
+     "start": 23.6,
+     "end": 23.988
     },
     {
      "text": "ja.",
-     "start": 22.217,
-     "end": 22.407
+     "start": 23.988,
+     "end": 24.313
     }
    ]
   },
   {
    "text": "Daraus wurden Zeitungsartikel: Ärzte empfehlen ein großes Frühstück. Und was ist ein großes Frühstück? Speck und Eier.",
-   "start": 22.877,
-   "speechEnd": 29.952,
+   "start": 24.783,
+   "speechEnd": 32.941,
    "words": [
     {
      "text": "Daraus",
-     "start": 22.937,
-     "end": 23.366
+     "start": 24.833,
+     "end": 25.32
     },
     {
      "text": "wurden",
-     "start": 23.389,
-     "end": 23.675
+     "start": 25.32,
+     "end": 25.57
     },
     {
      "text": "Zeitungsartikel:",
-     "start": 23.675,
-     "end": 24.592
+     "start": 25.57,
+     "end": 26.47
     },
     {
      "text": "Ärzte",
-     "start": 24.747,
-     "end": 25.056
+     "start": 26.895,
+     "end": 27.22
     },
     {
      "text": "empfehlen",
-     "start": 25.116,
-     "end": 25.52
+     "start": 27.22,
+     "end": 27.733
     },
     {
      "text": "ein",
-     "start": 25.58,
-     "end": 25.735
+     "start": 27.733,
+     "end": 27.858
     },
     {
      "text": "großes",
-     "start": 25.747,
-     "end": 26.092
+     "start": 27.858,
+     "end": 28.308
     },
     {
      "text": "Frühstück.",
-     "start": 26.116,
-     "end": 26.556
+     "start": 28.308,
+     "end": 28.908
     },
     {
      "text": "Und",
-     "start": 26.986,
-     "end": 27.141
+     "start": 29.328,
+     "end": 29.578
     },
     {
      "text": "was",
-     "start": 27.176,
-     "end": 27.379
+     "start": 29.578,
+     "end": 29.828
     },
     {
      "text": "ist",
-     "start": 27.403,
-     "end": 27.522
+     "start": 29.828,
+     "end": 30.04
     },
     {
      "text": "ein",
-     "start": 27.569,
-     "end": 27.688
+     "start": 30.04,
+     "end": 30.178
     },
     {
      "text": "großes",
-     "start": 27.712,
-     "end": 28.093
+     "start": 30.178,
+     "end": 30.64
     },
     {
      "text": "Frühstück?",
-     "start": 28.117,
-     "end": 28.581
+     "start": 30.64,
+     "end": 31.278
     },
     {
      "text": "Speck",
-     "start": 29.011,
-     "end": 29.344
+     "start": 31.708,
+     "end": 32.108
     },
     {
      "text": "und",
-     "start": 29.404,
-     "end": 29.523
+     "start": 32.158,
+     "end": 32.395
     },
     {
      "text": "Eier.",
-     "start": 29.582,
-     "end": 29.832
+     "start": 32.395,
+     "end": 32.821
     }
    ]
   },
   {
    "text": "Der Trick: Keine Werbung für Speck – sondern eine 'Gesundheitsnachricht'. Genau das macht PR bis heute.",
-   "start": 30.302,
-   "speechEnd": 36.209,
+   "start": 33.291,
+   "speechEnd": 40.193,
    "words": [
     {
      "text": "Der",
-     "start": 30.362,
-     "end": 30.505
+     "start": 33.341,
+     "end": 33.541
     },
     {
      "text": "Trick:",
-     "start": 30.552,
-     "end": 30.779
+     "start": 33.541,
+     "end": 33.866
     },
     {
      "text": "Keine",
-     "start": 31.005,
-     "end": 31.243
+     "start": 34.266,
+     "end": 34.591
     },
     {
      "text": "Werbung",
-     "start": 31.267,
-     "end": 31.612
+     "start": 34.591,
+     "end": 34.929
     },
     {
      "text": "für",
-     "start": 31.624,
-     "end": 31.802
+     "start": 34.929,
+     "end": 35.091
     },
     {
      "text": "Speck",
-     "start": 31.814,
-     "end": 32.1
+     "start": 35.091,
+     "end": 35.454
     },
     {
      "text": "sondern",
-     "start": 32.243,
-     "end": 32.612
+     "start": 35.879,
+     "end": 36.204
     },
     {
      "text": "eine",
-     "start": 32.672,
-     "end": 32.933
+     "start": 36.204,
+     "end": 36.491
     },
     {
      "text": "'Gesundheitsnachricht'.",
-     "start": 33.112,
-     "end": 34.017
+     "start": 36.666,
+     "end": 37.779
     },
     {
      "text": "Genau",
-     "start": 34.446,
-     "end": 34.708
+     "start": 38.198,
+     "end": 38.573
     },
     {
      "text": "das",
-     "start": 34.767,
-     "end": 34.958
+     "start": 38.573,
+     "end": 38.761
     },
     {
      "text": "macht",
-     "start": 34.982,
-     "end": 35.16
+     "start": 38.761,
+     "end": 39.048
     },
     {
      "text": "PR",
-     "start": 35.232,
-     "end": 35.529
+     "start": 39.048,
+     "end": 39.398
     },
     {
      "text": "bis",
-     "start": 35.577,
-     "end": 35.708
+     "start": 39.398,
+     "end": 39.573
     },
     {
      "text": "heute.",
-     "start": 35.744,
-     "end": 36.089
+     "start": 39.573,
+     "end": 40.073
     }
    ]
   },
   {
    "text": "Folg mir für Teil 3: Warum Verlobungsringe einen Diamanten haben.",
-   "start": 36.559,
-   "speechEnd": 40.286,
+   "start": 40.543,
+   "speechEnd": 44.761,
    "words": [
     {
      "text": "Folg",
-     "start": 36.619,
-     "end": 36.952
+     "start": 40.603,
+     "end": 40.916
     },
     {
      "text": "mir",
-     "start": 36.988,
-     "end": 37.131
+     "start": 40.916,
+     "end": 41.078
     },
     {
      "text": "für",
-     "start": 37.143,
-     "end": 37.274
+     "start": 41.078,
+     "end": 41.216
     },
     {
      "text": "Teil",
-     "start": 37.321,
-     "end": 37.524
+     "start": 41.216,
+     "end": 41.466
     },
     {
      "text": "3:",
-     "start": 37.571,
-     "end": 37.798
+     "start": 41.466,
+     "end": 41.828
     },
     {
      "text": "Warum",
-     "start": 37.964,
-     "end": 38.274
+     "start": 42.291,
+     "end": 42.591
     },
     {
      "text": "Verlobungsringe",
-     "start": 38.274,
-     "end": 39.059
+     "start": 42.591,
+     "end": 43.428
     },
     {
      "text": "einen",
-     "start": 39.143,
-     "end": 39.369
+     "start": 43.428,
+     "end": 43.666
     },
     {
      "text": "Diamanten",
-     "start": 39.393,
-     "end": 39.833
+     "start": 43.666,
+     "end": 44.166
     },
     {
      "text": "haben.",
-     "start": 39.857,
-     "end": 40.167
+     "start": 44.166,
+     "end": 44.641
     }
    ]
   }
