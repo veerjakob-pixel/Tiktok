@@ -26,7 +26,7 @@ npx remotion render AppleADay out/apple-a-day.mp4
   (optional). Ist sie da, passen Szenen und Untertitel genau zur Stimme. Wenn du eine **eigene**
   Aufnahme nimmst, lösch diese Datei – dann wird das Video nur gleichmäßig an die Länge angepasst.
 - Der Sprechtext steht in `voiceover-text.txt`.
-- Die aktuelle Stimme ist eine KI-Stimme (Piper, Stimme „Thorsten“, etwas tiefer gepitcht).
+- Die aktuelle Stimme ist eine KI-Stimme (Piper): der englische Spruch mit „Ryan“ (Englisch), der Rest mit „Thorsten“ (Deutsch), beide etwas tiefer gepitcht.
 
 ## Aufbau
 
