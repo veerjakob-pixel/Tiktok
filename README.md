@@ -36,3 +36,25 @@ npx remotion render AppleADay out/apple-a-day.mp4
 - `src/components/Poster.tsx` – Werbeplakate im 1920er-Stil
 - `src/components/Overlays.tsx` – Sepia/Filmkorn, Untertitel, Fortschrittsbalken
 - `public/fonts/` – Schriften (Montserrat, Anton, Abril Fatface; Google Fonts, OFL), lokal, damit das Rendern auch offline klappt
+
+---
+
+# Folge3Diamant – „Werbelügen #3“: Der Diamant-Trick
+
+Hochformat (1080 × 1920, 30 fps, ca. 45 s) darüber, wie De Beers mit „A Diamond is Forever“ den Verlobungsring erfunden hat.
+
+```bash
+npx remotion render Folge3Diamant out/folge3-diamant.mp4
+ffprobe -v error -show_entries stream=codec_type -of csv out/folge3-diamant.mp4   # muss "audio" zeigen
+```
+
+- Fertiges Video: `out/folge3-diamant.mp4`
+- Sprechtext: `voiceover-folge3.txt`
+- `public/voiceover-folge3.mp3` – Sprachaufnahme (**Pflicht**: ohne sie bricht das Rendern ab, es gibt nie ein Video ohne Ton).
+  Eigene Aufnahme? Einfach unter diesem Namen speichern und `public/voiceover-folge3-timing.json` löschen.
+- `public/voiceover-folge3-timing.json` – Länge jeder Szene + Startzeit jedes Worts (per Whisper gemessen)
+- `public/music-folge3.mp3` – ruhige Hintergrundmusik (per Code erzeugt), Lautstärke 0.12
+- `public/sfx-*.mp3` – Wusch, Knall, Klick (per Code erzeugt)
+- Stimme: Piper-TTS „Thorsten“ (Deutsch) + „Ryan“ für den englischen Slogan, etwas tiefer und langsamer
+- Skripte zum Neu-Erzeugen: `scripts/folge3/` (`make_voice.py`, `align.py`, `make_sounds.py`)
+- Code: `src/Folge3Diamant.tsx`, `src/folge3/` (Szenen, Grafiken, Untertitel)
