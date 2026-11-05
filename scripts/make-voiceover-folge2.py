@@ -1,6 +1,6 @@
 """Erzeugt public/voiceover-folge2.mp3 + src/folge2/timing.json aus voiceover-folge2.txt.
 
-Stimme: edge-tts, de-DE-ConradNeural, rate -8 %, pitch -4 Hz (ruhig, leicht tief).
+Stimme: edge-tts, de-DE-ConradNeural, rate +5 %, pitch -2 Hz (wach, aber gelassen).
 Jede Szene wird einzeln gesprochen, dann mit kurzen Pausen zusammengefügt.
 So kennen wir die genaue Länge jeder Szene und die Zeit jedes Wortes (für die Untertitel).
 
@@ -16,9 +16,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TXT = os.path.join(ROOT, "voiceover-folge2.txt")
 MP3 = os.path.join(ROOT, "public", "voiceover-folge2.mp3")
 TIMING = os.path.join(ROOT, "src", "folge2", "timing.json")
-VOICE, RATE, PITCH = "de-DE-ConradNeural", "-8%", "-4Hz"
-PAUSE = 0.45  # Sekunden Pause zwischen den Szenen
-GAP = 0.35    # Sekunden Pause zwischen zwei Sätzen
+VOICE, RATE, PITCH = "de-DE-ConradNeural", "+5%", "-2Hz"
+PAUSE = 0.35  # Sekunden Pause zwischen den Szenen
+GAP = 0.25    # Sekunden Pause zwischen zwei Sätzen
 TAIL = 0.12   # Nachklang nach dem letzten Wort eines Satzes
 LEAD = 0.2   # Sekunden Stille ganz am Anfang
 
