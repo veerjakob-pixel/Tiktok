@@ -99,14 +99,14 @@ export const timeWords = (scene: TimedScene): TimedWord[] => {
   });
 };
 
-// Gruppiert Wörter zu kleinen "Seiten" (max. 3 Wörter), wie bei CapCut.
+// Gruppiert Wörter zu kleinen "Seiten" (max. 4 Wörter), wie bei CapCut.
 export const pageWords = (words: TimedWord[]): TimedWord[][] => {
   const pages: TimedWord[][] = [];
   let current: TimedWord[] = [];
   for (const w of words) {
     current.push(w);
     const chars = current.reduce((s, x) => s + x.text.length, 0);
-    if (current.length >= 3 || chars > 16 || /[.,:!?“]$/.test(w.text)) {
+    if (current.length >= 4 || chars > 22 || /[.:!?“]$/.test(w.text)) {
       pages.push(current);
       current = [];
     }

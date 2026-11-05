@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, interpolate, random, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, interpolate, random, useCurrentFrame, useVideoConfig } from "remotion";
 import { COLORS, FONT_SUB } from "../theme";
 import { pageWords, TimedWord } from "../script";
 
@@ -64,7 +64,6 @@ export const Vintage: React.FC<{ children: React.ReactNode; strength?: number }>
 // ---------- Untertitel (Wort für Wort, aktuelles Wort gelb) ----------
 export const Subtitles: React.FC<{ words: TimedWord[] }> = ({ words }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
   const pages = React.useMemo(() => pageWords(words), [words]);
 
   const page = pages.find((p, i) => {
@@ -73,8 +72,6 @@ export const Subtitles: React.FC<{ words: TimedWord[] }> = ({ words }) => {
     return frame >= start && frame < nextStart;
   });
   if (!page) return null;
-
-  const pageIn = spring({ frame: frame - page[0].start, fps, config: { damping: 12, stiffness: 220 } });
 
   return (
     <AbsoluteFill
@@ -95,30 +92,30 @@ export const Subtitles: React.FC<{ words: TimedWord[] }> = ({ words }) => {
           display: "flex",
           flexWrap: "wrap",
           justifyContent: "center",
-          gap: "0 46px",
-          transform: `scale(${interpolate(pageIn, [0, 1], [0.85, 1])})`,
+          gap: "0 24px",
           textAlign: "center",
         }}
       >
         {page.map((w, i) => {
-          if (frame < w.start) return null;
+          // Kommende Wörter sind schon da (unsichtbar), damit die Zeile nicht hin- und herspringt
           const active = frame >= w.start && (i === page.length - 1 ? true : frame < page[i + 1].start);
-          const s = spring({ frame: frame - w.start, fps, config: { damping: 18, stiffness: 300 } });
+          const appear = frame < w.start ? 0 : interpolate(frame, [w.start, w.start + 3], [0.5, 1], { extrapolateRight: "clamp" });
           return (
             <span
               key={i}
               style={{
                 fontFamily: FONT_SUB,
                 fontWeight: 900,
-                fontSize: 96,
+                fontSize: 70,
                 lineHeight: 1.15,
                 textTransform: "uppercase",
                 color: active ? COLORS.yellow : "#FFFFFF",
-                WebkitTextStroke: "14px #000",
+                WebkitTextStroke: "10px #000",
                 paintOrder: "stroke fill",
-                textShadow: "0 8px 0 rgba(0,0,0,0.55)",
+                textShadow: "0 5px 0 rgba(0,0,0,0.5)",
                 display: "inline-block",
-                transform: `scale(${interpolate(s, [0, 1], [0.5, 1])}) translateY(${active ? -6 : 0}px)`,
+                opacity: appear,
+                transform: `scale(${interpolate(appear, [0, 1], [0.92, 1])})`,
               }}
             >
               {w.text}
