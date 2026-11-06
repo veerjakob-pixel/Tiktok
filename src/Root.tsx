@@ -1,6 +1,7 @@
-import { Composition } from "remotion";
+import { Composition, Still } from "remotion";
 import { AppleADay, AppleADayProps, calculateMetadata } from "./AppleADay";
 import { BASE_SECONDS, FPS } from "./script";
+import { Folge3Story } from "./folge3/StoryImage";
 import { calculateMetadata as calculateFolge3, Folge3Diamant, FOLGE3_DEFAULTS } from "./Folge3Diamant";
 
 export const RemotionRoot: React.FC = () => {
@@ -26,6 +27,7 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={FOLGE3_DEFAULTS}
         calculateMetadata={calculateFolge3}
       />
+      <Still id="Folge3Story" component={Folge3Story} width={1080} height={1920} />
     </>
   );
 };

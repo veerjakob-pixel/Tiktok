@@ -87,7 +87,7 @@ export const Ring: React.FC<{ size?: number; plain?: boolean; style?: React.CSSP
           <line x1="172" y1="168" x2="160" y2="120" stroke="#E7B53C" strokeWidth="8" strokeLinecap="round" />
           <line x1="228" y1="168" x2="240" y2="120" stroke="#E7B53C" strokeWidth="8" strokeLinecap="round" />
           <foreignObject x="110" y="40" width="180" height="170">
-            <Diamond size={180} />
+            <Diamond size={180} glow={0} />
           </foreignObject>
         </>
       )}
