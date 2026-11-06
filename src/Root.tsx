@@ -4,6 +4,8 @@ import { BASE_SECONDS, FPS } from "./script";
 import { calculateMetadata as calculateFolge4, Folge4Zucker, FOLGE4_DEFAULTS } from "./Folge4Zucker";
 import { calculateMetadata as calculateFolge4Story, Folge4Story } from "./Folge4Story";
 import { Folge3Story } from "./folge3/StoryImage";
+import { calculateMetadata as calculateFolge5, Folge5Fackeln } from "./Folge5Fackeln";
+import { Folge5Story } from "./folge5/StoryImage";
 import { calculateMetadata as calculateFolge3, Folge3Diamant, FOLGE3_DEFAULTS } from "./Folge3Diamant";
 
 export const RemotionRoot: React.FC = () => {
@@ -59,7 +61,18 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{ total: 55 }}
         calculateMetadata={calculateFolge4Story}
       />
+      <Composition
+        id="Folge5Fackeln"
+        component={Folge5Fackeln}
+        durationInFrames={50 * FPS}
+        fps={FPS}
+        width={1080}
+        height={1920}
+        defaultProps={{ total: 50 }}
+        calculateMetadata={calculateFolge5}
+      />
       <Still id="Folge3Story" component={Folge3Story} width={1080} height={1920} />
+      <Still id="Folge5Story" component={Folge5Story} width={1080} height={1920} />
     </>
   );
 };
