@@ -38,6 +38,16 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={FOLGE4_DEFAULTS}
         calculateMetadata={calculateFolge4}
       />
+      <Composition
+        id="Folge4Zucker3D"
+        component={Folge4Zucker}
+        durationInFrames={50 * FPS}
+        fps={FPS}
+        width={1080}
+        height={1920}
+        defaultProps={{ ...FOLGE4_DEFAULTS, variant: "3d" as const }}
+        calculateMetadata={calculateFolge4}
+      />
       <Still id="Folge3Story" component={Folge3Story} width={1080} height={1920} />
     </>
   );

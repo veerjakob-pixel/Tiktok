@@ -28,12 +28,12 @@ export type SceneProps = { dur: number };
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
 // ---------- Helfer ----------
-const useT = (i: number, dur: number) => {
+export const useT = (i: number, dur: number) => {
   const planned = SCENES[i].seconds;
   return (s: number) => Math.round((s / planned) * dur);
 };
 
-const Cut: React.FC<{ T: (s: number) => number; a: number; b: number; children: React.ReactNode }> = ({ T, a, b, children }) => (
+export const Cut: React.FC<{ T: (s: number) => number; a: number; b: number; children: React.ReactNode }> = ({ T, a, b, children }) => (
   <Sequence from={T(a)} durationInFrames={Math.max(1, T(b) - T(a))} layout="none">
     <AbsoluteFill>{children}</AbsoluteFill>
   </Sequence>
@@ -53,7 +53,7 @@ const useSpr = (delay: number, stiffness = 220, damping = 13) => {
 };
 
 // Moderner Hintergrund mit Strahlen, Lichtpunkten (Bokeh) und Vignette
-const Bg: React.FC<{ a: string; b: string; rays?: boolean }> = ({ a, b, rays = true }) => {
+export const Bg: React.FC<{ a: string; b: string; rays?: boolean }> = ({ a, b, rays = true }) => {
   const frame = useCurrentFrame();
   return (
     <AbsoluteFill style={{ background: `radial-gradient(circle at 50% 34%, ${a} 0%, ${b} 74%)` }}>
@@ -93,11 +93,11 @@ const Bg: React.FC<{ a: string; b: string; rays?: boolean }> = ({ a, b, rays = t
   );
 };
 
-const PaperBg: React.FC = () => (
+export const PaperBg: React.FC = () => (
   <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 35%, #F6EBD0 0%, #DCC59A 70%, #B99A68 100%)" }} />
 );
 
-const Txt: React.FC<{ children: React.ReactNode; size?: number; color?: string; font?: string; style?: React.CSSProperties }> = ({
+export const Txt: React.FC<{ children: React.ReactNode; size?: number; color?: string; font?: string; style?: React.CSSProperties }> = ({
   children,
   size = 100,
   color = "#fff",
@@ -109,7 +109,7 @@ const Txt: React.FC<{ children: React.ReactNode; size?: number; color?: string; 
   </div>
 );
 
-const Slam: React.FC<{ at: number; children: React.ReactNode; style?: React.CSSProperties; from?: number }> = ({ at, children, style, from = 3 }) => {
+export const Slam: React.FC<{ at: number; children: React.ReactNode; style?: React.CSSProperties; from?: number }> = ({ at, children, style, from = 3 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   if (frame < at) return null;
@@ -121,14 +121,14 @@ const Slam: React.FC<{ at: number; children: React.ReactNode; style?: React.CSSP
   );
 };
 
-const WhiteFlash: React.FC<{ at?: number; len?: number; color?: string; max?: number }> = ({ at = 0, len = 6, color = "#fff", max = 1 }) => {
+export const WhiteFlash: React.FC<{ at?: number; len?: number; color?: string; max?: number }> = ({ at = 0, len = 6, color = "#fff", max = 1 }) => {
   const frame = useCurrentFrame();
   const o = interpolate(frame, [at, at + len], [max, 0], clamp);
   return o > 0 ? <AbsoluteFill style={{ background: color, opacity: o }} /> : null;
 };
 
 // Zähler, der bei jedem Schritt "klickt"
-const Counter: React.FC<{ from: number; to: number; at: number; steps: number; stepLen: number; format: (n: number) => string; style?: React.CSSProperties }> = ({
+export const Counter: React.FC<{ from: number; to: number; at: number; steps: number; stepLen: number; format: (n: number) => string; style?: React.CSSProperties }> = ({
   from,
   to,
   at,

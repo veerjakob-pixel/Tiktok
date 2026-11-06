@@ -6,18 +6,22 @@ import { BASE_SECONDS, buildTimeline, SFX } from "./folge4/script";
 import { CalmSubtitles, ProgressBar, SeriesLabel } from "./folge3/Overlays";
 import { Flash } from "./components/Overlays";
 import { Scene1, Scene2, Scene3, Scene4, Scene5, Scene6, Scene7, SceneProps } from "./folge4/Scenes";
+import * as S3D from "./folge4-3d/Scenes3D";
 
 export type Folge4Props = {
   voiceoverSeconds: number | null;
   sceneSeconds: number[] | null;
   wordStarts: number[][] | null;
+  // "3d" = Three.js-Version (Folge4Zucker3D)
+  variant?: "2d" | "3d";
 };
 
 const VOICE = "voiceover-folge4.mp3";
 const TIMING = "voiceover-folge4-timing.json";
 const MUSIC = "music-folge4.mp3";
 
-const SCENE_COMPONENTS: React.FC<SceneProps>[] = [Scene1, Scene2, Scene3, Scene4, Scene5, Scene6, Scene7];
+const SCENES_2D: React.FC<SceneProps>[] = [Scene1, Scene2, Scene3, Scene4, Scene5, Scene6, Scene7];
+const SCENES_3D: React.FC<SceneProps>[] = [S3D.Scene1, S3D.Scene2, S3D.Scene3, S3D.Scene4, S3D.Scene5, S3D.Scene6, S3D.Scene7];
 const hasFile = (name: string) => getStaticFiles().some((f) => f.name === name);
 
 // Das Video muss IMMER Ton haben: ohne Sprachaufnahme bricht das Rendern ab.
@@ -48,7 +52,8 @@ export const calculateMetadata: CalculateMetadataFunction<Folge4Props> = async (
 const SFX_FILE = { whoosh: "sfx-whoosh.mp3", boom: "sfx-boom.mp3", click: "sfx-click.mp3", kaching: "sfx-kaching.mp3", hit: "sfx-hit.mp3" } as const;
 const SFX_VOL = { whoosh: 0.35, boom: 0.5, click: 0.35, kaching: 0.4, hit: 0.7 } as const;
 
-export const Folge4Zucker: React.FC<Folge4Props> = ({ voiceoverSeconds, sceneSeconds, wordStarts }) => {
+export const Folge4Zucker: React.FC<Folge4Props> = ({ voiceoverSeconds, sceneSeconds, wordStarts, variant = "2d" }) => {
+  const SCENE_COMPONENTS = variant === "3d" ? SCENES_3D : SCENES_2D;
   const timeline = React.useMemo(() => buildTimeline(voiceoverSeconds, sceneSeconds), [voiceoverSeconds, sceneSeconds]);
   const pages = React.useMemo(() => {
     const words = timeline.flatMap((s, i) => timeWords(s, wordStarts?.[i]));

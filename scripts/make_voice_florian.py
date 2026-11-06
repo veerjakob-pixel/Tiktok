@@ -3,11 +3,11 @@
 Aufruf:
   EDGE_TTS_CA=/root/.ccr/ca-bundle.crt python3 scripts/make_voice_florian.py scripts/folge4/text.json \
       public/voiceover-folge4.mp3 public/voiceover-folge4-timing.json
-text.json: {"rate": "-3%", "pitch": "-4Hz", "scenes": [{"display": "...", "spoken": "..."}]}
+text.json: {"rate": "+10%", "pitch": "+0Hz", "scenes": [{"display": "...", "spoken": "..."}]}
 "display" = Untertitel-Text, "spoken" = was gesprochen wird (Zahlen ausgeschrieben). Beide müssen
-gleich viele Wörter haben. Jede Szene wird am Stück gesprochen (natürliche Betonung).
+gleich viele Wörter haben. Tipp: "Haarvard" statt "Harvard", sonst klingt es wie "Harz". Jede Szene wird am Stück gesprochen (natürliche Betonung).
 """
-import asyncio, json, os, re, subprocess, sys, tempfile
+import asyncio, json, os, re, subprocess, sys, tempfile, time
 
 if os.environ.get("EDGE_TTS_CA"):  # hinter dem Cloud-Proxy dessen Zertifikat verwenden
     import certifi
@@ -15,7 +15,7 @@ if os.environ.get("EDGE_TTS_CA"):  # hinter dem Cloud-Proxy dessen Zertifikat ve
 import edge_tts
 
 VOICE = "de-DE-FlorianMultilingualNeural"
-PAUSE = 0.35  # Sekunden Pause zwischen den Szenen
+PAUSE = float(os.environ.get("VOICE_PAUSE", "0.25"))  # Sekunden Pause zwischen den Szenen
 norm = lambda s: re.sub(r"[^\w]", "", s.lower())
 tokens = lambda t: [w for w in t.split() if norm(w)]
 
@@ -39,7 +39,14 @@ def main(cfg_path, out_mp3, out_json):
         disp, spok = tokens(sc["display"]), tokens(sc["spoken"])
         assert len(disp) == len(spok), f"Szene {i+1}: {len(disp)} vs {len(spok)} Wörter"
         raw = f"{tmp}/s{i}.mp3"
-        words = asyncio.run(speak(sc["spoken"], cfg.get("rate", "+0%"), cfg.get("pitch", "+0Hz"), raw))
+        for attempt in range(5):  # der Dienst bricht manchmal kurz ab -> nochmal versuchen
+            try:
+                words = asyncio.run(speak(sc["spoken"], cfg.get("rate", "+0%"), cfg.get("pitch", "+0Hz"), raw))
+                break
+            except edge_tts.exceptions.NoAudioReceived:
+                if attempt == 4:
+                    raise
+                time.sleep(2 ** attempt)
         a = max(0.0, words[0][1] - 0.04)          # Stille vorne abschneiden
         b = words[-1][2] + 0.12                   # kurz nach dem letzten Wort
         seg = f"{tmp}/s{i}.wav"

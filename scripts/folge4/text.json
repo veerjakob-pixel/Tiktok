@@ -1,20 +1,34 @@
 {
- "rate": "+0%",
- "pitch": "-4Hz",
+ "rate": "+10%",
+ "pitch": "+0Hz",
  "scenes": [
-  {"display": "Die Zucker-Industrie hat Harvard-Forscher bezahlt. Damit du Fett hasst, und nicht Zucker. Und fast 50 Jahre lang hat's keiner gemerkt.",
-   "spoken":  "Die Zucker-Industrie hat Harvard-Forscher bezahlt. Damit du Fett hasst – und nicht Zucker. Und fast fünfzig Jahre lang hat's keiner gemerkt."},
-  {"display": "In den 1960ern kam ein Verdacht auf: Macht Zucker das Herz krank? Für die Zucker-Industrie ein Albtraum.",
-   "spoken":  "In den Neunzehnhundertsechzigern kam ein Verdacht auf: Macht Zucker das Herz krank? Für die Zucker-Industrie ein Albtraum."},
-  {"display": "1965 zahlte ein Zucker-Verband drei Harvard-Forschern Geld für einen Bericht. Heute wären das rund 50.000 Dollar.",
-   "spoken":  "Neunzehnhundertfünfundsechzig zahlte ein Zucker-Verband drei Harvard-Forschern Geld für einen Bericht. Heute wären das rund fünfzigtausend Dollar."},
-  {"display": "Der Bericht erschien 1967 in einer Top-Fachzeitschrift. Ergebnis: Fett ist schuld, Zucker kaum. Wer bezahlt hat, stand nirgends.",
-   "spoken":  "Der Bericht erschien neunzehnhundertsiebenundsechzig in einer Top-Fachzeitschrift. Ergebnis: Fett ist schuld, Zucker kaum. Wer bezahlt hat, stand nirgends."},
-  {"display": "Jahrzehntelang galt Fett als Feind. Überall hieß es „fettarm“ – und oft steckte dafür mehr Zucker drin.",
-   "spoken":  "Jahrzehntelang galt Fett als Feind. Überall hieß es „fettarm“ – und oft steckte dafür mehr Zucker drin."},
-  {"display": "Rausgekommen ist das erst 2016 – durch alte Briefe aus einem Archiv.",
-   "spoken":  "Rausgekommen ist das erst zweitausendsechzehn – durch alte Briefe aus einem Archiv."},
-  {"display": "Folg mir für mehr Werbelügen. Hättest du das gedacht?",
-   "spoken":  "Folg mir für mehr Werbelügen. Hättest du das gedacht?"}
+  {
+   "display": "Die Zucker-Industrie hat Harvard-Forscher bezahlt. Damit du Fett hasst, und nicht Zucker. Und fast 50 Jahre lang hat's keiner gemerkt.",
+   "spoken": "Die Zucker-Industrie hat Haarvard-Forscher bezahlt. Damit du Fett hasst – und nicht Zucker. Und fast fünfzig Jahre lang hat's keiner gemerkt."
+  },
+  {
+   "display": "In den 1960ern kam ein Verdacht auf: Macht Zucker das Herz krank? Für die Zucker-Industrie ein Albtraum.",
+   "spoken": "In den Neunzehnhundertsechzigern kam ein Verdacht auf: Macht Zucker das Herz krank? Für die Zucker-Industrie ein Albtraum."
+  },
+  {
+   "display": "1965 zahlte ein Zucker-Verband drei Harvard-Forschern Geld für einen Bericht. Heute wären das rund 50.000 Dollar.",
+   "spoken": "Neunzehnhundertfünfundsechzig zahlte ein Zucker-Verband drei Haarvard-Forschern Geld für einen Bericht. Heute wären das rund fünfzigtausend Dollar."
+  },
+  {
+   "display": "Der Bericht erschien 1967 in einer Top-Fachzeitschrift. Ergebnis: Fett ist schuld, Zucker kaum. Wer bezahlt hat, stand nirgends.",
+   "spoken": "Der Bericht erschien neunzehnhundertsiebenundsechzig in einer Top-Fachzeitschrift. Ergebnis: Fett ist schuld, Zucker kaum. Wer bezahlt hat, stand nirgends."
+  },
+  {
+   "display": "Jahrzehntelang galt Fett als Feind. Überall hieß es „fettarm“ – und oft steckte dafür mehr Zucker drin.",
+   "spoken": "Jahrzehntelang galt Fett als Feind. Überall hieß es „fettarm“ – und oft steckte dafür mehr Zucker drin."
+  },
+  {
+   "display": "Rausgekommen ist das erst 2016 – durch alte Briefe aus einem Archiv.",
+   "spoken": "Rausgekommen ist das erst zweitausendsechzehn – durch alte Briefe aus einem Archiv."
+  },
+  {
+   "display": "Folg mir für mehr Werbelügen. Hättest du das gedacht?",
+   "spoken": "Folg mir für mehr Werbelügen. Hättest du das gedacht?"
+  }
  ]
 }
