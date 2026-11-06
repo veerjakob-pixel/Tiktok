@@ -815,8 +815,8 @@ export const Scene7: React.FC<SceneProps> = () => {
   return (
     <AbsoluteFill>
       <Bg a="#3A0CA3" b="#0A0420" />
-      <Stage3D cam={[0, 0.8, 7.5]} look={[0, LY - 0.9, 0]} floor={null} rim="#c77dff" dist={1.25}>
-        <group position={[0, 0.9, 0]} scale={bp}>
+      <Stage3D cam={[0, 0.8, 7.5]} look={[0, -2.6, 0]} floor={null} rim="#c77dff" dist={1.9} lift={0}>
+        <group position={[0, 0, 0]} scale={bp}>
           <Butter position={[-1.25, 0, 0]} rotation={[0.2, frame * 0.04, 0]} scale={0.6} />
           <SugarCube position={[1.25, 0, 0]} rotation={[0.3, -frame * 0.04, 0]} scale={0.7} />
         </group>
