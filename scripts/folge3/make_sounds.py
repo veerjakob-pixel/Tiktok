@@ -83,6 +83,28 @@ def hit(d=1.4):  # tiefer Bass-Hit mit Nachhall (Hook)
     noise = lowpass(rng.standard_normal(n), 0.05) * np.exp(-t * 4) * 0.8
     return sub + noise
 
+def ambience(d=16.0):  # Supermarkt: Kühlregal-Summen, Raumrauschen, ab und zu ein Kassen-Piep
+    n = int(d * SR); t = np.arange(n) / SR
+    hum = (np.sin(2 * np.pi * 50 * t) * 0.5 + np.sin(2 * np.pi * 100 * t) * 0.25 + np.sin(2 * np.pi * 150 * t) * 0.1) * 0.15
+    room = lowpass(rng.standard_normal(n), 0.03) * 1.2
+    y = hum + room
+    for at in [1.7, 6.3, 11.8, 14.1]:
+        s0 = int(at * SR); m = int(0.12 * SR)
+        y[s0:s0 + m] += np.sin(2 * np.pi * 2900 * np.arange(m) / SR) * 0.12 * env(m, 0.005, 0.03)
+    return y * env(n, 0.3, 0.3)
+
+def rewind(d=1.2):  # Kassette zurückspulen: schnelle, hohe Zwitscher-Stimmen + Bandrauschen
+    n = int(d * SR); t = np.arange(n) / SR
+    f = 900 + 600 * np.sin(2 * np.pi * 7 * t) + 400 * np.sin(2 * np.pi * 13.3 * t)
+    chirp = np.sin(2 * np.pi * np.cumsum(f) / SR) * (0.5 + 0.5 * np.sin(2 * np.pi * 21 * t) ** 2)
+    hiss = lowpass(rng.standard_normal(n), 0.4) * 0.4
+    return (chirp * 0.6 + hiss) * env(n, 0.05, 0.15)
+
+if len(sys.argv) > 2 and sys.argv[2] == "folge4b":
+    save("sfx-ambience-market.mp3", ambience())
+    save("sfx-rewind.mp3", rewind())
+    print("fertig"); sys.exit()
+
 if len(sys.argv) > 2 and sys.argv[2] == "folge4":
     # etwas spannender: a-Moll / F / d-Moll / E, 80 BPM
     save("music-folge4.mp3", music(56, chords=[[45, 57, 60, 64], [41, 57, 60, 65], [38, 57, 62, 65], [40, 56, 59, 64]], bpm=80), stereo=True)

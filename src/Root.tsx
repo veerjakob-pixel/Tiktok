@@ -2,6 +2,7 @@ import { Composition, Still } from "remotion";
 import { AppleADay, AppleADayProps, calculateMetadata } from "./AppleADay";
 import { BASE_SECONDS, FPS } from "./script";
 import { calculateMetadata as calculateFolge4, Folge4Zucker, FOLGE4_DEFAULTS } from "./Folge4Zucker";
+import { calculateMetadata as calculateFolge4Story, Folge4Story } from "./Folge4Story";
 import { Folge3Story } from "./folge3/StoryImage";
 import { calculateMetadata as calculateFolge3, Folge3Diamant, FOLGE3_DEFAULTS } from "./Folge3Diamant";
 
@@ -47,6 +48,16 @@ export const RemotionRoot: React.FC = () => {
         height={1920}
         defaultProps={{ ...FOLGE4_DEFAULTS, variant: "3d" as const }}
         calculateMetadata={calculateFolge4}
+      />
+      <Composition
+        id="Folge4Story"
+        component={Folge4Story}
+        durationInFrames={55 * FPS}
+        fps={FPS}
+        width={1080}
+        height={1920}
+        defaultProps={{ total: 55 }}
+        calculateMetadata={calculateFolge4Story}
       />
       <Still id="Folge3Story" component={Folge3Story} width={1080} height={1920} />
     </>

@@ -73,7 +73,7 @@ export const buildTimeline = (totalSeconds: number | null, sceneSeconds: number[
   });
 };
 
-export type TimedWord = { text: string; start: number };
+export type TimedWord = { text: string; start: number; who?: string };
 
 const isOnlyPunctuation = (w: string) => !/[\p{L}\p{N}]/u.test(w);
 
@@ -144,7 +144,7 @@ export const buildPages = (words: TimedWord[], sceneEnds: number[]): SubPage[] =
   words.forEach((w, i) => {
     cur.push(w);
     const next = words[i + 1];
-    const sceneEnd = !next || sceneEnds.some((e) => w.start < e && next.start >= e);
+    const sceneEnd = !next || sceneEnds.some((e) => w.start < e && next.start >= e) || next.who !== w.who;
     if (SENTENCE_END.test(w.text) || sceneEnd) {
       sentences.push(cur);
       cur = [];
@@ -158,9 +158,9 @@ export const buildPages = (words: TimedWord[], sceneEnds: number[]): SubPage[] =
     if (s.length >= MIN_WORDS) continue;
     const nxt = sentences[i + 1];
     const prv = sentences[i - 1];
-    if (nxt && sceneOf(nxt[0]) === sceneOf(s[0]) && s.length + nxt.length <= MAX_WORDS && chars([...s, ...nxt]) <= MAX_CHARS) {
+    if (nxt && sceneOf(nxt[0]) === sceneOf(s[0]) && nxt[0].who === s[0].who && s.length + nxt.length <= MAX_WORDS && chars([...s, ...nxt]) <= MAX_CHARS) {
       sentences.splice(i, 2, [...s, ...nxt]);
-    } else if (prv && sceneOf(prv[0]) === sceneOf(s[0]) && s.length + prv.length <= MAX_WORDS && chars([...prv, ...s]) <= MAX_CHARS) {
+    } else if (prv && sceneOf(prv[0]) === sceneOf(s[0]) && prv[0].who === s[0].who && s.length + prv.length <= MAX_WORDS && chars([...prv, ...s]) <= MAX_CHARS) {
       sentences.splice(i - 1, 2, [...prv, ...s]);
       i--;
     }

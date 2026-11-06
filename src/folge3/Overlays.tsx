@@ -7,7 +7,8 @@ const FADE = 5; // ca. 0,15 s bei 30 fps
 
 // Ruhige Untertitel: 3–5 Wörter pro Abschnitt, max. 2 Zeilen, weich ein-/ausblenden,
 // gesprochenes Wort nur dezent gelb (keine Vergrößerung, kein Wackeln).
-export const CalmSubtitles: React.FC<{ pages: SubPage[] }> = ({ pages }) => {
+export type SpeakerTag = { label?: string; color: string; highlight: string };
+export const CalmSubtitles: React.FC<{ pages: SubPage[]; speakers?: Record<string, SpeakerTag> }> = ({ pages, speakers }) => {
   const frame = useCurrentFrame();
   const idx = pages.findIndex((p) => frame >= p.start && frame < p.end);
   if (idx < 0) return null;
@@ -16,6 +17,7 @@ export const CalmSubtitles: React.FC<{ pages: SubPage[] }> = ({ pages }) => {
   const fadeIn = idx === 0 ? 1 : interpolate(frame, [page.start, page.start + FADE], [0, 1], { extrapolateRight: "clamp" });
   const fadeOut = interpolate(frame, [page.end - FADE, page.end], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const opacity = Math.min(fadeIn, fadeOut);
+  const tag = speakers && page.words[0].who ? speakers[page.words[0].who] : undefined;
 
   return (
     <AbsoluteFill
@@ -28,6 +30,23 @@ export const CalmSubtitles: React.FC<{ pages: SubPage[] }> = ({ pages }) => {
         pointerEvents: "none",
       }}
     >
+      {tag?.label && (
+        <div
+          style={{
+            opacity,
+            marginBottom: 10,
+            background: tag.color,
+            color: "#fff",
+            fontFamily: FONT_SUB,
+            fontWeight: 900,
+            fontSize: 34,
+            padding: "4px 18px",
+            borderRadius: 10,
+          }}
+        >
+          {tag.label}
+        </div>
+      )}
       <div
         style={{
           maxWidth: 1080 * 0.85,
@@ -52,7 +71,7 @@ export const CalmSubtitles: React.FC<{ pages: SubPage[] }> = ({ pages }) => {
           const active = frame >= w.start && (!next || frame < next.start);
           return (
             <React.Fragment key={i}>
-              <span style={{ color: active ? "#FFE680" : "#FFFFFF" }}>{w.text}</span>
+              <span style={{ color: active ? (tag?.highlight ?? "#FFE680") : "#FFFFFF" }}>{w.text}</span>
               {next ? " " : ""}
             </React.Fragment>
           );

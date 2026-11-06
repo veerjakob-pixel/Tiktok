@@ -221,7 +221,7 @@ export const Scene2: React.FC<SceneProps> = ({ dur }) => {
   );
 };
 
-const TVShot: React.FC = () => {
+export const TVShot: React.FC = () => {
   const frame = useCurrentFrame();
   const q = useSpr(40, 200, 10);
   const screen = useTvTexture(q);
@@ -266,7 +266,7 @@ const TVShot: React.FC = () => {
   );
 };
 
-const HeartShot: React.FC = () => {
+export const HeartShot: React.FC = () => {
   const frame = useCurrentFrame();
   const wild = interpolate(frame, [0, 40], [0, 1], clamp);
   const ecg = useEcgTexture(frame, wild);
@@ -375,7 +375,7 @@ export const Scene3: React.FC<SceneProps> = ({ dur }) => {
   );
 };
 
-const YearShot: React.FC<{ step: number }> = ({ step }) => {
+export const YearShot: React.FC<{ step: number }> = ({ step }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const cam = useDolly([0, 0, 9], [0, 0, 6.5], 40);
@@ -393,7 +393,7 @@ const YearShot: React.FC<{ step: number }> = ({ step }) => {
   );
 };
 
-const PaymentShot: React.FC<{ threeAt: number; openAt: number }> = ({ threeAt, openAt }) => {
+export const PaymentShot: React.FC<{ threeAt: number; openAt: number }> = ({ threeAt, openAt }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const head = useLetterheadTexture();
@@ -420,7 +420,7 @@ const PaymentShot: React.FC<{ threeAt: number; openAt: number }> = ({ threeAt, o
   );
 };
 
-const MoneyShot: React.FC<{ nowAt: number; countAt: number; step: number }> = ({ nowAt, countAt, step }) => {
+export const MoneyShot: React.FC<{ nowAt: number; countAt: number; step: number }> = ({ nowAt, countAt, step }) => {
   const frame = useCurrentFrame();
   const bill = useBillTexture();
   const now = useSpr(nowAt, 220, 13);
@@ -489,7 +489,7 @@ export const Scene4: React.FC<SceneProps> = ({ dur }) => {
   );
 };
 
-const JournalShot: React.FC<{ hiAt: number }> = ({ hiAt }) => {
+export const JournalShot: React.FC<{ hiAt: number }> = ({ hiAt }) => {
   const frame = useCurrentFrame();
   const s = useSpr(0, 120, 16);
   const hi = interpolate(frame, [hiAt, hiAt + 8], [0, 1], clamp);
@@ -524,7 +524,7 @@ const ResultShot: React.FC<{ typeAt: number }> = ({ typeAt }) => {
   );
 };
 
-const ScaleShot: React.FC<{ tiltAt: number; sugarAt: number }> = ({ tiltAt, sugarAt }) => {
+export const ScaleShot: React.FC<{ tiltAt: number; sugarAt: number }> = ({ tiltAt, sugarAt }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const tiltS = spring({ frame: frame - tiltAt, fps, config: { damping: 7, stiffness: 110 } });
@@ -590,7 +590,7 @@ const ScaleShot: React.FC<{ tiltAt: number; sugarAt: number }> = ({ tiltAt, suga
   );
 };
 
-const FinePrintShot: React.FC<{ stampAt: number }> = ({ stampAt }) => {
+export const FinePrintShot: React.FC<{ stampAt: number }> = ({ stampAt }) => {
   const frame = useCurrentFrame();
   const page = usePageTexture("", true);
   const mx = interpolate(frame, [0, stampAt], [-1.6, 0.9], { ...clamp, easing: Easing.inOut(Easing.cubic) });
@@ -628,7 +628,7 @@ export const Scene5: React.FC<SceneProps> = ({ dur }) => {
   );
 };
 
-const WantedShot: React.FC = () => {
+export const WantedShot: React.FC = () => {
   const frame = useCurrentFrame();
   const poster = useWantedTexture();
   const cam = useDolly([-1.2, 0.6, 9], [-0.3, 0.3, 6.6]);
@@ -663,7 +663,7 @@ const Product: React.FC<{ name: string; color: string; position: V3; sticker: nu
   );
 };
 
-const ShelfShot: React.FC<{ at: number; step: number }> = ({ at, step }) => {
+export const ShelfShot: React.FC<{ at: number; step: number }> = ({ at, step }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const sticker = useStickerTexture();
@@ -702,7 +702,7 @@ const cupGeo = (() => {
   return new THREE.LatheGeometry(pts, 64);
 })();
 
-const YogurtShot: React.FC<{ at: number; step: number }> = ({ at, step }) => {
+export const YogurtShot: React.FC<{ at: number; step: number }> = ({ at, step }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const label = useYogurtTexture();
@@ -759,7 +759,7 @@ export const Scene6: React.FC<SceneProps> = ({ dur }) => {
   );
 };
 
-const RevealShot: React.FC<{ stampAt: number }> = ({ stampAt }) => {
+export const RevealShot: React.FC<{ stampAt: number }> = ({ stampAt }) => {
   const frame = useCurrentFrame();
   const news = useNewsTexture();
   const s = useSpr(0, 90, 15);
@@ -781,7 +781,7 @@ const RevealShot: React.FC<{ stampAt: number }> = ({ stampAt }) => {
   );
 };
 
-const ArchiveShot: React.FC = () => {
+export const ArchiveShot: React.FC = () => {
   const frame = useCurrentFrame();
   const lbl = useBoxLabelTexture();
   const l1 = useLetterTexture("July 1965");
