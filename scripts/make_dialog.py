@@ -6,6 +6,7 @@ Aufruf:
 dialog.json: {"voices": {"ich": {"voice": "...", "rate": "+10%", "pitch": "+0Hz"}, ...},
               "gap": 0.18, "scenes": [{"lines": [{"who": "lena", "display": "...", "spoken": "..."}]}]}
 "display" = Untertitel, "spoken" = gesprochener Text (Zahlen ausgeschrieben, gleiche Wortzahl).
+Optional pro Zeile "rate" (z. B. "+16%"), überschreibt das Tempo der Stimme nur für diese Zeile.
 Ergebnis-JSON: sceneSeconds, wordStarts (pro Szene), speakers (pro Szene: Sprecher jedes Worts),
 lines (pro Szene: who/start/end in Sekunden ab Videostart).
 """
@@ -69,7 +70,7 @@ def main(cfg_path, out_mp3, out_json):
         for li, line in enumerate(sc["lines"]):
             disp, spok = tokens(line["display"]), tokens(line["spoken"])
             assert len(disp) == len(spok), f"Szene {si+1}, Zeile {li+1}: {len(disp)} vs {len(spok)} Wörter"
-            v = cfg["voices"][line["who"]]
+            v = {**cfg["voices"][line["who"]], **({"rate": line["rate"]} if "rate" in line else {})}  # Tempo pro Zeile möglich
             raw = f"{tmp}/s{si}_{li}.mp3"
             words = speak_retry(line["spoken"], v, raw)
             a = max(0.0, words[0][1] - 0.04); b = words[-1][2] + 0.1
