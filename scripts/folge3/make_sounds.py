@@ -1,5 +1,5 @@
 """Erzeugt ruhige Hintergrundmusik und Soundeffekte (Wusch, Knall, Klick) nur per Code.
-Aufruf: python3 scripts/folge3/make_sounds.py public  (braucht numpy + ffmpeg)"""
+Aufruf: python3 scripts/folge3/make_sounds.py public [folge4]  (braucht numpy + ffmpeg)"""
 import sys, subprocess, numpy as np
 OUT = sys.argv[1] if len(sys.argv) > 1 else "public"
 SR = 44100
@@ -23,11 +23,11 @@ def env(n, att, rel):
     e[:a] = np.linspace(0, 1, a); e[-r:] *= np.linspace(1, 0, r); return e
 
 # ---------- Musik: ruhiger Pad-Teppich, Am – F – C – G, 72 BPM ----------
-def music(seconds=48):
+def music(seconds=48, chords=None, bpm=72):
     n = int(seconds * SR); t = np.arange(n) / SR
     L = np.zeros(n); R = np.zeros(n)
-    chords = [[57, 60, 64, 69], [53, 57, 60, 65], [48, 55, 60, 64], [55, 59, 62, 67]]  # MIDI
-    bar = 4 * 60 / 72  # Sekunden pro Takt
+    chords = chords or [[57, 60, 64, 69], [53, 57, 60, 65], [48, 55, 60, 64], [55, 59, 62, 67]]  # MIDI
+    bar = 4 * 60 / bpm  # Sekunden pro Takt
     f = lambda m: 440 * 2 ** ((m - 69) / 12)
     k = 0; start = 0.0
     while start < seconds:
@@ -70,6 +70,25 @@ def boom(d=0.9):  # Stempel-Knall: kurzer Schlag + tiefer Bums
 def click(d=0.06):
     n = int(d * SR); t = np.arange(n) / SR
     return (np.sin(2 * np.pi * 2200 * t) * 0.6 + rng.standard_normal(n) * 0.4) * np.exp(-t * 120)
+
+def kaching(d=0.9):  # Kasse: kurzer Klick + helle Glocke
+    n = int(d * SR); t = np.arange(n) / SR
+    bell = sum(np.sin(2 * np.pi * f * t) * a for f, a in [(2637, 1), (3520, 0.6), (5274, 0.3)]) * np.exp(-t * 5)
+    start = int(0.06 * SR); y = np.zeros(n); y[start:] = bell[: n - start]
+    return y + np.pad(click(), (0, n - len(click())))
+
+def hit(d=1.4):  # tiefer Bass-Hit mit Nachhall (Hook)
+    n = int(d * SR); t = np.arange(n) / SR
+    sub = np.sin(2 * np.pi * (42 + 60 * np.exp(-t * 12)) * t) * np.exp(-t * 2.2)
+    noise = lowpass(rng.standard_normal(n), 0.05) * np.exp(-t * 4) * 0.8
+    return sub + noise
+
+if len(sys.argv) > 2 and sys.argv[2] == "folge4":
+    # etwas spannender: a-Moll / F / d-Moll / E, 80 BPM
+    save("music-folge4.mp3", music(56, chords=[[45, 57, 60, 64], [41, 57, 60, 65], [38, 57, 62, 65], [40, 56, 59, 64]], bpm=80), stereo=True)
+    save("sfx-kaching.mp3", kaching())
+    save("sfx-hit.mp3", hit())
+    print("fertig"); sys.exit()
 
 if __name__ == "__main__":
     save("music-folge3.mp3", music(), stereo=True)

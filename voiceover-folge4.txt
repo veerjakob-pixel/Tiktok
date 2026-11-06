@@ -1,0 +1,31 @@
+Sprechtext für Folge 4 – "Die Zucker-Lüge" (ca. 52 Sekunden, Stimme: Florian)
+Aufnahme: public/voiceover-folge4.mp3 – erzeugt mit scripts/make_voice_florian.py aus scripts/folge4/text.json.
+
+[Szene 1 – Hook]
+Die Zucker-Industrie hat Harvard-Forscher bezahlt. Damit du Fett hasst – und nicht Zucker. Und fast 50 Jahre lang hat's keiner gemerkt.
+
+[Szene 2 – 1960er: der Verdacht]
+In den 1960ern kam ein Verdacht auf: Macht Zucker das Herz krank? Für die Zucker-Industrie ein Albtraum.
+
+[Szene 3 – 1965: das Geld]
+1965 zahlte ein Zucker-Verband drei Harvard-Forschern Geld für einen Bericht. Heute wären das rund 50.000 Dollar.
+
+[Szene 4 – 1967: der Bericht]
+Der Bericht erschien 1967 in einer Top-Fachzeitschrift. Ergebnis: Fett ist schuld, Zucker kaum. Wer bezahlt hat, stand nirgends.
+
+[Szene 5 – „fettarm“]
+Jahrzehntelang galt Fett als Feind. Überall hieß es „fettarm“ – und oft steckte dafür mehr Zucker drin.
+
+[Szene 6 – 2016: enthüllt]
+Rausgekommen ist das erst 2016 – durch alte Briefe aus einem Archiv.
+
+[Szene 7 – Folgen-Aufruf]
+Folg mir für mehr Werbelügen. Hättest du das gedacht?
+
+--- Am Stück ---
+Die Zucker-Industrie hat Harvard-Forscher bezahlt. Damit du Fett hasst – und nicht Zucker. Und fast 50 Jahre lang hat's keiner gemerkt. In den 1960ern kam ein Verdacht auf: Macht Zucker das Herz krank? Für die Zucker-Industrie ein Albtraum. 1965 zahlte ein Zucker-Verband drei Harvard-Forschern Geld für einen Bericht. Heute wären das rund 50.000 Dollar. Der Bericht erschien 1967 in einer Top-Fachzeitschrift. Ergebnis: Fett ist schuld, Zucker kaum. Wer bezahlt hat, stand nirgends. Jahrzehntelang galt Fett als Feind. Überall hieß es „fettarm“ – und oft steckte dafür mehr Zucker drin. Rausgekommen ist das erst 2016 – durch alte Briefe aus einem Archiv. Folg mir für mehr Werbelügen. Hättest du das gedacht?
+
+--- Quellen ---
+Kearns, Schmidt, Glantz: "Sugar Industry and Coronary Heart Disease Research", JAMA Internal Medicine, 2016.
+McGandy, Hegsted, Stare: "Dietary Fats, Carbohydrates and Atherosclerotic Vascular Disease", N Engl J Med, 1967.
+Bezahlt wurden 6.500 Dollar (1965), laut JAMA-Artikel heute etwa 49.000 Dollar.

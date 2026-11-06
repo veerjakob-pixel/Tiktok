@@ -102,45 +102,71 @@ export type SubPage = { words: TimedWord[]; start: number; end: number };
 
 const MAX_WORDS = 5;
 const MIN_WORDS = 3;
-const MAX_CHARS = 34; // passt in höchstens 2 Zeilen bei 64 px und 85 % Bildbreite
+const MAX_CHARS = 42; // passt in höchstens 2 Zeilen bei 64 px und 85 % Bildbreite
 const MIN_FRAMES = FPS; // jeder Abschnitt mind. 1 Sekunde sichtbar
 
 const chars = (ws: TimedWord[]) => ws.reduce((s, w) => s + w.text.length + 1, -1);
 
-// Wörter zu ruhigen Abschnitten mit 3–5 Wörtern zusammenfassen.
-export const buildPages = (words: TimedWord[], sceneEnds: number[]): SubPage[] => {
-  const groups: TimedWord[][] = [];
-  let cur: TimedWord[] = [];
-  const isSceneEnd = (w: TimedWord, next?: TimedWord) => !next || sceneEnds.some((e) => w.start < e && next.start >= e);
-  words.forEach((w, i) => {
-    const next = words[i + 1];
-    // passt das nächste Wort nicht mehr rein -> vorher umbrechen
-    if (cur.length >= MIN_WORDS && chars([...cur, w]) > MAX_CHARS) {
-      groups.push(cur);
-      cur = [];
+// Wörter zu ruhigen Abschnitten mit 3–5 Wörtern zusammenfassen:
+// 1) in Sätze teilen, 2) sehr kurze Sätze mit dem nächsten verbinden,
+// 3) jeden Satz gleichmäßig in Stücke mit 3–5 Wörtern teilen (am liebsten nach Komma/Doppelpunkt).
+const SENTENCE_END = /[.!?“]$/;
+const SOFT_BREAK = /[,:;]$/;
+
+const splitSentence = (ws: TimedWord[]): TimedWord[][] => {
+  const n = ws.length;
+  if (n <= MAX_WORDS && chars(ws) <= MAX_CHARS) return [ws];
+  // best[i] = günstigste Aufteilung der ersten i Wörter
+  const best: { cost: number; prev: number }[] = Array.from({ length: n + 1 }, () => ({ cost: Infinity, prev: -1 }));
+  best[0].cost = 0;
+  for (let i = 0; i < n; i++) {
+    if (best[i].cost === Infinity) continue;
+    for (let len = 1; len <= MAX_WORDS && i + len <= n; len++) {
+      const chunk = ws.slice(i, i + len);
+      let cost = best[i].cost;
+      if (len < MIN_WORDS) cost += 40; // zu kurz
+      if (chars(chunk) > MAX_CHARS) cost += 100 * (chars(chunk) - MAX_CHARS); // passt nicht in 2 Zeilen
+      const last = chunk[len - 1].text;
+      if (i + len < n && !SOFT_BREAK.test(last)) cost += 6; // Trennung mitten im Satzteil
+      cost += Math.abs(len - 4); // gleichmäßig, ca. 4 Wörter
+      if (cost < best[i + len].cost) best[i + len] = { cost, prev: i };
     }
+  }
+  const out: TimedWord[][] = [];
+  for (let i = n; i > 0; i = best[i].prev) out.unshift(ws.slice(best[i].prev, i));
+  return out;
+};
+
+export const buildPages = (words: TimedWord[], sceneEnds: number[]): SubPage[] => {
+  // 1) Sätze (enden auch an Szenengrenzen)
+  const sentences: TimedWord[][] = [];
+  let cur: TimedWord[] = [];
+  words.forEach((w, i) => {
     cur.push(w);
-    const sentenceEnd = /[.:!?“]$/.test(w.text);
-    const restInSentence = (() => {
-      let n = 0;
-      for (let k = i + 1; k < words.length; k++) {
-        n++;
-        if (/[.:!?“]$/.test(words[k].text)) break;
-      }
-      return n;
-    })();
-    const done =
-      isSceneEnd(w, next) ||
-      cur.length >= MAX_WORDS ||
-      (cur.length >= MIN_WORDS && sentenceEnd) ||
-      // Satz nicht so teilen, dass am Ende nur 1–2 Wörter übrig bleiben
-      (cur.length >= MIN_WORDS && /,$/.test(w.text) && restInSentence >= MIN_WORDS);
-    if (done) {
-      groups.push(cur);
+    const next = words[i + 1];
+    const sceneEnd = !next || sceneEnds.some((e) => w.start < e && next.start >= e);
+    if (SENTENCE_END.test(w.text) || sceneEnd) {
+      sentences.push(cur);
       cur = [];
     }
   });
-  if (cur.length) groups.push(cur);
+  if (cur.length) sentences.push(cur);
+  // 2) Mini-Sätze (1–2 Wörter) mit dem Nachbarn derselben Szene verbinden, wenn es passt
+  const sceneOf = (w: TimedWord) => sceneEnds.findIndex((e) => w.start < e);
+  for (let i = 0; i < sentences.length; i++) {
+    const s = sentences[i];
+    if (s.length >= MIN_WORDS) continue;
+    const nxt = sentences[i + 1];
+    const prv = sentences[i - 1];
+    if (nxt && sceneOf(nxt[0]) === sceneOf(s[0]) && s.length + nxt.length <= MAX_WORDS && chars([...s, ...nxt]) <= MAX_CHARS) {
+      sentences.splice(i, 2, [...s, ...nxt]);
+    } else if (prv && sceneOf(prv[0]) === sceneOf(s[0]) && s.length + prv.length <= MAX_WORDS && chars([...prv, ...s]) <= MAX_CHARS) {
+      sentences.splice(i - 1, 2, [...prv, ...s]);
+      i--;
+    }
+  }
+  // 3) Sätze aufteilen
+  const groups: TimedWord[][] = sentences.flatMap(splitSentence);
 
   // Zu kurze Abschnitte (< 1 s) mit dem nächsten zusammenlegen, wenn es noch passt
   const startOf = (g: TimedWord[]) => g[0].start;
