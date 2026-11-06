@@ -1,42 +1,107 @@
 {
  "voices": {
-  "ich":  {"voice": "de-DE-FlorianMultilingualNeural", "rate": "+10%", "pitch": "+0Hz"},
-  "lena": {"voice": "de-DE-SeraphinaMultilingualNeural", "rate": "+8%", "pitch": "+0Hz"}
+  "ich": {
+   "voice": "de-DE-FlorianMultilingualNeural",
+   "rate": "+13%",
+   "pitch": "+0Hz"
+  },
+  "lena": {
+   "voice": "de-DE-SeraphinaMultilingualNeural",
+   "rate": "+11%",
+   "pitch": "+0Hz"
+  }
  },
  "gap": 0.18,
  "scenePause": 0.25,
  "scenes": [
-  {"lines": [
-   {"who": "lena", "display": "Nimm den fettarmen Joghurt. Fett ist doch das Schlimmste.",
-                   "spoken":  "Nimm den fettarmen Joghurt. Fett ist doch das Schlimmste."},
-   {"who": "ich",  "display": "Weißt du, wer wollte, dass du das glaubst? Die Zucker-Industrie. Die hat sogar Forscher bezahlt.",
-                   "spoken":  "Weißt du, wer wollte, dass du das glaubst? Die Zucker-Industrie. Die hat sogar Forscher bezahlt."},
-   {"who": "lena", "display": "Hä? Quatsch.", "spoken": "Hä? Quatsch."}
-  ]},
-  {"lines": [
-   {"who": "ich", "display": "Kein Quatsch. Spulen wir zurück: USA, 1960er. Ärzte fragen sich: Macht Zucker das Herz krank?",
-                  "spoken":  "Kein Quatsch. Spulen wir zurück: USA, Neunzehnhundertsechziger. Ärzte fragen sich: Macht Zucker das Herz krank?"}
-  ]},
-  {"lines": [
-   {"who": "ich", "display": "1965 zahlt ein Zucker-Verband drei Harvard-Forschern Geld für einen Bericht. Heute wären das rund 50.000 Dollar.",
-                  "spoken":  "Neunzehnhundertfünfundsechzig zahlt ein Zucker-Verband drei Haarvard-Forschern Geld für einen Bericht. Heute wären das rund fünfzigtausend Dollar."}
-  ]},
-  {"lines": [
-   {"who": "ich", "display": "1967 erscheint der Bericht. Ergebnis: Fett ist schuld, Zucker kaum. Wer bezahlt hat, steht nirgends.",
-                  "spoken":  "Neunzehnhundertsiebenundsechzig erscheint der Bericht. Ergebnis: Fett ist schuld, Zucker kaum. Wer bezahlt hat, steht nirgends."}
-  ]},
-  {"lines": [
-   {"who": "ich", "display": "Danach galt Fett jahrzehntelang als Feind. Überall hieß es „fettarm“ – und oft steckte dafür mehr Zucker drin.",
-                  "spoken":  "Danach galt Fett jahrzehntelang als Feind. Überall hieß es „fettarm“ – und oft steckte dafür mehr Zucker drin."}
-  ]},
-  {"lines": [
-   {"who": "lena", "display": "Und das kam nie raus?", "spoken": "Und das kam nie raus?"},
-   {"who": "ich",  "display": "Doch. Erst 2016. Eine Forscherin hat die alten Briefe in einem Archiv gefunden.",
-                   "spoken":  "Doch. Erst zweitausendsechzehn. Eine Forscherin hat die alten Briefe in einem Archiv gefunden."}
-  ]},
-  {"lines": [
-   {"who": "lena", "display": "Okay, dann nehm ich den normalen.", "spoken": "Okay … dann nehm ich den normalen."},
-   {"who": "ich",  "display": "Folg mir für mehr Werbelügen.", "spoken": "Folg mir für mehr Werbelügen."}
-  ]}
+  {
+   "lines": [
+    {
+     "who": "lena",
+     "display": "Nimm den fettarmen Joghurt. Fett ist doch das Schlimmste.",
+     "spoken": "Nimm den fettarmen Joghurt. Fett ist doch das Schlimmste!",
+     "pause": 0.12
+    },
+    {
+     "who": "ich",
+     "display": "Weißt du, wer wollte, dass du das glaubst? Die Zucker-Industrie. Die hat sogar Forscher bezahlt.",
+     "spoken": "Weißt du, wer wollte, dass du das glaubst? Die Zucker-Industrie. Die hat sogar Forscher bezahlt.",
+     "pause": 0.12
+    },
+    {
+     "who": "lena",
+     "display": "Hä? Quatsch.",
+     "spoken": "Hä? Quatsch!"
+    }
+   ],
+   "room": true
+  },
+  {
+   "lines": [
+    {
+     "who": "ich",
+     "display": "Kein Quatsch. Spulen wir zurück: USA, 1960er. Ärzte fragen sich: Macht Zucker das Herz krank?",
+     "spoken": "Kein Quatsch. Spulen wir zurück: USA, Neunzehnhundertsechziger. Ärzte fragen sich: Macht Zucker das Herz krank?"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "ich",
+     "display": "1965 zahlt ein Zucker-Verband drei Harvard-Forschern Geld für einen Bericht. Heute wären das rund 50.000 Dollar.",
+     "spoken": "Neunzehnhundertfünfundsechzig zahlt ein Zucker-Verband drei Haarvard-Forschern Geld für einen Bericht. Heute wären das rund fünfzigtausend Dollar."
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "ich",
+     "display": "1967 erscheint der Bericht. Ergebnis: Fett ist schuld, Zucker kaum. Wer bezahlt hat, steht nirgends.",
+     "spoken": "Neunzehnhundertsiebenundsechzig erscheint der Bericht. Ergebnis: Fett ist schuld, Zucker kaum. Wer bezahlt hat, steht nirgends."
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "ich",
+     "display": "Danach galt Fett jahrzehntelang als Feind. Überall hieß es „fettarm“ – und oft steckte dafür mehr Zucker drin.",
+     "spoken": "Danach galt Fett jahrzehntelang als Feind. Überall hieß es „fettarm“ – und oft steckte dafür mehr Zucker drin."
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "lena",
+     "display": "Und das kam nie raus?",
+     "spoken": "Und das kam nie raus?",
+     "pause": 0.12
+    },
+    {
+     "who": "ich",
+     "display": "Doch. Erst 2016. Eine Forscherin hat die alten Briefe in einem Archiv gefunden.",
+     "spoken": "Doch. Erst zweitausendsechzehn. Eine Forscherin hat die alten Briefe in einem Archiv gefunden."
+    }
+   ],
+   "room": true
+  },
+  {
+   "lines": [
+    {
+     "who": "lena",
+     "display": "Okay, dann nehm ich den normalen.",
+     "spoken": "Okay … dann nehm ich den normalen!"
+    },
+    {
+     "who": "ich",
+     "display": "Folg mir für mehr Werbelügen.",
+     "spoken": "Folg mir für mehr Werbelügen."
+    }
+   ],
+   "room": true
+  }
  ]
 }

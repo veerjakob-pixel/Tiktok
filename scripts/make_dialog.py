@@ -76,8 +76,12 @@ def main(cfg_path, out_mp3, out_json):
             last = li == len(sc["lines"]) - 1
             pad = scene_pause if last else line.get("pause", gap)
             seg = f"{tmp}/s{si}_{li}.wav"
+            # Klang: etwas wärmer, Härten oben weg; in "room"-Szenen leichter Raumhall (wirkt weniger steril)
+            fx = "equalizer=f=180:t=q:w=1.2:g=1.5,equalizer=f=6500:t=q:w=1.5:g=-2"
+            if sc.get("room"):
+                fx += ",aecho=0.85:0.55:23|41|67:0.10|0.07|0.04"
             subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", raw, "-af",
-                            f"atrim={a}:{b},asetpts=N/SR/TB,apad=pad_dur={pad}", "-ar", "44100", "-ac", "1", seg], check=True)
+                            f"atrim={a}:{b},asetpts=N/SR/TB,{fx},apad=pad_dur={pad}", "-ar", "44100", "-ac", "1", seg], check=True)
             d = dur(seg)
             res = map_words(words, spok, a, t)
             for k in range(1, len(res)):

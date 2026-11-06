@@ -32,6 +32,12 @@ export const SFX: Sfx[][] = [
   [{ t: 2.45, type: "click" }],
 ];
 
+// Alle Zeitangaben in Scenes.tsx/SFX wurden zur ersten Aufnahme (diese Szenenlängen) gesetzt.
+// K = neue Länge / alte Länge -> Schnitte und Effekte wandern mit, wenn die Stimme schneller/langsamer wird.
+const PLANNED = [12.17, 7.807, 7.663, 8.137, 6.424, 7.812, 4.521];
+export const K = timing.sceneSeconds.map((x, i) => x / PLANNED[i]);
+export const TS = (i: number) => (s: number) => Math.round(s * FPS * K[i]);
+
 // In welchen Szenen läuft Supermarkt-Atmo
 export const AMBIENCE_SCENES = [0, 5, 6];
 

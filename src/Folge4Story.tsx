@@ -4,7 +4,7 @@ import { getAudioDurationInSeconds } from "@remotion/media-utils";
 import { buildPages, FPS, timeWords } from "./folge3/script";
 import { CalmSubtitles, ProgressBar, SeriesLabel, SpeakerTag } from "./folge3/Overlays";
 import { Flash } from "./components/Overlays";
-import { AMBIENCE_SCENES, buildTimeline, SCENES, SFX, SPEAKERS } from "./folge4b/script";
+import { AMBIENCE_SCENES, buildTimeline, K, SCENES, SFX, SPEAKERS } from "./folge4b/script";
 import { Scene1, Scene2, Scene3, Scene4, Scene5, Scene6, Scene7, SceneProps } from "./folge4b/Scenes";
 import timing from "../public/voiceover-folge4b-timing.json";
 
@@ -59,7 +59,7 @@ export const Folge4Story: React.FC<Folge4StoryProps> = ({ total }) => {
     const list: { at: number; type: keyof typeof SFX_FILE }[] = [];
     timeline.forEach((s, i) => {
       if (i > 0) list.push({ at: Math.max(0, s.from - 4), type: "whoosh" });
-      SFX[i].forEach((e) => list.push({ at: s.from + Math.round(e.t * FPS), type: e.type }));
+      SFX[i].forEach((e) => list.push({ at: s.from + Math.round(e.t * FPS * K[i]), type: e.type }));
     });
     return list;
   }, [timeline]);
