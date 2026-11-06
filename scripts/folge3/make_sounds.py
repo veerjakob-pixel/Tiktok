@@ -100,6 +100,56 @@ def rewind(d=1.2):  # Kassette zurückspulen: schnelle, hohe Zwitscher-Stimmen +
     hiss = lowpass(rng.standard_normal(n), 0.4) * 0.4
     return (chirp * 0.6 + hiss) * env(n, 0.05, 0.15)
 
+# ---------- Rauschfreie Versionen (nur reine Töne, kein Zufallsrauschen) ----------
+def whoosh_clean(d=0.45):  # "Wusch": tiefer, gleitender Ton mit weichem Ein-/Ausblenden
+    n = int(d * SR); t = np.arange(n) / SR
+    f = 180 + 520 * np.sin(np.pi * t / d) ** 2
+    ph = 2 * np.pi * np.cumsum(f) / SR
+    y = (np.sin(ph) + 0.35 * np.sin(2 * ph) + 0.15 * np.sin(3.01 * ph)) * np.sin(np.pi * t / d) ** 2
+    return lowpass(y, 0.08)
+
+def boom_clean(d=0.9):  # Stempel: tiefer Schlag ohne Rausch-Knack
+    n = int(d * SR); t = np.arange(n) / SR
+    thump = np.sin(2 * np.pi * (55 + 90 * np.exp(-t * 30)) * t) * np.exp(-t * 6)
+    knock = np.sin(2 * np.pi * 220 * t) * np.exp(-t * 60) * 0.6
+    return thump + knock
+
+def click_clean(d=0.05):
+    n = int(d * SR); t = np.arange(n) / SR
+    return (np.sin(2 * np.pi * 1800 * t) + 0.5 * np.sin(2 * np.pi * 3100 * t)) * np.exp(-t * 140)
+
+def ambience_clean(d=16.0):  # Supermarkt: nur ab und zu ein leiser Kassen-Piep, kein Summen/Rauschen
+    n = int(d * SR); y = np.zeros(n)
+    for at in [1.7, 6.3, 11.8, 14.1]:
+        s0 = int(at * SR); m = int(0.12 * SR)
+        y[s0:s0 + m] += np.sin(2 * np.pi * 2900 * np.arange(m) / SR) * 0.3 * env(m, 0.005, 0.03)
+    return y
+
+def rewind_clean(d=1.2):  # Zurückspulen: nur die zwitschernden Töne, ohne Bandrauschen
+    n = int(d * SR); t = np.arange(n) / SR
+    f = 900 + 600 * np.sin(2 * np.pi * 7 * t) + 400 * np.sin(2 * np.pi * 13.3 * t)
+    return np.sin(2 * np.pi * np.cumsum(f) / SR) * (0.5 + 0.5 * np.sin(2 * np.pi * 21 * t) ** 2) * env(n, 0.05, 0.15)
+
+def hit_clean(d=1.4):  # tiefer Bass-Hit ohne Rauschen
+    n = int(d * SR); t = np.arange(n) / SR
+    sub = np.sin(2 * np.pi * (42 + 60 * np.exp(-t * 12)) * t) * np.exp(-t * 2.2)
+    body = np.sin(2 * np.pi * (84 + 120 * np.exp(-t * 20)) * t) * np.exp(-t * 5) * 0.4
+    return sub + body
+
+def save_quiet(name, x, peak):  # wie save, aber mit festem Spitzenpegel (für leise Atmo)
+    x = x / (np.max(np.abs(x)) + 1e-9) * peak
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "f32le", "-ar", str(SR), "-ac", "1", "-i", "-", "-b:a", "160k", f"{OUT}/{name}"],
+                   input=x.astype(np.float32).tobytes(), check=True)
+
+if len(sys.argv) > 2 and sys.argv[2] == "clean":
+    save("sfx-whoosh.mp3", whoosh_clean())
+    save("sfx-boom.mp3", boom_clean())
+    save("sfx-click.mp3", click_clean())
+    save("sfx-rewind.mp3", rewind_clean())
+    save("sfx-hit.mp3", hit_clean())
+    save_quiet("sfx-ambience-market.mp3", ambience_clean(), 0.5)
+    print("fertig"); sys.exit()
+
 if len(sys.argv) > 2 and sys.argv[2] == "folge4b":
     save("sfx-ambience-market.mp3", ambience())
     save("sfx-rewind.mp3", rewind())
