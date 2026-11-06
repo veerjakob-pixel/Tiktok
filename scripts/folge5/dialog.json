@@ -1,0 +1,31 @@
+{
+ "voices": {
+  "florian": {"voice": "de-DE-FlorianMultilingualNeural", "rate": "+13%", "pitch": "+0Hz"},
+  "lena": {"voice": "de-DE-SeraphinaMultilingualNeural", "rate": "+11%", "pitch": "+0Hz"}
+ },
+ "gap": 0.18,
+ "scenePause": 0.25,
+ "scenes": [
+  {"lines": [{"who": "lena",
+    "display": "Ein Mann hat Frauen zum Rauchen gebracht. Sein Trick: Er hat Zigaretten einfach Freiheit genannt.",
+    "spoken": "Ein Mann hat Frauen zum Rauchen gebracht. Sein Trick: Er hat Zigaretten einfach Freiheit genannt."}]},
+  {"lines": [{"who": "florian",
+    "display": "Damals galt es als unanständig, wenn Frauen in der Öffentlichkeit rauchen. Für die Tabakindustrie hieß das: die Hälfte der Kunden fehlt.",
+    "spoken": "Damals galt es als unanständig, wenn Frauen in der Öffentlichkeit rauchen. Für die Tabakindustrie hieß das: die Hälfte der Kunden fehlt."}]},
+  {"lines": [{"who": "lena",
+    "display": "Und was hat er gemacht?",
+    "spoken": "Und was hat er gemacht?"}]},
+  {"lines": [{"who": "florian",
+    "display": "1929 ließ Edward Bernays – derselbe wie bei Speck und Eiern – junge Frauen bei der Osterparade in New York öffentlich rauchen. Die Presse wurde vorher eingeladen.",
+    "spoken": "Neunzehnhundertneunundzwanzig ließ Edward Bernays – derselbe wie bei Speck und Eiern – junge Frauen bei der Osterparade in New York öffentlich rauchen. Die Presse wurde vorher eingeladen."}]},
+  {"lines": [{"who": "lena",
+    "display": "Und die Zeitungen?",
+    "spoken": "Und die Zeitungen?"}]},
+  {"lines": [{"who": "florian",
+    "display": "Am nächsten Tag stand überall: Frauen kämpfen für Gleichberechtigung. Dass die Tabakindustrie alles bezahlt hatte, wusste kaum jemand.",
+    "spoken": "Am nächsten Tag stand überall: Frauen kämpfen für Gleichberechtigung. Dass die Tabakindustrie alles bezahlt hatte, wusste kaum jemand."}]},
+  {"lines": [{"who": "lena",
+    "display": "Der Trick: Man verkauft kein Produkt, sondern eine Idee. Freiheit, Liebe, Gesundheit – das Produkt hängt man einfach dran. Folg mir für Teil 6: Hat Coca-Cola den Weihnachtsmann erfunden?",
+    "spoken": "Der Trick: Man verkauft kein Produkt, sondern eine Idee. Freiheit, Liebe, Gesundheit – das Produkt hängt man einfach dran. Folg mir für Teil sechs: Hat Coca-Cola den Weihnachtsmann erfunden?"}]}
+ ]
+}
