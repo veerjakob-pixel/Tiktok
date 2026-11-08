@@ -20,7 +20,7 @@ norm = lambda s: re.sub(r"[^\w]", "", s.lower())
 tokens = lambda t: [w for w in t.split() if norm(w)]
 
 async def speak(text, rate, pitch, path):
-    c = edge_tts.Communicate(text, VOICE, rate=rate, pitch=pitch, boundary="WordBoundary")
+    c = edge_tts.Communicate(text, VOICE, rate=rate, pitch=pitch, boundary="WordBoundary", proxy=os.environ.get("HTTPS_PROXY"))
     words = []
     with open(path, "wb") as f:
         async for ch in c.stream():

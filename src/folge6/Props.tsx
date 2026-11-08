@@ -285,7 +285,7 @@ export const Snow3D: React.FC<{ frame: number; n?: number; area?: [number, numbe
 };
 
 // ---------- Weihnachtsstraße am Abend: nasse Straße, Gehweg, Häuser mit Fenstern, Laternen, Lichterketten, Plakatwand ----------
-const useWindows = (seed: number) =>
+export const useWindows = (seed: number) =>
   useCanvasTexture(
     512,
     1024,
@@ -308,7 +308,7 @@ const useWindows = (seed: number) =>
     [seed],
   );
 
-const useAsphalt = () =>
+export const useAsphalt = () =>
   useCanvasTexture(
     512,
     512,

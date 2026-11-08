@@ -13,7 +13,7 @@ model = WhisperModel("small", device="cpu", compute_type="int8")
 tmp = tempfile.mkdtemp()
 for i, t in enumerate(texts):
     f = f"{tmp}/{i}.mp3"
-    asyncio.run(edge_tts.Communicate(t, voice, rate=rate).save(f))
+    asyncio.run(edge_tts.Communicate(t, voice, rate=rate, proxy=os.environ.get("HTTPS_PROXY")).save(f))
     raw = subprocess.check_output(["ffmpeg", "-v", "error", "-i", f, "-f", "f32le", "-ac", "1", "-ar", "16000", "-"])
     segs, _ = model.transcribe(np.frombuffer(raw, np.float32), language="de", beam_size=5)
     print(f"{t!r:60} -> {' '.join(s.text for s in segs).strip()!r}")

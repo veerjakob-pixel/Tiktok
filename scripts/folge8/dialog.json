@@ -1,0 +1,155 @@
+{
+ "voices": {
+  "florian": {
+   "voice": "de-DE-FlorianMultilingualNeural",
+   "rate": "+16%",
+   "pitch": "+0Hz"
+  },
+  "lena": {
+   "voice": "de-DE-SeraphinaMultilingualNeural",
+   "rate": "+14%",
+   "pitch": "+0Hz"
+  }
+ },
+ "gap": 0.1,
+ "scenePause": 0.18,
+ "scenes": [
+  {
+   "lines": [
+    {
+     "who": "lena",
+     "display": "Marlboro war früher eine Zigarette für Frauen.",
+     "spoken": "Marlboro war früher eine Zigarette für Frauen.",
+     "tail": 0.18,
+     "rate": "+16%",
+     "pause": 0.15
+    },
+    {
+     "who": "lena",
+     "display": "Bis ein Cowboy kam.",
+     "spoken": "Bis ein Cowboy kam.",
+     "tail": 0.18,
+     "rate": "+6%",
+     "pitch": "-3Hz"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "New York, im Jahr 1924.",
+     "spoken": "New York, im Jahr neunzehnhundertvierundzwanzig.",
+     "tail": 0.18,
+     "rate": "+12%",
+     "pause": 0.1
+    },
+    {
+     "who": "florian",
+     "display": "Philip Morris bringt Marlboro heraus. Der Spruch: Mild wie der Mai.",
+     "spoken": "Fillip Mohriss bringt Mahrlboro heraus. Der Spruch: Mild wie der Mai.",
+     "tail": 0.18,
+     "rate": "+16%"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "Später bekommt sie sogar ein rotes Mundstück.",
+     "spoken": "Später bekommt sie sogar ein rotes Mundstück.",
+     "tail": 0.18,
+     "rate": "+16%",
+     "pause": 0.1
+    },
+    {
+     "who": "florian",
+     "display": "Damit man den Lippenstift nicht sieht.",
+     "spoken": "Damit man den Lippenstift nicht sieht.",
+     "tail": 0.18,
+     "rate": "+8%",
+     "pitch": "-3Hz"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "Chicago, im Jahr 1954. Der Werbemann Leo Burnett soll sie an Männer verkaufen.",
+     "spoken": "Chicago, im Jahr neunzehnhundertvierundfünfzig. Der Werbemann Leo Börnett soll sie an Männer verkaufen.",
+     "tail": 0.18,
+     "rate": "+18%",
+     "pause": 0.12
+    },
+    {
+     "who": "florian",
+     "display": "Seine Idee: ein Cowboy.",
+     "spoken": "Seine Idee: ein Cowboy.",
+     "tail": 0.18,
+     "rate": "+6%",
+     "pitch": "-3Hz"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "Harte Männer, Pferde, Freiheit.",
+     "spoken": "Harte Männer, Pferde, Freiheit.",
+     "tail": 0.18,
+     "rate": "+14%",
+     "pause": 0.1
+    },
+    {
+     "who": "florian",
+     "display": "Im Jahr 1972 ist sie die meistverkaufte Zigarette der Welt.",
+     "spoken": "Im Jahr neunzehnhundertzweiundsiebzig ist sie die meistverkaufte Zigarette der Welt.",
+     "tail": 0.18,
+     "rate": "+20%"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "Mehrere Marlboro-Cowboys sterben später an Lungenkrebs.",
+     "spoken": "Mehrere Mahrlboro-Cowboys sterben später an Lungenkrebs.",
+     "tail": 0.18,
+     "rate": "+6%",
+     "pitch": "-4Hz",
+     "pause": 0.15
+    },
+    {
+     "who": "lena",
+     "display": "Verkauft wurde nie eine Zigarette.",
+     "spoken": "Verkauft wurde nie eine Zigarette.",
+     "tail": 0.18,
+     "rate": "+12%"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "lena",
+     "display": "Sondern ein Gefühl: Freiheit. Genau das ist der Trick.",
+     "spoken": "Sondern ein Gefühl: Freiheit. Genau das ist der Trick.",
+     "tail": 0.18,
+     "rate": "+12%",
+     "pause": 0.15
+    },
+    {
+     "who": "lena",
+     "display": "Folg mir für mehr Werbelügen.",
+     "spoken": "Folg mir für mehr Werbelügen.",
+     "tail": 0.18,
+     "rate": "+16%"
+    }
+   ]
+  }
+ ]
+}
