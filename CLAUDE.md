@@ -71,10 +71,9 @@ Jede neue Folge wird genauso gebaut wie Folge 6 (`Folge6Weihnachtsmann`, Ordner 
   Merkwürdige (verformte Figuren, abgeschnittene Köpfe, zu hell/dunkel, verdeckte Gesichter) beheben.
 - Kino-Look ab Folge 6: `CineStage` (src/folge6/Stage.tsx), Figuren `Human`, Weihnachtsmann `SantaFigure`.
 
-## Umgebung (ab Folge 8)
+## Umgebung
 - Cloud-Umgebung "Tiktok" erlaubt speech.platform.bing.com (Stimme) und Hugging Face (Whisper-Modell für die Aussprache-Prüfung).
 - edge-tts geht nur über den Proxy: die Skripte geben `proxy=HTTPS_PROXY` an edge_tts weiter.
 - Rendern ohne Internet-Download des Browsers:
   `--browser-executable=/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell`
 - Kontaktbogen schnell: `node scripts/render_stills.mjs <Komposition> <Ordner> <Frame> ...` (ein Bundle, viele Bilder).
-- "Marlboro" hört Whisper als "Malboro", "Philip" als "Philipp" – das sind nur Schreibweisen, keine Aussprachefehler.
