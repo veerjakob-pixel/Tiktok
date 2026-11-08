@@ -23,8 +23,8 @@ const clicks = (from: number, n: number, step: number): Sfx[] => Array.from({ le
 
 // Sekunden ab Szenenstart (passend zu den Schnitten in Scenes.tsx)
 export const SFX: Sfx[][] = [
-  // Hook: Zoom auf das Mundwasser, Stempel KRANKHEIT?, Lena, zurückspulen
-  [{ t: 0, type: "whoosh" }, { t: 0.1, type: "hit" }, { t: 0.65, type: "riser" }, { t: 1.85, type: "hit" }, { t: 1.87, type: "boom" }, { t: 2.8, type: "whoosh" }, { t: 4.6, type: "rewind" }],
+  // Hook: Lena zeigt auf dich ("Du stinkst aus dem Mund."), Mundwasser, Stempel WERBUNG, Millionen, zurückspulen
+  [{ t: 0, type: "whoosh" }, { t: 0.05, type: "hit" }, { t: 0.24, type: "boom" }, { t: 2.1, type: "whoosh" }, { t: 3.36, type: "riser" }, { t: 4.56, type: "hit" }, { t: 4.58, type: "boom" }, { t: 5.51, type: "kaching" }, { t: 5.9, type: "rewind" }],
   // 1879: Labor, Arzt gießt, Flasche
   [{ t: 0.05, type: "boom" }, { t: 2.9, type: "whoosh" }, ...clicks(3.4, 4, 0.3), { t: 5.5, type: "whoosh" }, { t: 5.69, type: "kaching" }],
   // 1920er, Wörterbuch, HALITOSIS steigt auf
@@ -41,7 +41,7 @@ export const SFX: Sfx[][] = [
 
 // Alle Zeitangaben in Scenes.tsx/SFX wurden zu dieser Aufnahme (diese Szenenlängen) gesetzt.
 // K = neue Länge / alte Länge -> Schnitte und Effekte wandern mit, wenn die Stimme neu aufgenommen wird.
-const PLANNED = [5.932, 6.67, 6.84, 7.849, 5.677, 4.44, 6.396];
+const PLANNED = [6.931, 6.67, 6.84, 7.849, 5.677, 4.44, 6.396];
 export const K = timing.sceneSeconds.map((x, i) => x / PLANNED[i]);
 export const TS = (i: number) => (s: number) => Math.round(s * FPS * K[i]);
 

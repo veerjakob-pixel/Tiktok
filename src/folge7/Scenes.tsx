@@ -345,14 +345,20 @@ export const Scene1: React.FC<SceneProps> = ({ from }) => {
   const T = TS(0);
   return (
     <AbsoluteFill>
-      <Cut T={T} a={0} b={2.8}>
-        <BottleHookShot />
-        <Slam at={T(1.85)} style={{ left: 0, right: 0, top: 600, display: "flex", justifyContent: "center" }}>
-          <Stamp text="KRANKHEIT?" size={170} rotate={-10} />
-        </Slam>
+      <Cut T={T} a={0} b={2.1}>
+        <InsultShot t0={t0} />
       </Cut>
-      <Cut T={T} a={2.8} b={5.932 + 1}>
-        <LenaRewindShot t0={t0 + T(2.8) / FPS} rewindAt={T(4.6 - 2.8)} />
+      <Cut T={T} a={2.1} b={5.9}>
+        <BottleHookShot />
+        <Slam at={T(4.56 - 2.1)} style={{ left: 0, right: 0, top: 600, display: "flex", justifyContent: "center" }}>
+          <Stamp text="WERBUNG" size={190} rotate={-10} />
+        </Slam>
+        <Card at={T(5.51 - 2.1)} top={880} size={64} bg="#FFD166" color="#1D2433" rotate={-3}>
+          💰 Millionen verdient
+        </Card>
+      </Cut>
+      <Cut T={T} a={5.9} b={6.931 + 1}>
+        <LenaRewindShot t0={t0 + T(5.9) / FPS} rewindAt={0} />
       </Cut>
     </AbsoluteFill>
   );
@@ -373,14 +379,55 @@ const BottleHookShot: React.FC = () => {
         <Glow position={[0.22, 0.9, 0.3]} color="#FFFFFF" size={0.35 + 0.15 * Math.sin(frame * 0.3)} core={0.005} />
       </CineStage>
       <div style={{ position: "absolute", top: 210, left: 0, right: 0 }}>
-        <Txt size={96} color="#FFFFFF" style={{ WebkitTextStroke: "4px #12352A" }}>
-          WIE WERBUNG EINE
+        <Txt size={100} color="#FFFFFF" style={{ WebkitTextStroke: "4px #12352A" }}>
+          … SAGT DIE
         </Txt>
         <Txt size={128} color="#7BE495" style={{ WebkitTextStroke: "5px #12352A" }}>
-          KRANKHEIT
+          WERBUNG
         </Txt>
-        <Txt size={96} color="#FFFFFF" style={{ WebkitTextStroke: "4px #12352A" }}>
-          ERFAND
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+// "Du stinkst aus dem Mund." – Lena schaut direkt in die Kamera und zeigt auf dich (Bild 0 schon voll da)
+const InsultShot: React.FC<{ t0: number }> = ({ t0 }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const z = spring({ frame, fps, config: { damping: 15, stiffness: 260 } });
+  const c = closeUp(LENA, interpolate(z, [0, 1], [3.4, 1.75]) - frame * 0.003);
+  const point = spring({ frame: frame - 2, fps, config: { damping: 12, stiffness: 220 } });
+  return (
+    <AbsoluteFill>
+      <CityBg />
+      <CityScene t0={t0} cam={c.cam} look={c.look} lena={{ armR: 1.35 * point, bendR: 0.15, brow: -0.9, smile: 0.25, headTilt: -0.08, gesture: 0 }} fov={32} />
+      {/* grüner "Mundgeruch"-Schleier am Rand */}
+      <AbsoluteFill style={{ background: "radial-gradient(ellipse at 50% 45%, transparent 45%, rgba(60,140,60,0.35) 100%)" }} />
+      {/* dunkles Band hinter dem Text, damit das Plakat im Hintergrund nicht stört */}
+      <AbsoluteFill style={{ background: "linear-gradient(rgba(5,12,8,0.82) 0%, rgba(5,12,8,0.6) 28%, transparent 42%)" }} />
+      {/* Finger zeigt auf den Zuschauer */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 860,
+          display: "flex",
+          justifyContent: "center",
+          fontSize: 110,
+          lineHeight: 1,
+          transform: `scale(${3.2 * point * (1 + Math.sin(frame * 0.6) * 0.04)}) rotate(-8deg)`,
+          filter: "drop-shadow(0 18px 30px rgba(0,0,0,0.5))",
+        }}
+      >
+        🫵
+      </div>
+      <div style={{ position: "absolute", top: 210, left: 0, right: 0 }}>
+        <Txt size={128} color="#FFFFFF" style={{ WebkitTextStroke: "5px #12352A" }}>
+          DU STINKST
+        </Txt>
+        <Txt size={110} color="#7BE495" style={{ WebkitTextStroke: "5px #12352A" }}>
+          AUS DEM MUND.
         </Txt>
       </div>
     </AbsoluteFill>

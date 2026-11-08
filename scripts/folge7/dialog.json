@@ -18,19 +18,19 @@
    "lines": [
     {
      "who": "lena",
-     "display": "Mundgeruch galt früher nicht als Krankheit.",
-     "spoken": "Mundgeruch galt früher nicht als Krankheit.",
+     "display": "Du stinkst aus dem Mund.",
+     "spoken": "Du stinkst aus dem Mund.",
      "tail": 0.18,
-     "rate": "+16%",
-     "pause": 0.15
+     "rate": "+6%",
+     "pitch": "-2Hz",
+     "pause": 0.32
     },
     {
      "who": "lena",
-     "display": "Bis eine Firma Mundwasser verkaufen wollte.",
-     "spoken": "Bis eine Firma Mundwasser verkaufen wollte.",
+     "display": "Das sollst du zumindest glauben. Eine Firma hat damit Millionen verdient.",
+     "spoken": "Das sollst du zumindest glauben. Eine Firma hat damit Millionen verdient.",
      "tail": 0.18,
-     "rate": "+8%",
-     "pitch": "-3Hz"
+     "rate": "+18%"
     }
    ]
   },
