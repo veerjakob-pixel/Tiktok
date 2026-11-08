@@ -17,24 +17,24 @@ export const SPEAKERS = timing.speakers as Who[][];
 // Spricht diese Person gerade? (Sekunden ab Videostart)
 export const speakingAt = (who: Who, t: number) => LINES.some((sc) => sc.some((l) => l.who === who && t >= l.start && t <= l.end));
 
-export type SfxType = "whoosh" | "boom" | "click" | "kaching" | "hit" | "rewind";
+export type SfxType = "whoosh" | "boom" | "click" | "kaching" | "hit" | "rewind" | "riser";
 export type Sfx = { t: number; type: SfxType };
 const clicks = (from: number, n: number, step: number): Sfx[] => Array.from({ length: n }, (_, i) => ({ t: from + i * step, type: "click" }));
 
 // Sekunden ab Szenenstart (passend zu den Schnitten in Scenes.tsx)
 export const SFX: Sfx[][] = [
   // Hook: Zoom auf die Dose, Mütze fällt drauf, Farben, Stempel MYTHOS?
-  [{ t: 0, type: "whoosh" }, { t: 0.9, type: "hit" }, { t: 2.74, type: "click" }, { t: 3.41, type: "click" }, { t: 7.28, type: "hit" }, { t: 7.3, type: "boom" }],
+  [{ t: 0, type: "whoosh" }, { t: 0.9, type: "hit" }, { t: 2.74, type: "click" }, { t: 3.41, type: "click" }, { t: 6.08, type: "riser" }, { t: 7.28, type: "hit" }, { t: 7.3, type: "boom" }],
   // zurück ins Jahr ~300: Bischof Nikolaus, roter Mantel
-  [{ t: 0.8, type: "rewind" }, { t: 6.54, type: "boom" }],
+  [{ t: 0.8, type: "rewind" }, { t: 5.34, type: "riser" }, { t: 6.54, type: "boom" }],
   [],
   // 1863 Thomas Nast, um 1900 rote Postkarten, Stempel VOR COCA-COLA
-  [{ t: 0.05, type: "boom" }, { t: 1.6, type: "whoosh" }, ...clicks(4.6, 3, 0.25), { t: 7.39, type: "hit" }, { t: 7.41, type: "boom" }],
-  [],
+  [{ t: 0.05, type: "boom" }, { t: 1.6, type: "whoosh" }, ...clicks(4.6, 3, 0.25), { t: 6.19, type: "riser" }, { t: 7.39, type: "hit" }, { t: 7.41, type: "boom" }],
+  [{ t: 0.15, type: "riser" }],
   // 1931, Gemälde, drei Merkmale, Kalender zählt bis 1964
   [{ t: 0.05, type: "boom" }, { t: 4.67, type: "click" }, { t: 5.34, type: "click" }, { t: 6.08, type: "kaching" }, ...clicks(7.32, 11, 0.1)],
   // nicht erfunden, Plakatwand voller Werbung, Stempel WERBUNG, Folgen-Button
-  [{ t: 3.06, type: "hit" }, { t: 3.08, type: "boom" }, ...clicks(4.4, 6, 0.2), { t: 7.46, type: "hit" }, { t: 7.48, type: "boom" }, { t: 8.15, type: "whoosh" }, { t: 8.7, type: "click" }],
+  [{ t: 1.86, type: "riser" }, { t: 3.06, type: "hit" }, { t: 3.08, type: "boom" }, ...clicks(4.4, 6, 0.2), { t: 6.26, type: "riser" }, { t: 7.46, type: "hit" }, { t: 7.48, type: "boom" }, { t: 8.15, type: "whoosh" }, { t: 8.7, type: "click" }],
 ];
 
 // Alle Zeitangaben in Scenes.tsx/SFX wurden zu dieser Aufnahme (diese Szenenlängen) gesetzt.

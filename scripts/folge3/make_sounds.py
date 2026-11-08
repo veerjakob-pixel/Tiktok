@@ -1,5 +1,5 @@
 """Erzeugt ruhige Hintergrundmusik und Soundeffekte (Wusch, Knall, Klick) nur per Code.
-Aufruf: python3 scripts/folge3/make_sounds.py public [folge4]  (braucht numpy + ffmpeg)"""
+Aufruf: python3 scripts/folge3/make_sounds.py public [folge4|folge6|clean]  (braucht numpy + ffmpeg)"""
 import sys, subprocess, numpy as np
 OUT = sys.argv[1] if len(sys.argv) > 1 else "public"
 SR = 44100
@@ -140,6 +140,37 @@ def save_quiet(name, x, peak):  # wie save, aber mit festem Spitzenpegel (für l
     x = x / (np.max(np.abs(x)) + 1e-9) * peak
     subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "f32le", "-ar", str(SR), "-ac", "1", "-i", "-", "-b:a", "160k", f"{OUT}/{name}"],
                    input=x.astype(np.float32).tobytes(), check=True)
+
+# ---------- Folge 6: spannender Teppich (Moll, pulsierender Bass, wird lauter) + Riser ----------
+def music_tense(seconds=47, bpm=92):
+    base = music(seconds, chords=[[38, 57, 62, 65], [34, 58, 62, 65], [41, 57, 60, 65], [33, 57, 61, 64]], bpm=bpm)
+    n = base.shape[1]; pulse = np.zeros(n)
+    f = lambda m: 440 * 2 ** ((m - 69) / 12)
+    roots = [38, 34, 41, 33]; beat = 60 / bpm / 2  # Achtel
+    bar = 4 * 60 / bpm; k = 0; t0 = 0.0
+    while t0 < seconds:
+        root = roots[int(t0 // bar) % 4]; s0 = int(t0 * SR); m = min(n - s0, int(0.22 * SR))
+        if m > 0:
+            tt = np.arange(m) / SR
+            note = np.sin(2 * np.pi * f(root) * tt) + 0.4 * np.sin(2 * np.pi * f(root) * 2 * tt)
+            build = 0.35 + 0.65 * min(1.0, t0 / (seconds * 0.85))  # wird mit der Zeit kräftiger
+            pulse[s0:s0 + m] += note * np.exp(-tt * 14) * (1.0 if k % 2 == 0 else 0.6) * 0.28 * build
+        k += 1; t0 += beat
+    pulse = lowpass(pulse, 0.2) * env(n, 0.5, 2.5)
+    return base + np.vstack([pulse, pulse])
+
+def riser_clean(d=1.2):  # ansteigender Ton vor einer Auflösung, endet sauber
+    n = int(d * SR); t = np.arange(n) / SR
+    fr = 180 * (1200 / 180) ** (t / d)
+    ph = 2 * np.pi * np.cumsum(fr) / SR
+    y = (np.sin(ph) + 0.5 * np.sin(2 * ph) + 0.25 * np.sin(1.5 * ph)) * (t / d) ** 2
+    y *= env(n, 0.02, 0.04)
+    return lowpass(y, 0.25)
+
+if len(sys.argv) > 2 and sys.argv[2] == "folge6":
+    save("music-folge6.mp3", music_tense(), stereo=True)
+    save("sfx-riser.mp3", riser_clean())
+    print("fertig"); sys.exit()
 
 if len(sys.argv) > 2 and sys.argv[2] == "clean":
     save("sfx-whoosh.mp3", whoosh_clean())

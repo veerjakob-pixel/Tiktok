@@ -1,9 +1,8 @@
 import React from "react";
-import { AbsoluteFill, CalculateMetadataFunction, getStaticFiles, Html5Audio, Sequence, staticFile } from "remotion";
+import { AbsoluteFill, CalculateMetadataFunction, getStaticFiles, Html5Audio, Sequence, staticFile, useCurrentFrame } from "remotion";
 import { getAudioDurationInSeconds } from "@remotion/media-utils";
 import { buildPages, FPS, timeWords } from "./folge3/script";
 import { CalmSubtitles, ProgressBar, SeriesLabel, SpeakerTag } from "./folge3/Overlays";
-import { Flash } from "./components/Overlays";
 import { buildTimeline, K, SCENES, SFX, SPEAKERS } from "./folge6/script";
 import { Scene1, Scene2, Scene3, Scene4, Scene5, Scene6, Scene7, SceneProps } from "./folge6/Scenes";
 import timing from "../public/voiceover-folge6-timing.json";
@@ -12,7 +11,7 @@ import timing from "../public/voiceover-folge6-timing.json";
 export type Folge6Props = { total: number };
 
 const VOICE = "voiceover-folge6.mp3";
-const MUSIC = "music-folge4.mp3"; // gleiche Musik + Lautstärke wie Folge 4
+const MUSIC = "music-folge6.mp3"; // eigene, spannendere Musik (gleiche Lautstärke wie bisher)
 const hasFile = (name: string) => getStaticFiles().some((f) => f.name === name);
 
 // Das Video muss IMMER Ton haben: ohne Sprachaufnahme bricht das Rendern ab.
@@ -31,12 +30,25 @@ const SFX_FILE = {
   kaching: "sfx-kaching.mp3",
   hit: "sfx-hit.mp3",
   rewind: "sfx-rewind.mp3",
+  riser: "sfx-riser.mp3",
 } as const;
-const SFX_VOL = { whoosh: 0.35, boom: 0.45, click: 0.35, kaching: 0.4, hit: 0.6, rewind: 0.5 } as const;
+const SFX_VOL = { whoosh: 0.35, boom: 0.45, click: 0.35, kaching: 0.4, hit: 0.6, rewind: 0.5, riser: 0.32 } as const;
 
 const TAGS: Record<string, SpeakerTag> = {
   lena: { label: "Lena", color: "#E76F51", highlight: "#FFC9B3" },
   florian: { color: "#264653", highlight: "#FFE680" },
+};
+
+// Schneller Übergang: kurzer Zoom mit Bewegungsunschärfe statt weißem Blitz
+const WhipIn: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const frame = useCurrentFrame();
+  const p = Math.min(1, frame / 7);
+  const e = 1 - Math.pow(1 - p, 3);
+  return (
+    <AbsoluteFill style={{ transform: `scale(${1.18 - 0.18 * e}) translateY(${(1 - e) * -60}px)`, filter: p < 1 ? `blur(${(1 - e) * 16}px) brightness(${1 + (1 - e) * 0.25})` : undefined }}>
+      {children}
+    </AbsoluteFill>
+  );
 };
 
 export const Folge6Weihnachtsmann: React.FC<Folge6Props> = ({ total }) => {
@@ -70,8 +82,13 @@ export const Folge6Weihnachtsmann: React.FC<Folge6Props> = ({ total }) => {
         const Comp = SCENE_COMPONENTS[i];
         return (
           <Sequence key={scene.id} name={`Szene ${i + 1} – ${scene.id}`} from={scene.from} durationInFrames={scene.duration}>
-            <Comp dur={scene.duration} from={scene.from} />
-            {i > 0 && <Flash />}
+            {i > 0 ? (
+              <WhipIn>
+                <Comp dur={scene.duration} from={scene.from} />
+              </WhipIn>
+            ) : (
+              <Comp dur={scene.duration} from={scene.from} />
+            )}
           </Sequence>
         );
       })}

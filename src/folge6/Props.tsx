@@ -3,7 +3,7 @@
 import React from "react";
 import * as THREE from "three";
 import { Block, F, lines, Sheet, useCanvasTexture, V3 } from "../folge4-3d/Kit";
-import { Look, Person } from "../folge4b/People";
+import { Human, Pose } from "./Human";
 
 const RED = "#C8102E";
 
@@ -103,80 +103,253 @@ export const SantaHat: React.FC<{ position?: V3; rotation?: V3; scale?: number }
 
 const white = <meshPhysicalMaterial color="#F8F8F8" roughness={1} sheen={1} sheenColor="#ffffff" />;
 
-// ---------- Weihnachtsmann (dick, Bart, Mütze, Gürtel) ----------
-export const Santa: React.FC<{ position?: V3; rotation?: V3; scale?: number; look?: Look; hand?: React.ReactNode; belly?: number }> = ({
+// ---------- Weihnachtsmann (realistische Figur: Bauch, Gürtel, Pelzsaum, Bart, Mütze) ----------
+export const Santa: React.FC<{ frame: number; position?: V3; rotation?: V3; scale?: number; pose?: Pose; hand?: React.ReactNode; belly?: number }> = ({
+  frame,
   position = [0, 0, 0],
   rotation = [0, 0, 0],
   scale = 1,
-  look = {},
+  pose = {},
   hand,
   belly = 1,
 }) => (
-  <group position={position} rotation={rotation} scale={scale}>
-    <Person shirt={RED} pants={RED} hair="#F2F2F2" hairStyle="short" skin="#F3C3A0" look={{ smile: 0.6, ...look }} hand={hand} />
-    {/* Bauch + Gürtel */}
-    <mesh position={[0, 0.98, 0.04]} scale={[1.15 * belly, 1, 1.0 * belly]} castShadow>
-      <sphereGeometry args={[0.3, 32, 32]} />
-      <meshPhysicalMaterial color={RED} roughness={0.8} sheen={0.6} />
-    </mesh>
-    <mesh position={[0, 0.9, 0.04]} rotation={[Math.PI / 2, 0, 0]} scale={[1.15 * belly, 1.0 * belly, 1]}>
-      <torusGeometry args={[0.29, 0.04, 12, 48]} />
-      <meshStandardMaterial color="#1B1B1B" roughness={0.4} />
-    </mesh>
-    <mesh position={[0, 0.9, 0.33 * belly + 0.04]}>
-      <boxGeometry args={[0.12, 0.1, 0.03]} />
-      <meshStandardMaterial color="#E9B44C" metalness={1} roughness={0.2} />
-    </mesh>
-    {/* weißer Saum */}
-    <mesh position={[0, 0.68, 0]} rotation={[Math.PI / 2, 0, 0]}>
-      <torusGeometry args={[0.23, 0.05, 12, 40]} />
-      {white}
-    </mesh>
-    {/* Kopf: Bart, Schnurrbart, Mütze (drehen mit dem Kopf) */}
-    <group position={[0, 1.62, 0]} rotation={[0, look.headTurn ?? 0, look.headTilt ?? 0]}>
-      <mesh position={[0, -0.16, 0.08]} scale={[1, 1.15, 0.8]}>
-        <sphereGeometry args={[0.18, 32, 32]} />
-        {white}
-      </mesh>
-      {[-1, 1].map((s) => (
-        <mesh key={s} position={[s * 0.05, -0.065, 0.185]} rotation={[0, 0, s * 0.4]} scale={[1.4, 0.6, 0.6]}>
-          <sphereGeometry args={[0.04, 16, 16]} />
+  <Human
+    frame={frame}
+    seed={7}
+    position={position}
+    rotation={rotation}
+    scale={scale}
+    pose={{ smile: 0.6, ...pose }}
+    top={RED}
+    bottom={RED}
+    shoes="#1B1B1B"
+    skin="#F0BFA0"
+    hair="#F2F2F2"
+    hairStyle="short"
+    iris="#3A5A8C"
+    beard="#F8F8F8"
+    belly={belly}
+    build={1.45}
+    hand={hand}
+    bodyExtra={
+      <group>
+        {/* Gürtel um den Bauch */}
+        <mesh position={[0, 1.0, 0.03]} rotation={[Math.PI / 2, 0, 0]} scale={[1, 0.8 + belly * 0.12, 1]}>
+          <torusGeometry args={[0.23 + belly * 0.05, 0.032, 12, 48]} />
+          <meshPhysicalMaterial color="#141414" roughness={0.35} clearcoat={0.6} />
+        </mesh>
+        <mesh position={[0, 1.0, 0.22 + belly * 0.1]}>
+          <boxGeometry args={[0.1, 0.075, 0.02]} />
+          <meshStandardMaterial color="#E9B44C" metalness={1} roughness={0.2} />
+        </mesh>
+        {/* Pelzsaum unten und Knopfleiste */}
+        <mesh position={[0, 0.9, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[1, 0.75, 1]}>
+          <torusGeometry args={[0.21, 0.045, 12, 40]} />
           {white}
         </mesh>
-      ))}
-      <SantaHat position={[0, 0.13, -0.01]} rotation={[0, 0, 0]} scale={0.5} />
-    </group>
+        <mesh position={[0, 1.25, 0.12]} rotation={[-0.25, 0, 0]}>
+          <boxGeometry args={[0.07, 0.36, 0.03]} />
+          {white}
+        </mesh>
+      </group>
+    }
+    headExtra={<SantaHat position={[0, 0.085, -0.01]} rotation={[-0.1, 0, 0]} scale={0.37} />}
+  />
+);
+
+// ---------- Bischof Nikolaus (roter Mantel, Mitra, goldene Stola) ----------
+export const Bishop: React.FC<{ frame: number; position?: V3; rotation?: V3; scale?: number; pose?: Pose }> = ({ frame, position = [0, 0, 0], rotation = [0, 0, 0], scale = 1, pose = {} }) => (
+  <Human
+    frame={frame}
+    seed={11}
+    position={position}
+    rotation={rotation}
+    scale={scale}
+    pose={{ headTilt: 0.03, ...pose }}
+    top="#A4161A"
+    bottom="#A4161A"
+    robe="#A4161A"
+    skin="#E3B08C"
+    hair="#CFCFCF"
+    hairStyle="short"
+    beard="#E6E6E6"
+    bodyExtra={
+      <mesh position={[0, 1.2, 0.115]} rotation={[-0.12, 0, 0]}>
+        <boxGeometry args={[0.07, 0.6, 0.015]} />
+        <meshStandardMaterial color="#E9B44C" metalness={1} roughness={0.25} />
+      </mesh>
+    }
+    headExtra={
+      <group position={[0, 0.12, -0.01]}>
+        <mesh position={[0, 0.12, 0]} scale={[1, 1, 0.6]}>
+          <coneGeometry args={[0.14, 0.36, 4]} />
+          <meshPhysicalMaterial color="#F4EBD0" roughness={0.6} sheen={0.5} />
+        </mesh>
+        <mesh position={[0, 0.0, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[1, 0.65, 1]}>
+          <torusGeometry args={[0.125, 0.018, 10, 32]} />
+          <meshStandardMaterial color="#E9B44C" metalness={1} roughness={0.25} />
+        </mesh>
+      </group>
+    }
+  />
+);
+
+// ---------- Leuchtpunkt mit Schein (für Lichterketten, Laternen, Fenster) ----------
+let glowTex: THREE.Texture | null = null;
+const getGlow = () => {
+  if (glowTex) return glowTex;
+  const c = document.createElement("canvas");
+  c.width = c.height = 128;
+  const ctx = c.getContext("2d")!;
+  const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+  g.addColorStop(0, "rgba(255,255,255,1)");
+  g.addColorStop(0.2, "rgba(255,255,255,0.55)");
+  g.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 128, 128);
+  glowTex = new THREE.CanvasTexture(c);
+  return glowTex;
+};
+export const Glow: React.FC<{ position: V3; color: string; size?: number; core?: number }> = ({ position, color, size = 0.35, core = 0.035 }) => (
+  <group position={position}>
+    <mesh>
+      <sphereGeometry args={[core, 12, 10]} />
+      <meshBasicMaterial color={color} toneMapped={false} />
+    </mesh>
+    <sprite scale={[size, size, size]}>
+      <spriteMaterial map={getGlow()} color={color} transparent opacity={0.55} depthWrite={false} blending={THREE.AdditiveBlending} />
+    </sprite>
   </group>
 );
 
-// ---------- Bischof Nikolaus (roter Mantel, Mitra, Stab) ----------
-export const Bishop: React.FC<{ position?: V3; rotation?: V3; scale?: number; look?: Look }> = ({ position = [0, 0, 0], rotation = [0, 0, 0], scale = 1, look = {} }) => (
-  <group position={position} rotation={rotation} scale={scale}>
-    <Person shirt="#A4161A" pants="#A4161A" hair="#DADADA" hairStyle="short" skin="#E8B996" look={look} />
-    {/* langer Mantel bis zum Boden */}
-    <mesh position={[0, 0.55, 0]} castShadow>
-      <cylinderGeometry args={[0.24, 0.42, 1.1, 32]} />
-      <meshPhysicalMaterial color="#A4161A" roughness={0.6} sheen={0.8} sheenColor="#ff6060" />
-    </mesh>
-    {/* goldene Borte */}
-    <mesh position={[0, 0.55, 0.3]} rotation={[-0.15, 0, 0]}>
-      <boxGeometry args={[0.1, 1.1, 0.02]} />
-      <meshStandardMaterial color="#E9B44C" metalness={1} roughness={0.25} />
-    </mesh>
-    <group position={[0, 1.62, 0]} rotation={[0, look.headTurn ?? 0, 0]}>
-      {/* Bart */}
-      <mesh position={[0, -0.15, 0.08]} scale={[0.9, 1.25, 0.7]}>
-        <sphereGeometry args={[0.16, 32, 32]} />
-        <meshStandardMaterial color="#E6E6E6" roughness={1} />
-      </mesh>
-      {/* Mitra */}
-      <mesh position={[0, 0.3, -0.01]} scale={[1, 1, 0.6]}>
-        <coneGeometry args={[0.2, 0.5, 4]} />
-        <meshStandardMaterial color="#F4EBD0" roughness={0.6} />
-      </mesh>
-    </group>
+// Lichterkette zwischen zwei Punkten (hängt leicht durch)
+const BULBS = ["#FFD27A", "#FF6B6B", "#7AD7FF", "#FFD27A", "#A6FF8A"];
+export const Garland: React.FC<{ from: V3; to: V3; n?: number; sag?: number; frame: number }> = ({ from, to, n = 14, sag = 0.35, frame }) => (
+  <group>
+    {Array.from({ length: n }).map((_, i) => {
+      const t = i / (n - 1);
+      const p: V3 = [from[0] + (to[0] - from[0]) * t, from[1] + (to[1] - from[1]) * t - Math.sin(Math.PI * t) * sag, from[2] + (to[2] - from[2]) * t];
+      const tw = 0.75 + 0.25 * Math.sin(frame * 0.15 + i * 1.7);
+      return <Glow key={i} position={p} color={BULBS[i % BULBS.length]} size={0.32 * tw} core={0.03} />;
+    })}
   </group>
 );
+
+// ---------- fallender Schnee in 3D (immer gleich: keine Zufallswerte pro Rendern) ----------
+export const Snow3D: React.FC<{ frame: number; n?: number; area?: [number, number, number]; center?: V3 }> = ({ frame, n = 220, area = [8, 5, 6], center = [0, 0, 0] }) => {
+  const ref = React.useRef<THREE.InstancedMesh>(null);
+  const seeds = React.useMemo(() => Array.from({ length: n }).map((_, i) => [((i * 7919) % 1000) / 1000, ((i * 104729) % 1000) / 1000, ((i * 1299709) % 1000) / 1000, 0.5 + ((i * 31) % 100) / 100]), [n]);
+  React.useLayoutEffect(() => {
+    const m = new THREE.Matrix4();
+    seeds.forEach(([a, b, c, sp], i) => {
+      const y = ((b * area[1] - frame * 0.012 * sp) % area[1] + area[1]) % area[1];
+      m.makeTranslation(center[0] + (a - 0.5) * area[0] + Math.sin(frame * 0.03 + i) * 0.08, center[1] + y, center[2] + (c - 0.5) * area[2]);
+      ref.current!.setMatrixAt(i, m);
+    });
+    ref.current!.instanceMatrix.needsUpdate = true;
+  });
+  return (
+    <instancedMesh ref={ref} args={[undefined, undefined, n]}>
+      <sphereGeometry args={[0.018, 6, 5]} />
+      <meshBasicMaterial color="#ffffff" transparent opacity={0.9} />
+    </instancedMesh>
+  );
+};
+
+// ---------- Weihnachtsstraße am Abend: nasse Straße, Gehweg, Häuser mit Fenstern, Laternen, Lichterketten, Plakatwand ----------
+const useWindows = (seed: number) =>
+  useCanvasTexture(
+    512,
+    1024,
+    (ctx) => {
+      ctx.fillStyle = ["#4A3A34", "#3A3F4E", "#54453A"][seed % 3];
+      ctx.fillRect(0, 0, 512, 1024);
+      for (let y = 0; y < 6; y++)
+        for (let x = 0; x < 3; x++) {
+          const lit = (x * 7 + y * 3 + seed) % 5 !== 0;
+          const g = ctx.createLinearGradient(0, 60 + y * 160, 0, 170 + y * 160);
+          g.addColorStop(0, lit ? "#FFD9A0" : "#1E2433");
+          g.addColorStop(1, lit ? "#E89A4A" : "#141824");
+          ctx.fillStyle = g;
+          ctx.fillRect(50 + x * 150, 60 + y * 160, 100, 110);
+          ctx.fillStyle = "#2A2420";
+          ctx.fillRect(98 + x * 150, 60 + y * 160, 5, 110);
+          ctx.fillRect(50 + x * 150, 112 + y * 160, 100, 5);
+        }
+    },
+    [seed],
+  );
+
+const useAsphalt = () =>
+  useCanvasTexture(
+    512,
+    512,
+    (ctx) => {
+      ctx.fillStyle = "#2A2D33";
+      ctx.fillRect(0, 0, 512, 512);
+      // feste, nicht zufällige Struktur
+      for (let i = 0; i < 900; i++) {
+        const v = 38 + ((i * 53) % 28);
+        ctx.fillStyle = `rgb(${v},${v + 2},${v + 6})`;
+        ctx.fillRect((i * 197) % 512, (i * 311) % 512, 3, 3);
+      }
+    },
+    [],
+  );
+
+export const XmasStreet: React.FC<{ frame: number; posters?: THREE.Texture[] }> = ({ frame, posters }) => {
+  const wins = [useWindows(0), useWindows(1), useWindows(2)];
+  const asphalt = useAsphalt();
+  asphalt.wrapS = asphalt.wrapT = THREE.RepeatWrapping;
+  asphalt.repeat.set(10, 10);
+  return (
+    <group>
+      {/* nasse Straße (spiegelt die Lichter) */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 3]} receiveShadow>
+        <planeGeometry args={[30, 30]} />
+        <meshPhysicalMaterial map={asphalt} roughness={0.28} metalness={0.15} clearcoat={0.8} clearcoatRoughness={0.25} />
+      </mesh>
+      {/* Gehweg mit Bordstein und Schneerand */}
+      <Block size={[30, 0.14, 2.6]} position={[0, 0.07, -0.5]} color="#8E8C88" rough={0.8} />
+      <Block size={[30, 0.04, 0.35]} position={[0, 0.16, -1.65]} color="#F2F5FA" rough={1} />
+      {/* Häuserzeile */}
+      {[-5.2, -1.8, 1.8, 5.2].map((x, i) => (
+        <group key={x} position={[x, 4, -2.2]}>
+          <Block size={[3.3, 8, 0.6]} color={["#4A3A34", "#3A3F4E", "#54453A", "#3A3F4E"][i]} rough={0.9} />
+          <mesh position={[0, 0, 0.31]}>
+            <planeGeometry args={[3.2, 7.9]} />
+            <meshStandardMaterial map={wins[i % 3]} emissiveMap={wins[i % 3]} emissive="#ffffff" emissiveIntensity={0.55} roughness={0.9} />
+          </mesh>
+        </group>
+      ))}
+      {/* Plakatwand vor dem Haus */}
+      {posters && (
+        <group position={[0, 1.55, -1.75]}>
+          <Block size={[4.8, 2.2, 0.1]} color="#1B1D24" rough={0.4} metal={0.5} />
+          {posters.map((p, i) => (
+            <Sheet key={i} tex={p} size={[1.45, 2.0]} position={[-1.55 + i * 1.55, 0, 0.07]} />
+          ))}
+          <pointLight position={[0, 1.4, 0.7]} intensity={2.5} distance={3} color="#FFE2B0" />
+        </group>
+      )}
+      {/* Laternen */}
+      {[-3.4, 3.4].map((x) => (
+        <group key={x} position={[x, 0, -0.6]}>
+          <mesh position={[0, 1.9, 0]} castShadow>
+            <cylinderGeometry args={[0.045, 0.07, 3.8, 16]} />
+            <meshStandardMaterial color="#1B1D24" metalness={0.7} roughness={0.35} />
+          </mesh>
+          <Glow position={[0, 3.85, 0]} color="#FFD9A0" size={1.4} core={0.12} />
+          <pointLight position={[0, 3.6, 0.2]} intensity={7} distance={7} decay={1.6} color="#FFC98A" castShadow={false} />
+        </group>
+      ))}
+      {/* Lichterketten über der Straße */}
+      <Garland from={[-5, 3.6, -1.9]} to={[5, 3.6, -1.9]} n={22} sag={0.5} frame={frame} />
+      <Garland from={[-5, 4.4, 1.5]} to={[5, 4.4, 1.5]} n={20} sag={0.6} frame={frame + 30} />
+      <Snow3D frame={frame} center={[0, 0, 0.5]} />
+    </group>
+  );
+};
 
 // ---------- gezeichneter Weihnachtsmann (für Zeitschrift, Postkarte, Gemälde) ----------
 export const drawSanta = (ctx: CanvasRenderingContext2D, x: number, y: number, s: number, mode: "ink" | "color", bottle = false) => {

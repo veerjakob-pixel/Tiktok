@@ -6,41 +6,52 @@ import { Vintage } from "../components/Overlays";
 import { Stamp } from "../folge3/Graphics";
 import { FONT_SUB } from "../theme";
 import { Counter, Cut, Slam, Txt, WhiteFlash } from "../folge4/Scenes";
-import { add, clamp, shake3, Sheet, Stage3D, Text3D, V3 } from "../folge4-3d/Kit";
-import { faceAt, Look, Person } from "../folge4b/People";
+import { add, clamp, shake3, Sheet, Text3D, V3 } from "../folge4-3d/Kit";
 import { FPS } from "../folge3/script";
 import { speakingAt, TS, Who } from "./script";
-import { City } from "../folge5/Props";
+import { CineStage } from "./Stage";
+import { HEAD_Y, Human, Pose } from "./Human";
 import {
   Bishop,
   Bottle,
   Can,
   Easel,
+  Glow,
   Santa,
   SantaHat,
+  Snow3D,
   useAdPoster,
   useCanLabel,
   useMagazineTexture,
   usePaintingTexture,
   usePostcardTexture,
+  XmasStreet,
 } from "./Props";
 
 export type SceneProps = { dur: number; from: number };
 
-// ---------- Straße heute mit Lena + Florian ----------
-const LENA = { pos: [-0.45, 0, 0.2] as V3, rot: 0.55, head: [-0.45, 1.62, 0.2] as V3 };
-const FLO = { pos: [0.5, 0, 0.3] as V3, rot: -0.55, head: [0.5, 1.62, 0.3] as V3 };
+// ---------- Weihnachtsstraße am Abend mit Lena + Florian ----------
+const LENA = { pos: [-0.42, 0.14, 0.2] as V3, rot: 0.5, head: [-0.42, HEAD_Y + 0.14, 0.2] as V3 };
+const FLO = { pos: [0.48, 0.14, 0.3] as V3, rot: -0.5, head: [0.48, HEAD_Y + 0.14, 0.3] as V3 };
 
-const useFaces = (t0: number) => {
+// Mundbewegung: Silben-Rhythmus aus zwei Sinuswellen (gleich bei jedem Rendern)
+const mouth = (frame: number, talking: boolean, seed: number) =>
+  talking ? 0.2 + 0.8 * Math.abs(Math.sin(frame * 0.85 + seed) * Math.cos(frame * 0.37 + seed * 2)) : 0;
+
+const useVoices = (t0: number) => {
   const frame = useCurrentFrame();
   const t = t0 + frame / FPS;
-  const f = (who: Who, seed: number) => faceAt(frame, speakingAt(who, t), seed);
+  const f = (who: Who, seed: number): Pose => {
+    const talking = speakingAt(who, t);
+    return { talking, talk: mouth(frame, talking, seed), blink: (frame + seed * 13) % 95 < 3 };
+  };
   return { lena: f("lena", 1), florian: f("florian", 4) };
 };
 
-const CityBg: React.FC = () => <AbsoluteFill style={{ background: "linear-gradient(#9CC3DE, #E8EEF2)" }} />;
+// Abendhimmel hinter der 3D-Szene
+const CityBg: React.FC = () => <AbsoluteFill style={{ background: "linear-gradient(#060B1C 0%, #14213F 55%, #2B3557 100%)" }} />;
 
-const CityScene: React.FC<{ t0: number; cam: V3; look: V3; fov?: number; lena?: Look; flo?: Look; lift?: number; children?: React.ReactNode }> = ({
+const CityScene: React.FC<{ t0: number; cam: V3; look: V3; fov?: number; lena?: Pose; flo?: Pose; lift?: number; children?: React.ReactNode }> = ({
   t0,
   cam,
   look,
@@ -50,30 +61,52 @@ const CityScene: React.FC<{ t0: number; cam: V3; look: V3; fov?: number; lena?: 
   lift = 0,
   children,
 }) => {
-  const faces = useFaces(t0);
+  const frame = useCurrentFrame();
+  const v = useVoices(t0);
+  const posters = [useAdPoster(0), useAdPoster(1), useAdPoster(2)];
   return (
-    <Stage3D cam={cam} look={look} fov={fov} floor={null} dist={1} lift={lift} exposure={0.9} rim="#ffe8c8">
-      <City />
-      <Person position={LENA.pos} rotation={[0, LENA.rot, 0]} shirt="#E76F51" hair="#5A3A1A" hairStyle="long" look={{ ...faces.lena, ...lena }} />
-      <Person
+    <CineStage cam={cam} look={look} fov={fov} lift={lift} exposure={1.05} key1="#9FB4FF" keyI={0.7} rim="#FFB870" rimI={1.4} amb={0.35} bloom={1.1} fog={{ color: "#141C33", near: 9, far: 26 }}>
+      <XmasStreet frame={frame} posters={posters} />
+      {/* warmes Licht von vorne (Schaufenster) */}
+      <pointLight position={[0.2, 2.1, 3.2]} intensity={7} distance={9} decay={1.4} color="#FFD7A8" />
+      <Human
+        frame={frame}
+        seed={1}
+        position={LENA.pos}
+        rotation={[0, LENA.rot, 0]}
+        top="#E76F51"
+        bottom="#2E3A59"
+        shoes="#5A3A2A"
+        skin="#EDC3A3"
+        hair="#5A3A1A"
+        hairStyle="long"
+        iris="#4A6B3A"
+        collar="#F4E4D4"
+        pose={{ ...v.lena, ...lena }}
+      />
+      <Human
+        frame={frame}
+        seed={4}
         position={FLO.pos}
         rotation={[0, FLO.rot, 0]}
-        shirt="#264653"
+        top="#264653"
+        bottom="#3A3A3A"
+        skin="#E2B08E"
         hair="#2B1D0E"
         hairStyle="short"
-        skin="#E8B996"
-        look={{ ...faces.florian, ...flo }}
+        collar="#E9EEF2"
+        pose={{ ...v.florian, ...flo }}
       />
       {children}
-    </Stage3D>
+    </CineStage>
   );
 };
 
-const closeUp = (who: typeof LENA, d = 2.2): { cam: V3; look: V3 } => {
+const closeUp = (who: typeof LENA, d = 1.4): { cam: V3; look: V3 } => {
   const dir: V3 = [Math.sin(who.rot), 0, Math.cos(who.rot)];
   return {
-    cam: [who.head[0] + dir[0] * d, who.head[1] + 0.05, who.head[2] + dir[2] * d],
-    look: [who.head[0], who.head[1] - 0.36, who.head[2]],
+    cam: [who.head[0] + dir[0] * d, who.head[1] - 0.04, who.head[2] + dir[2] * d],
+    look: [who.head[0], who.head[1] - 0.2, who.head[2]],
   };
 };
 
@@ -101,12 +134,12 @@ const NameTag: React.FC<{ name: string; color: string; top?: number }> = ({ name
   );
 };
 
-const LenaClose: React.FC<{ t0: number; look?: Look; tag?: boolean }> = ({ t0, look = {}, tag }) => {
+const LenaClose: React.FC<{ t0: number; look?: Pose; tag?: boolean }> = ({ t0, look = {}, tag }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   // kurzer, harter Push-In am Schnittanfang
   const s = spring({ frame, fps, config: { damping: 18, stiffness: 240 } });
-  const c = closeUp(LENA, interpolate(s, [0, 1], [3.0, 2.0]) - frame * 0.004);
+  const c = closeUp(LENA, interpolate(s, [0, 1], [2.6, 1.85]) - frame * 0.002);
   return (
     <AbsoluteFill>
       <CityBg />
@@ -116,9 +149,9 @@ const LenaClose: React.FC<{ t0: number; look?: Look; tag?: boolean }> = ({ t0, l
   );
 };
 
-const FloClose: React.FC<{ t0: number; look?: Look; tag?: boolean }> = ({ t0, look = {}, tag }) => {
+const FloClose: React.FC<{ t0: number; look?: Pose; tag?: boolean }> = ({ t0, look = {}, tag }) => {
   const frame = useCurrentFrame();
-  const c = closeUp(FLO, 2.2 - frame * 0.004);
+  const c = closeUp(FLO, 1.9 - frame * 0.002);
   return (
     <AbsoluteFill>
       <CityBg />
@@ -240,6 +273,21 @@ export const Scene1: React.FC<SceneProps> = ({ from }) => {
   );
 };
 
+// warme Lichter weit hinten (werden durch das Leuchten zu weichen Lichtkreisen)
+const BokehLights: React.FC<{ frame: number }> = ({ frame }) => (
+  <group>
+    {Array.from({ length: 18 }).map((_, i) => (
+      <Glow
+        key={i}
+        position={[(random(`bx${i}`) - 0.5) * 7, 0.2 + random(`by${i}`) * 3.4, -2.6 - random(`bz${i}`) * 2]}
+        color={["#FFD27A", "#FF8A6B", "#FFE6B0"][i % 3]}
+        size={0.5 + 0.25 * Math.sin(frame * 0.08 + i)}
+        core={0.04}
+      />
+    ))}
+  </group>
+);
+
 const XmasBg: React.FC = () => <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 42%, #7A1020 0%, #14060A 78%)" }} />;
 
 // Schneeflocken (Overlay)
@@ -269,10 +317,12 @@ const CanShot: React.FC<{ hatAt: number }> = ({ hatAt }) => {
     <AbsoluteFill>
       <XmasBg />
       <Snow />
-      <Stage3D cam={cam} look={[0, 0.3, 0]} fov={34} floor={null} dist={1} lift={-120} exposure={1.0}>
+      <CineStage cam={cam} look={[0, 0.3, 0]} fov={34} floor={null} lift={-120} exposure={1.0} bloom={1.2} rim="#FF9A7A">
+        <Snow3D frame={frame} n={160} area={[6, 4, 4]} center={[0, -0.5, 0]} />
+        <BokehLights frame={frame} />
         <Can label={label} rotation={[0.08, -frame * 0.03, 0]} position={[0, -0.2, 0]} />
         {frame >= hatAt && <SantaHat position={[0, interpolate(drop, [0, 1], [3.5, 0.75]), 0]} rotation={[0, 0.4, 0.12]} scale={0.85} />}
-      </Stage3D>
+      </CineStage>
       {/* Bildschirm-Text sofort da (Hook ohne Ton verständlich) */}
       <Slam at={0} from={1.6} style={{ top: 210, left: 0, right: 0 }}>
         <Txt size={104} color="#FFF8E7" style={{ WebkitTextStroke: "4px #3A0A10" }}>
@@ -320,10 +370,12 @@ const RedWhiteShot: React.FC<{ redAt: number; whiteAt: number; canAt: number }> 
     <AbsoluteFill>
       <XmasBg />
       <Snow n={25} />
-      <Stage3D cam={cam} look={[0.2, 0.95, 0]} fov={34} floor={0} dist={1} lift={-60} exposure={1.0}>
-        <Santa position={[-0.35, 0, 0]} rotation={[0, 0.35, 0]} look={{ blink: frame % 80 < 3 }} />
+      <CineStage cam={cam} look={[0.2, 0.95, 0]} fov={34} floor={0} lift={-60} exposure={1.0} bloom={1.2} rim="#FF9A7A">
+        <Snow3D frame={frame} n={160} area={[6, 4, 4]} center={[0, -0.5, 0]} />
+        <BokehLights frame={frame} />
+        <Santa frame={frame} position={[-0.35, 0, 0]} rotation={[0, 0.35, 0]} pose={{ blink: frame % 80 < 3 }} />
         <Can label={label} position={[0.75, 0.85, 0.2]} rotation={[0, -frame * 0.02, 0]} scale={0.55} />
-      </Stage3D>
+      </CineStage>
       {chip(redAt, "#C8102E", "#fff", "ROT", 140)}
       {chip(whiteAt, "#fff", "#C8102E", "WEISS", 560)}
       <Card at={canAt} top={430} size={60} bg="#FFD166" color="#1D2433" rotate={-3}>
@@ -339,7 +391,7 @@ const MythTwoShot: React.FC<{ t0: number; stampAt: number }> = ({ t0, stampAt })
   return (
     <AbsoluteFill>
       <CityBg />
-      <CityScene t0={t0} cam={cam} look={[0.02, 1.05, 0]} lena={{ armUp: 0.5, brow: 0.6 }} flo={{ headTurn: 0.15, brow: -1 }} lift={80} />
+      <CityScene t0={t0} cam={cam} look={[0.02, 1.05, 0]} lena={{ armR: 0.5, brow: 0.6 }} flo={{ headTurn: 0.15, brow: -1 }} lift={80} />
       <NameTag name="Lena" color="#E76F51" />
       <Card top={330} size={52}>
         „Das glauben fast alle“
@@ -418,10 +470,10 @@ const BishopShot: React.FC = () => {
   return (
     <AbsoluteFill>
       <AbsoluteFill style={{ background: "linear-gradient(#E3D3AE, #9C805A)" }} />
-      <Stage3D cam={cam} look={[0, 1.25, 0]} fov={36} floor={null} dist={1} lift={-200} exposure={0.95} rim="#ffd9a0">
+      <CineStage cam={cam} look={[0, 1.25, 0]} fov={36} floor={null} lift={-200} exposure={0.95} rim="#ffd9a0">
         <Church />
-        <Bishop position={[0, 0, 0]} rotation={[0, -0.2, 0]} look={{ blink: frame % 90 < 3 }} />
-      </Stage3D>
+        <Bishop frame={frame} position={[0, 0, 0]} rotation={[0, -0.2, 0]} pose={{ blink: frame % 90 < 3 }} />
+      </CineStage>
       <Card top={330} size={64} bg="#2B1D0E" color="#F1E6C8">
         Heiliger Nikolaus
         <div style={{ fontSize: 38, fontWeight: 700 }}>Bischof von Myra</div>
@@ -438,11 +490,11 @@ const PaintingFrameShot: React.FC<{ redAt: number }> = ({ redAt }) => {
   return (
     <AbsoluteFill style={{ background: "#2B1D0E" }}>
       <AbsoluteFill style={{ left: 120, right: 120, top: 330, bottom: 640, width: "auto", height: "auto", overflow: "hidden", background: "linear-gradient(#5A3A22, #2B1D0E)" }}>
-        <Stage3D cam={cam} look={[0, 1.15, 0]} fov={34} floor={null} dist={1} lift={0} exposure={0.9 + glow * 0.3} rim="#ffd9a0">
+        <CineStage cam={cam} look={[0, 1.15, 0]} fov={34} floor={null} lift={0} exposure={0.9 + glow * 0.3} rim="#ffd9a0">
           <Church />
-          <Bishop rotation={[0, 0.25, 0]} />
+          <Bishop frame={frame} rotation={[0, 0.25, 0]} />
           <pointLight position={[0.6, 1.3, 1.4]} intensity={glow * 8} distance={3} color="#FF4040" />
-        </Stage3D>
+        </CineStage>
       </AbsoluteFill>
       {/* goldener Rahmen */}
       <div
@@ -479,6 +531,10 @@ export const Scene3: React.FC<SceneProps> = ({ from }) => (
 export const Scene5: React.FC<SceneProps> = ({ from }) => (
   <AbsoluteFill>
     <LenaClose t0={from / FPS} look={{ brow: -1, headTilt: -0.12 }} />
+    {/* Spannungs-Moment: jetzt kommt die Auflösung */}
+    <Card at={4} top={900} size={56} bg="#1D2433" color="#FFD166" rotate={-2}>
+      Jetzt kommt der Trick 👀
+    </Card>
   </AbsoluteFill>
 );
 
@@ -513,9 +569,9 @@ const YearShot: React.FC<{ text: string; color: string; sub: string; bg?: string
   return (
     <AbsoluteFill>
       <AbsoluteFill style={{ background: bg }} />
-      <Stage3D cam={cam} look={[0, 0.3, 0]} fov={34} floor={null} dist={1} lift={60}>
+      <CineStage cam={cam} look={[0, 0.3, 0]} fov={34} floor={null} lift={60}>
         <Text3D text={text} size={1.0} depth={0.4} color={color} position={[0, 0.3, 0]} rotation={[0.1, -0.25 + frame * 0.006, 0]} metal={0.5} />
-      </Stage3D>
+      </CineStage>
       <div style={{ position: "absolute", top: 1000, left: 0, right: 0 }}>
         <Txt size={70} color={subColor} style={{ textShadow: "none" }}>
           {sub}
@@ -534,11 +590,11 @@ const MagazineShot: React.FC = () => {
   return (
     <AbsoluteFill>
       <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 40%, #5A4632 0%, #1E160F 85%)" }} />
-      <Stage3D cam={cam} look={[0, 0.2, 0]} fov={36} floor={null} dist={1} lift={-40} exposure={1.05}>
+      <CineStage cam={cam} look={[0, 0.2, 0]} fov={36} floor={null} lift={-40} exposure={1.05}>
         <group position={[0, interpolate(s, [0, 1], [-4, 0]), 0]} rotation={[interpolate(s, [0, 1], [-1.2, -0.08]), 0.12, 0.04]}>
           <Sheet tex={tex} size={[2, 2.6]} depth={0.02} color="#EFE4C6" />
         </group>
-      </Stage3D>
+      </CineStage>
       <Card top={230} size={60} bg="#2B1D0E" color="#F1E6C8">
         Zeichner Thomas Nast
         <div style={{ fontSize: 36, fontWeight: 700 }}>Zeitschrift in New York</div>
@@ -561,7 +617,7 @@ const PostcardShot: React.FC<{ at: number[]; stampAt: number }> = ({ at, stampAt
     <AbsoluteFill>
       <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 40%, #3B2A1A 0%, #120C08 85%)" }} />
       <Snow n={25} />
-      <Stage3D cam={cam} look={[0, 0, 0]} fov={36} floor={null} dist={1} lift={60} exposure={1.05}>
+      <CineStage cam={cam} look={[0, 0, 0]} fov={36} floor={null} lift={60} exposure={1.05}>
         {spots.map((p, i) => {
           if (frame < at[i]) return null;
           const s = spring({ frame: frame - at[i], fps, config: { damping: 14, stiffness: 170 } });
@@ -573,7 +629,7 @@ const PostcardShot: React.FC<{ at: number[]; stampAt: number }> = ({ at, stampAt
             </group>
           );
         })}
-      </Stage3D>
+      </CineStage>
       <div style={{ position: "absolute", top: 220, left: 50 }}>
         <Txt size={60} color="#F1E6C8" font={FONT_SUB} style={{ fontWeight: 900, textAlign: "left" }}>
           Postkarten:
@@ -614,9 +670,9 @@ const EaselShot: React.FC<{ cardAt: number }> = ({ cardAt }) => {
   return (
     <AbsoluteFill>
       <AbsoluteFill style={{ background: "linear-gradient(#F1E6D8, #C9B49A)" }} />
-      <Stage3D cam={cam} look={[0, 1.35, 0]} fov={36} floor={0} dist={1} lift={-140} exposure={1.0}>
+      <CineStage cam={cam} look={[0, 1.35, 0]} fov={36} floor={0} lift={-140} exposure={1.0}>
         <Easel tex={tex} rotation={[0, 0.15, 0]} />
-      </Stage3D>
+      </CineStage>
       <Card top={230} size={58} bg="#C8102E" color="#fff">
         Bestellt von der Werbung
       </Card>
@@ -637,15 +693,18 @@ const JollyShot: React.FC<{ at: number[] }> = ({ at }) => {
     <AbsoluteFill>
       <XmasBg />
       <Snow n={25} />
-      <Stage3D cam={cam} look={[0, 1.05, 0]} fov={36} floor={0} dist={1} lift={-180} exposure={1.0}>
+      <CineStage cam={cam} look={[0, 1.05, 0]} fov={36} floor={0} lift={-180} exposure={1.0} bloom={1.2} rim="#FF9A7A">
+        <Snow3D frame={frame} n={160} area={[6, 4, 4]} center={[0, -0.5, 0]} />
+        <BokehLights frame={frame} />
         <Santa
+          frame={frame}
           rotation={[0, -0.15, 0]}
           belly={frame >= at[1] ? 1 + 0.25 * spring({ frame: frame - at[1], fps, config: { damping: 8, stiffness: 200 } }) : 1}
-          look={{ smile: frame >= at[0] ? 1 : 0.4, armUp: frame >= at[2] ? 0.8 : 0.2, blink: frame % 70 < 3, headTilt: Math.sin(frame * 0.2) * 0.06 }}
-          hand={frame >= at[2] ? <Bottle scale={0.11} rotation={[Math.PI / 2 - 0.2, 0, 0]} /> : undefined}
+          pose={{ smile: frame >= at[0] ? 1 : 0.4, armR: frame >= at[2] ? 0.55 : 0.1, bendR: frame >= at[2] ? 1.3 : 0.15, blink: frame % 70 < 3, headTilt: Math.sin(frame * 0.2) * 0.06 }}
+          hand={frame >= at[2] ? <Bottle scale={0.17} rotation={[Math.PI / 2 - 0.2, 0, 0]} /> : undefined}
           scale={bounce}
         />
-      </Stage3D>
+      </CineStage>
       {labels.map((l, i) =>
         frame >= at[i] ? (
           <div
@@ -725,10 +784,12 @@ const NotInventedShot: React.FC<{ stampAt: number }> = ({ stampAt }) => {
     <AbsoluteFill>
       <XmasBg />
       <Snow n={25} />
-      <Stage3D cam={cam} look={[0.2, 0.95, 0]} fov={34} floor={0} dist={1} lift={-100} exposure={1.0}>
-        <Santa position={[-0.35, 0, 0]} rotation={[0, 0.35, 0]} look={{ blink: frame % 80 < 3 }} />
+      <CineStage cam={cam} look={[0.2, 0.95, 0]} fov={34} floor={0} lift={-100} exposure={1.0} bloom={1.2} rim="#FF9A7A">
+        <Snow3D frame={frame} n={160} area={[6, 4, 4]} center={[0, -0.5, 0]} />
+        <BokehLights frame={frame} />
+        <Santa frame={frame} position={[-0.35, 0, 0]} rotation={[0, 0.35, 0]} pose={{ blink: frame % 80 < 3 }} />
         <Can label={label} position={[0.75, 0.85, 0.2]} rotation={[0, -frame * 0.02, 0]} scale={0.55} />
-      </Stage3D>
+      </CineStage>
       <div style={{ position: "absolute", top: 230, left: 0, right: 0 }}>
         <Txt size={80} color="#fff">
           ERFUNDEN?
@@ -760,7 +821,7 @@ const WallShot: React.FC<{ waveAt: number; waveStep: number; stampAt: number }> 
   return (
     <AbsoluteFill>
       <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 40%, #3A2A2E 0%, #0E0A0C 85%)" }} />
-      <Stage3D cam={cam} look={[0, 0.3, 0]} fov={38} floor={null} dist={1} lift={60} exposure={1.0}>
+      <CineStage cam={cam} look={[0, 0.3, 0]} fov={38} floor={null} lift={60} exposure={1.0}>
         {cells.map((c, i) => {
           const at = waveAt + c.wave * waveStep;
           if (frame < at) return null;
@@ -771,7 +832,7 @@ const WallShot: React.FC<{ waveAt: number; waveStep: number; stampAt: number }> 
             </group>
           );
         })}
-      </Stage3D>
+      </CineStage>
       <div style={{ position: "absolute", top: 200, left: 0, right: 0 }}>
         <Txt size={70} color="#fff" font={FONT_SUB} style={{ fontWeight: 900 }}>
           immer wieder gezeigt …
@@ -796,7 +857,7 @@ const OutroShot: React.FC<{ t0: number }> = ({ t0 }) => {
   return (
     <AbsoluteFill>
       <CityBg />
-      <CityScene t0={t0} cam={cam} look={[0, 1.25, 0]} lena={{ armUp: 0.4, smile: 0.7 }} flo={{ smile: 0.7, headTurn: 0.3 }} lift={-120} />
+      <CityScene t0={t0} cam={cam} look={[0, 1.25, 0]} lena={{ armR: 0.4, smile: 0.7 }} flo={{ smile: 0.7, headTurn: 0.3 }} lift={-120} />
       <Snow n={30} />
       <div style={{ position: "absolute", top: 220, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <div
