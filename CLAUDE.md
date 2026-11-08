@@ -6,9 +6,11 @@ Jede neue Folge wird genauso gebaut wie Folge 6 (`Folge6Weihnachtsmann`, Ordner 
   mehr Werbelügen."). Florian erzählt dazwischen die Geschichte chronologisch mit Ort + Zeit
   ("Kleinasien, vor über 1600 Jahren.", "New York, im Jahr 1863."), kurze Sätze, Spannung, Wendepunkt.
   Keine Frage-Antwort-Ping-Pongs. Nur gesicherte Fakten, Legenden als "Der Legende nach" kennzeichnen.
-- **Länge** ca. 55–65 s, 7 Szenen, alle ~2 s ein neues Bild. Jede Einstellung zeigt HANDLUNG (Figur läuft,
+- **Länge** ca. 35–45 s (Stimme ohne Pausen am Ende höchstens ~44 s; nach dem Erzeugen die Summe von
+  `sceneSeconds` prüfen und bei Bedarf kürzen), 7 Szenen, alle ~2 s ein neues Bild.
+  Dafür knapp erzählen: Hook 2 Sätze, pro Station der Geschichte 1–2 kurze Sätze, Schluss 3 Sätze. Jede Einstellung zeigt HANDLUNG (Figur läuft,
   etwas wird gezeichnet/gemalt, Dinge fliegen, Farbe kommt dazu), nicht nur Standbilder.
-- **Hook:** ab Bild 0 harter Zoom + großer Bildschirm-Text mit der Frage; Stempel ("MYTHOS?" o. ä.) nach ~6 s.
+- **Hook:** ab Bild 0 harter Zoom + großer Bildschirm-Text mit der Frage; Stempel ("MYTHOS?" o. ä.) nach ~4–5 s.
 - **Look:** `CineStage` (Leuchten, Vignette, weiche Schatten, Handkamera), Figuren `Human` mit Atmen/Gesten,
   Spezialfiguren als eigene, sorgfältig gebaute Modelle (wie `SantaFigure`), Bokeh-Lichter, 3D-Schnee/Partikel,
   Nachtszenen wirklich dunkel (`env` klein), Wisch-Übergänge (`WhipIn`) statt weißem Blitz.
@@ -44,7 +46,7 @@ Jede neue Folge wird genauso gebaut wie Folge 6 (`Folge6Weihnachtsmann`, Ordner 
 - Erzählen statt Interview: Tempo/Tonhöhe pro Satz variieren (`rate`, `pitch`, `pause` in dialog.json).
 
 ## Rendern
-- 3D (Three.js) hier ohne Grafikkarte: `--gl=swangle`. Eine Folge im Kino-Look dauert ca. 30–40 Minuten.
+- 3D (Three.js) hier ohne Grafikkarte: `--gl=swangle`. Eine Folge im Kino-Look (ca. 40 s) dauert ca. 25–30 Minuten.
 - Nach dem Rendern mit `ffprobe` prüfen, dass eine Tonspur da ist (außer bei "ohne Ton"-Versionen).
 
 ## Bild-Qualität selbst kontrollieren
