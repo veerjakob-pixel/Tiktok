@@ -1,0 +1,31 @@
+{
+ "voices": {
+  "florian": {"voice": "de-DE-FlorianMultilingualNeural", "rate": "+13%", "pitch": "+0Hz"},
+  "lena": {"voice": "de-DE-SeraphinaMultilingualNeural", "rate": "+11%", "pitch": "+0Hz"}
+ },
+ "gap": 0.18,
+ "scenePause": 0.25,
+ "scenes": [
+  {"lines": [{"who": "lena",
+    "display": "Coca-Cola hat den Weihnachtsmann erfunden. Rot und weiß, wie die Dose. Das glauben fast alle. Aber stimmt das?",
+    "spoken": "Coca-Cola hat den Weihnachtsmann erfunden. Rot und weiß, wie die Dose. Das glauben fast alle. Aber stimmt das?"}]},
+  {"lines": [{"who": "florian",
+    "display": "Nein. Den heiligen Nikolaus gab es schon vor über 1600 Jahren. Und auf alten Bildern trägt er als Bischof oft einen roten Mantel.",
+    "spoken": "Nein. Den heiligen Nikolaus gab es schon vor über sechzehnhundert Jahren. Und auf alten Bildern trägt er als Bischof oft einen roten Mantel."}]},
+  {"lines": [{"who": "lena", "rate": "+16%",
+    "display": "Und der dicke Mann mit Bart?",
+    "spoken": "Und der dicke Mann mit Bart?"}]},
+  {"lines": [{"who": "florian",
+    "display": "Den zeichnete Thomas Nast schon ab 1863 für eine Zeitschrift in New York. Und um 1900 war der Weihnachtsmann auf vielen Bildern längst rot.",
+    "spoken": "Den zeichnete Thomas Nast schon ab achtzehnhundertdreiundsechzig für eine Zeitschrift in New York. Und um neunzehnhundert war der Weihnachtsmann auf vielen Bildern längst rot."}]},
+  {"lines": [{"who": "lena", "rate": "+16%",
+    "display": "Und Coca-Cola?",
+    "spoken": "Und Coca-Cola?"}]},
+  {"lines": [{"who": "florian",
+    "display": "Ab 1931 ließ Coca-Cola jedes Jahr einen Weihnachtsmann malen. Fröhlich, rund, mit Cola in der Hand. Über 30 Jahre lang.",
+    "spoken": "Ab neunzehnhunderteinunddreißig ließ Coca-Cola jedes Jahr einen Weihnachtsmann malen. Fröhlich, rund, mit Cola in der Hand. Über dreißig Jahre lang."}]},
+  {"lines": [{"who": "lena",
+    "display": "Der Trick: Coca-Cola hat den Weihnachtsmann nicht erfunden. Aber so oft gezeigt, bis alle dachten, er gehört zur Marke. Folg mir für mehr Werbelügen.",
+    "spoken": "Der Trick: Coca-Cola hat den Weihnachtsmann nicht erfunden. Aber so oft gezeigt, bis alle dachten, er gehört zur Marke. Folg mir für mehr Werbelügen."}]}
+ ]
+}
