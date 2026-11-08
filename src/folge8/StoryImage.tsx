@@ -53,7 +53,7 @@ export const Folge8Story: React.FC = () => (
         <div style={{ fontSize: 96, color: "#FFD1DC" }}>WAR FÜR FRAUEN</div>
       </div>
 
-      <div style={{ position: "relative", width: 900, height: 600, display: "flex", justifyContent: "center", alignItems: "center", gap: 40 }}>
+      <div style={{ position: "relative", width: 900, height: 640, display: "flex", justifyContent: "center", alignItems: "flex-start", paddingTop: 60, gap: 40 }}>
         <div style={{ transform: "rotate(-6deg)" }}>
           <LadySvg size={360} />
         </div>
@@ -61,8 +61,8 @@ export const Folge8Story: React.FC = () => (
         <div style={{ transform: "rotate(6deg)" }}>
           <CowboySvg size={360} />
         </div>
-        <div style={{ position: "absolute", top: 380, background: "rgba(255,248,231,0.92)", borderRadius: 26, padding: "10px 24px", transform: "rotate(-4deg)" }}>
-          <Stamp text="WERBUNG" size={150} rotate={-6} />
+        <div style={{ position: "absolute", top: 400, background: "rgba(255,248,231,0.92)", borderRadius: 26, padding: "10px 24px", transform: "rotate(-4deg)" }}>
+          <Stamp text="WERBUNG" size={115} rotate={-6} />
         </div>
       </div>
 
