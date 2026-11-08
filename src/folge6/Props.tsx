@@ -179,19 +179,47 @@ export const Bishop: React.FC<{ frame: number; position?: V3; rotation?: V3; sca
         <meshStandardMaterial color="#E9B44C" metalness={1} roughness={0.25} />
       </mesh>
     }
-    headExtra={
-      <group position={[0, 0.12, -0.01]}>
-        <mesh position={[0, 0.12, 0]} scale={[1, 1, 0.6]}>
-          <coneGeometry args={[0.14, 0.36, 4]} />
-          <meshPhysicalMaterial color="#F4EBD0" roughness={0.6} sheen={0.5} />
-        </mesh>
-        <mesh position={[0, 0.0, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[1, 0.65, 1]}>
-          <torusGeometry args={[0.125, 0.018, 10, 32]} />
-          <meshStandardMaterial color="#E9B44C" metalness={1} roughness={0.25} />
-        </mesh>
-      </group>
-    }
+    headExtra={<Mitre />}
   />
+);
+
+// Mitra: oben spitzbogig, vorne flach, mit goldenem Band, Mittelstreifen und Kreuz
+const mitreGeo = (() => {
+  const sh = new THREE.Shape();
+  sh.moveTo(-0.13, 0);
+  sh.lineTo(-0.14, 0.16);
+  sh.quadraticCurveTo(-0.11, 0.3, 0, 0.38);
+  sh.quadraticCurveTo(0.11, 0.3, 0.14, 0.16);
+  sh.lineTo(0.13, 0);
+  sh.closePath();
+  const g = new THREE.ExtrudeGeometry(sh, { depth: 0.16, bevelEnabled: true, bevelThickness: 0.02, bevelSize: 0.015, bevelSegments: 3, curveSegments: 24 });
+  g.translate(0, 0, -0.08);
+  return g;
+})();
+const Mitre: React.FC = () => (
+  <group position={[0, 0.085, -0.01]}>
+    <mesh geometry={mitreGeo} castShadow>
+      <meshPhysicalMaterial color="#F4EBD0" roughness={0.55} sheen={0.6} sheenColor="#fff4d6" />
+    </mesh>
+    {/* goldenes Band unten */}
+    <mesh position={[0, 0.035, 0]} scale={[1, 1, 0.75]}>
+      <cylinderGeometry args={[0.145, 0.14, 0.06, 32, 1, true]} />
+      <meshStandardMaterial color="#E9B44C" metalness={1} roughness={0.25} side={THREE.DoubleSide} />
+    </mesh>
+    {/* Mittelstreifen + Kreuz vorne */}
+    <mesh position={[0, 0.2, 0.1]}>
+      <boxGeometry args={[0.035, 0.3, 0.012]} />
+      <meshStandardMaterial color="#E9B44C" metalness={1} roughness={0.25} />
+    </mesh>
+    <mesh position={[0, 0.24, 0.106]}>
+      <boxGeometry args={[0.1, 0.03, 0.012]} />
+      <meshStandardMaterial color="#C8102E" roughness={0.4} />
+    </mesh>
+    <mesh position={[0, 0.24, 0.107]}>
+      <boxGeometry args={[0.03, 0.12, 0.012]} />
+      <meshStandardMaterial color="#C8102E" roughness={0.4} />
+    </mesh>
+  </group>
 );
 
 // ---------- Leuchtpunkt mit Schein (für Lichterketten, Laternen, Fenster) ----------
@@ -521,5 +549,210 @@ export const Easel: React.FC<{ tex: THREE.Texture; position?: V3; rotation?: V3;
       <Block size={[1.62, 1.98, 0.08]} color="#C9A24A" metal={0.8} rough={0.3} />
       <Sheet tex={tex} size={[1.44, 1.8]} position={[0, 0, 0.045]} depth={0.01} />
     </group>
+  </group>
+);
+
+// ================= Neue Kulissen für die Erzähl-Version =================
+
+// ---------- Altstadt in Kleinasien bei Nacht: flache Lehmhäuser, ein Fenster leuchtet, Mond, Sterne ----------
+export const OldTown: React.FC<{ frame: number; windowGlow?: number }> = ({ frame, windowGlow = 1 }) => {
+  const houses: { x: number; z: number; w: number; h: number; d: number; c: string }[] = [
+    { x: -2.6, z: -2.0, w: 2.2, h: 2.6, d: 2, c: "#C9A97A" },
+    { x: 0.2, z: -2.6, w: 2.6, h: 3.2, d: 2, c: "#B8956A" },
+    { x: 2.9, z: -1.6, w: 2.0, h: 2.4, d: 2, c: "#D2B48A" },
+    { x: -3.2, z: 1.2, w: 1.8, h: 2.2, d: 1.8, c: "#BE9C70" },
+    { x: 3.3, z: 1.4, w: 1.8, h: 2.8, d: 1.8, c: "#C4A275" },
+  ];
+  return (
+    <group>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[30, 30]} />
+        <meshStandardMaterial color="#6E5A44" roughness={1} />
+      </mesh>
+      {houses.map((h, i) => (
+        <group key={i} position={[h.x, h.h / 2, h.z]}>
+          <Block size={[h.w, h.h, h.d]} color={h.c} rough={0.95} />
+          {/* flaches Dach mit Rand */}
+          <Block size={[h.w + 0.12, 0.12, h.d + 0.12]} position={[0, h.h / 2 + 0.06, 0]} color="#9C7C54" rough={0.95} />
+          {/* dunkle Tür + Fenster */}
+          <Block size={[0.5, 1.0, 0.04]} position={[h.w * 0.2, -h.h / 2 + 0.5, h.d / 2 + 0.01]} color="#3B2A1A" rough={0.9} />
+          <Block size={[0.36, 0.42, 0.04]} position={[-h.w * 0.25, 0.2, h.d / 2 + 0.01]} color="#2A2018" rough={0.9} />
+        </group>
+      ))}
+      {/* das Fenster der armen Familie (leuchtet warm) */}
+      <group position={[0.75, 1.35, -1.59]}>
+        <mesh>
+          <planeGeometry args={[0.55, 0.6]} />
+          <meshBasicMaterial color="#FFB45C" toneMapped={false} transparent opacity={0.5 + 0.5 * windowGlow} />
+        </mesh>
+        <pointLight position={[0, 0, 0.6]} intensity={2.2 * windowGlow} distance={3.5} color="#FFB45C" />
+      </group>
+      {/* Mond + Sterne */}
+      <Glow position={[-2.2, 5.6, -8]} color="#DDE8FF" size={2.6} core={0.42} />
+      {Array.from({ length: 40 }).map((_, i) => (
+        <Glow
+          key={i}
+          position={[((i * 7919) % 100) / 100 * 16 - 8, 3.8 + ((i * 104729) % 100) / 100 * 4, -9]}
+          color="#ffffff"
+          size={0.12 + 0.06 * Math.sin(frame * 0.1 + i)}
+          core={0.012}
+        />
+      ))}
+    </group>
+  );
+};
+
+// ---------- Goldmünze ----------
+export const Coin: React.FC<{ position: V3; rotation?: V3; scale?: number }> = ({ position, rotation = [0, 0, 0], scale = 1 }) => (
+  <mesh position={position} rotation={rotation} scale={scale} castShadow>
+    <cylinderGeometry args={[0.07, 0.07, 0.015, 24]} />
+    <meshStandardMaterial color="#F2C14E" metalness={0.6} roughness={0.25} emissive="#FFB000" emissiveIntensity={1.4} toneMapped={false} />
+  </mesh>
+);
+
+// ---------- Schreibtisch mit Öllampe (1863) ----------
+export const Desk: React.FC<{ frame: number }> = ({ frame }) => {
+  const flick = 1 + Math.sin(frame * 0.7) * 0.05 + Math.sin(frame * 1.9) * 0.03;
+  return (
+    <group>
+      {/* Tischplatte */}
+      <Block size={[3.2, 0.08, 1.8]} position={[0, -0.04, 0]} color="#5A3A22" rough={0.55} />
+      <Block size={[3.4, 0.6, 0.1]} position={[0, -0.35, 0.9]} color="#4A2E1A" rough={0.6} />
+      {/* Tintenfass */}
+      <mesh position={[0.95, 0.09, -0.25]} castShadow>
+        <cylinderGeometry args={[0.09, 0.11, 0.17, 24]} />
+        <meshPhysicalMaterial color="#141414" roughness={0.1} clearcoat={1} />
+      </mesh>
+      {/* Öllampe */}
+      <group position={[-1.05, 0, -0.35]}>
+        <mesh position={[0, 0.08, 0]} castShadow>
+          <cylinderGeometry args={[0.13, 0.16, 0.16, 24]} />
+          <meshStandardMaterial color="#B08D57" metalness={0.9} roughness={0.3} />
+        </mesh>
+        <mesh position={[0, 0.34, 0]}>
+          <sphereGeometry args={[0.15, 24, 18]} />
+          <meshPhysicalMaterial color="#FFF3D6" roughness={0.05} transmission={0.6} transparent opacity={0.45} />
+        </mesh>
+        <Glow position={[0, 0.33, 0]} color="#FFB347" size={1.1 * flick} core={0.04} />
+        <pointLight position={[0, 0.36, 0]} intensity={6 * flick} distance={5} decay={1.5} color="#FFB45C" castShadow />
+      </group>
+    </group>
+  );
+};
+
+// Zeichnung, die von unten nach oben entsteht (Bauch -> Bart -> Lachen)
+export const useDrawingTexture = (progress: number) =>
+  useCanvasTexture(
+    800,
+    1040,
+    (ctx) => {
+      ctx.fillStyle = "#EFE4C6";
+      ctx.fillRect(0, 0, 800, 1040);
+      ctx.save();
+      const top = 1040 - progress * 1000;
+      ctx.beginPath();
+      ctx.rect(0, top, 800, 1040);
+      ctx.clip();
+      drawSanta(ctx, 400, 470, 1.7, "ink");
+      ctx.restore();
+      ctx.fillStyle = "#3A2A16";
+      ctx.textAlign = "center";
+      ctx.font = `40px ${F.vintage}`;
+      if (progress > 0.98) ctx.fillText("Santa Claus · 1863", 400, 960);
+    },
+    [Math.round(progress * 60)],
+  );
+
+// Feder (Federkiel)
+export const Quill: React.FC<{ position: V3; rotation?: V3 }> = ({ position, rotation = [0, 0, 0] }) => (
+  <group position={position} rotation={rotation}>
+    <mesh position={[0, 0.25, 0]}>
+      <cylinderGeometry args={[0.006, 0.004, 0.5, 8]} />
+      <meshStandardMaterial color="#E8E0CC" />
+    </mesh>
+    <mesh position={[0.03, 0.33, 0]} rotation={[0, 0, -0.08]} scale={[0.35, 1, 0.08]}>
+      <sphereGeometry args={[0.16, 16, 12]} />
+      <meshPhysicalMaterial color="#F4EFE4" roughness={0.9} sheen={1} />
+    </mesh>
+  </group>
+);
+
+// Gemälde, das beim Malen sichtbar wird (diagonal wischen)
+export const usePaintingProgress = (progress: number) =>
+  useCanvasTexture(
+    800,
+    1000,
+    (ctx) => {
+      ctx.fillStyle = "#F4EEE2";
+      ctx.fillRect(0, 0, 800, 1000);
+      ctx.save();
+      ctx.beginPath();
+      const p = progress * 1900;
+      ctx.moveTo(0, 0);
+      ctx.lineTo(Math.min(800, p), 0);
+      ctx.lineTo(Math.max(0, p - 1000), 1000);
+      ctx.lineTo(0, 1000);
+      ctx.closePath();
+      ctx.clip();
+      const g = ctx.createRadialGradient(400, 420, 50, 400, 500, 650);
+      g.addColorStop(0, "#FFE8B0");
+      g.addColorStop(1, "#7A3B1A");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, 800, 1000);
+      drawSanta(ctx, 380, 470, 1.8, "color", true);
+      ctx.restore();
+    },
+    [Math.round(progress * 40)],
+  );
+
+// ---------- Atelier: Holzboden, Wand, Fenster mit Schnee-Licht ----------
+export const Studio: React.FC = () => (
+  <group>
+    <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+      <planeGeometry args={[20, 20]} />
+      <meshStandardMaterial color="#7A5A3C" roughness={0.6} />
+    </mesh>
+    <mesh position={[0, 3, -2.2]} receiveShadow>
+      <planeGeometry args={[20, 6]} />
+      <meshStandardMaterial color="#D8CDBA" roughness={0.95} />
+    </mesh>
+    {/* Fenster */}
+    <group position={[-2.2, 2.0, -2.18]}>
+      <mesh>
+        <planeGeometry args={[1.6, 1.8]} />
+        <meshBasicMaterial color="#BFD4F2" toneMapped={false} />
+      </mesh>
+      <Block size={[1.7, 0.06, 0.06]} position={[0, 0, 0.03]} color="#5A4030" />
+      <Block size={[0.06, 1.9, 0.06]} position={[0, 0, 0.03]} color="#5A4030" />
+      <pointLight position={[0, 0, 1]} intensity={4} distance={6} color="#CFE0FF" />
+    </group>
+  </group>
+);
+
+// Baskenmütze für den Maler
+export const Beret: React.FC = () => (
+  <group position={[0.02, 0.11, -0.01]} rotation={[0.05, 0, -0.25]}>
+    <mesh scale={[1, 0.32, 1]}>
+      <sphereGeometry args={[0.15, 32, 20]} />
+      <meshPhysicalMaterial color="#2B2D42" roughness={0.9} sheen={0.6} />
+    </mesh>
+    <mesh position={[0, 0.05, 0]}>
+      <cylinderGeometry args={[0.008, 0.008, 0.03, 8]} />
+      <meshStandardMaterial color="#2B2D42" />
+    </mesh>
+  </group>
+);
+
+// Pinsel
+export const Brush: React.FC = () => (
+  <group rotation={[Math.PI / 2, 0, 0]}>
+    <mesh position={[0, 0.1, 0]}>
+      <cylinderGeometry args={[0.008, 0.01, 0.24, 10]} />
+      <meshStandardMaterial color="#8C5A3C" />
+    </mesh>
+    <mesh position={[0, 0.235, 0]}>
+      <coneGeometry args={[0.012, 0.04, 10]} />
+      <meshStandardMaterial color={RED} />
+    </mesh>
   </group>
 );

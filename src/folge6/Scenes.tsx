@@ -1,32 +1,38 @@
-// Folge 6 "Hat Coca-Cola den Weihnachtsmann erfunden?": Hook (Dose + Mütze) -> Nikolaus -> Thomas Nast 1863 -> rote Postkarten 1900
-// -> Werbegemälde ab 1931 -> der Trick: so oft gezeigt, bis er zur Marke gehört.
+// Folge 6 "Hat Coca-Cola den Weihnachtsmann erfunden?" als erzählte Geschichte: Hook -> Legende vom Nikolaus ->
+// Thomas Nast zeichnet 1863 -> rote Postkarten um 1900 -> 1931 Problem Winter -> Maler Sundblom -> der Trick.
 import React from "react";
 import { AbsoluteFill, interpolate, random, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { Vintage } from "../components/Overlays";
 import { Stamp } from "../folge3/Graphics";
 import { FONT_SUB } from "../theme";
-import { Counter, Cut, Slam, Txt, WhiteFlash } from "../folge4/Scenes";
+import { Counter, Cut, Slam, Txt } from "../folge4/Scenes";
 import { add, clamp, shake3, Sheet, Text3D, V3 } from "../folge4-3d/Kit";
 import { FPS } from "../folge3/script";
 import { speakingAt, TS, Who } from "./script";
 import { CineStage } from "./Stage";
 import { HEAD_Y, Human, Pose } from "./Human";
 import {
+  Beret,
   Bishop,
   Bottle,
+  Brush,
   Can,
+  Coin,
+  Desk,
   Easel,
   Glow,
-  Santa,
-  SantaHat,
+  OldTown,
+  Quill,
   Snow3D,
+  Studio,
   useAdPoster,
   useCanLabel,
-  useMagazineTexture,
-  usePaintingTexture,
+  useDrawingTexture,
+  usePaintingProgress,
   usePostcardTexture,
   XmasStreet,
 } from "./Props";
+import { SantaFigure } from "./Santa";
 
 export type SceneProps = { dur: number; from: number };
 
@@ -149,18 +155,6 @@ const LenaClose: React.FC<{ t0: number; look?: Pose; tag?: boolean }> = ({ t0, l
   );
 };
 
-const FloClose: React.FC<{ t0: number; look?: Pose; tag?: boolean }> = ({ t0, look = {}, tag }) => {
-  const frame = useCurrentFrame();
-  const c = closeUp(FLO, 1.9 - frame * 0.002);
-  return (
-    <AbsoluteFill>
-      <CityBg />
-      <CityScene t0={t0} cam={c.cam} look={c.look} flo={{ smile: 0.3, ...look }} fov={30} />
-      {tag && <NameTag name="Ich" color="#264653" />}
-    </AbsoluteFill>
-  );
-};
-
 const YearTag: React.FC<{ text: string }> = ({ text }) => (
   <div
     style={{
@@ -254,26 +248,7 @@ const Vhs: React.FC<{ label: string }> = ({ label }) => {
   );
 };
 
-// =============== Szene 1 – Hook: Dose, Mütze fällt drauf, Stempel MYTHOS? ===============
-export const Scene1: React.FC<SceneProps> = ({ from }) => {
-  const t0 = from / FPS;
-  const T = TS(0);
-  return (
-    <AbsoluteFill>
-      <Cut T={T} a={0} b={2.6}>
-        <CanShot hatAt={T(0.9)} />
-      </Cut>
-      <Cut T={T} a={2.6} b={5.0}>
-        <RedWhiteShot redAt={T(2.74 - 2.6)} whiteAt={T(3.41 - 2.6)} canAt={T(4.31 - 2.6)} />
-      </Cut>
-      <Cut T={T} a={5.0} b={8.307 + 1}>
-        <MythTwoShot t0={t0 + T(5.0) / FPS} stampAt={T(7.28 - 5.0)} />
-      </Cut>
-    </AbsoluteFill>
-  );
-};
-
-// warme Lichter weit hinten (werden durch das Leuchten zu weichen Lichtkreisen)
+// ---------- gemeinsame Bausteine ----------
 const BokehLights: React.FC<{ frame: number }> = ({ frame }) => (
   <group>
     {Array.from({ length: 18 }).map((_, i) => (
@@ -290,7 +265,6 @@ const BokehLights: React.FC<{ frame: number }> = ({ frame }) => (
 
 const XmasBg: React.FC = () => <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 42%, #7A1020 0%, #14060A 78%)" }} />;
 
-// Schneeflocken (Overlay)
 const Snow: React.FC<{ n?: number }> = ({ n = 40 }) => {
   const frame = useCurrentFrame();
   return (
@@ -305,143 +279,6 @@ const Snow: React.FC<{ n?: number }> = ({ n = 40 }) => {
   );
 };
 
-const CanShot: React.FC<{ hatAt: number }> = ({ hatAt }) => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const label = useCanLabel();
-  // harter Zoom ab Bild 0
-  const z = spring({ frame, fps, config: { damping: 16, stiffness: 260 } });
-  const drop = spring({ frame: frame - hatAt, fps, config: { damping: 9, stiffness: 300 } });
-  const cam = add([0, 0.5, interpolate(z, [0, 1], [12, 5.2]) - frame * 0.006], shake3(frame, hatAt + 3, 10, 0.12));
-  return (
-    <AbsoluteFill>
-      <XmasBg />
-      <Snow />
-      <CineStage cam={cam} look={[0, 0.3, 0]} fov={34} floor={null} lift={-120} exposure={1.0} bloom={1.2} rim="#FF9A7A">
-        <Snow3D frame={frame} n={160} area={[6, 4, 4]} center={[0, -0.5, 0]} />
-        <BokehLights frame={frame} />
-        <Can label={label} rotation={[0.08, -frame * 0.03, 0]} position={[0, -0.2, 0]} />
-        {frame >= hatAt && <SantaHat position={[0, interpolate(drop, [0, 1], [3.5, 0.75]), 0]} rotation={[0, 0.4, 0.12]} scale={0.85} />}
-      </CineStage>
-      {/* Bildschirm-Text sofort da (Hook ohne Ton verständlich) */}
-      <Slam at={0} from={1.6} style={{ top: 210, left: 0, right: 0 }}>
-        <Txt size={104} color="#FFF8E7" style={{ WebkitTextStroke: "4px #3A0A10" }}>
-          HAT COLA DEN
-        </Txt>
-        <Txt size={124} color="#FF4D5E" style={{ WebkitTextStroke: "5px #3A0A10" }}>
-          WEIHNACHTSMANN
-        </Txt>
-        <Txt size={104} color="#FFF8E7" style={{ WebkitTextStroke: "4px #3A0A10" }}>
-          ERFUNDEN?
-        </Txt>
-      </Slam>
-      {frame >= hatAt + 3 && <WhiteFlash at={hatAt + 3} len={5} max={0.5} />}
-    </AbsoluteFill>
-  );
-};
-
-const RedWhiteShot: React.FC<{ redAt: number; whiteAt: number; canAt: number }> = ({ redAt, whiteAt, canAt }) => {
-  const frame = useCurrentFrame();
-  const label = useCanLabel();
-  const cam: V3 = [0.2, 1.3, 6.0 - frame * 0.008];
-  const chip = (at: number, bg: string, color: string, text: string, left: number) =>
-    frame >= at && (
-      <div
-        style={{
-          position: "absolute",
-          top: 260,
-          left,
-          transform: `scale(${spring({ frame: frame - at, fps: FPS, config: { damping: 11, stiffness: 260 } })})`,
-          background: bg,
-          color,
-          fontFamily: FONT_SUB,
-          fontWeight: 900,
-          fontSize: 70,
-          padding: "10px 34px",
-          borderRadius: 18,
-          border: "4px solid #3A0A10",
-          boxShadow: "0 10px 26px rgba(0,0,0,0.4)",
-        }}
-      >
-        {text}
-      </div>
-    );
-  return (
-    <AbsoluteFill>
-      <XmasBg />
-      <Snow n={25} />
-      <CineStage cam={cam} look={[0.2, 0.95, 0]} fov={34} floor={0} lift={-60} exposure={1.0} bloom={1.2} rim="#FF9A7A">
-        <Snow3D frame={frame} n={160} area={[6, 4, 4]} center={[0, -0.5, 0]} />
-        <BokehLights frame={frame} />
-        <Santa frame={frame} position={[-0.35, 0, 0]} rotation={[0, 0.35, 0]} pose={{ blink: frame % 80 < 3 }} />
-        <Can label={label} position={[0.75, 0.85, 0.2]} rotation={[0, -frame * 0.02, 0]} scale={0.55} />
-      </CineStage>
-      {chip(redAt, "#C8102E", "#fff", "ROT", 140)}
-      {chip(whiteAt, "#fff", "#C8102E", "WEISS", 560)}
-      <Card at={canAt} top={430} size={60} bg="#FFD166" color="#1D2433" rotate={-3}>
-        = Farben der Dose?
-      </Card>
-    </AbsoluteFill>
-  );
-};
-
-const MythTwoShot: React.FC<{ t0: number; stampAt: number }> = ({ t0, stampAt }) => {
-  const frame = useCurrentFrame();
-  const cam = add([0.05, 1.45, 4.7 - frame * 0.006], shake3(frame, stampAt, 10, 0.08));
-  return (
-    <AbsoluteFill>
-      <CityBg />
-      <CityScene t0={t0} cam={cam} look={[0.02, 1.05, 0]} lena={{ armR: 0.5, brow: 0.6 }} flo={{ headTurn: 0.15, brow: -1 }} lift={80} />
-      <NameTag name="Lena" color="#E76F51" />
-      <Card top={330} size={52}>
-        „Das glauben fast alle“
-      </Card>
-      <Slam at={stampAt} style={{ left: 0, right: 0, top: 480, display: "flex", justifyContent: "center" }}>
-        <Stamp text="MYTHOS?" size={170} rotate={-10} />
-      </Slam>
-    </AbsoluteFill>
-  );
-};
-
-// =============== Szene 2 – Bischof Nikolaus (vor über 1600 Jahren) ===============
-export const Scene2: React.FC<SceneProps> = ({ from }) => {
-  const t0 = from / FPS;
-  const T = TS(1);
-  return (
-    <AbsoluteFill>
-      <Cut T={T} a={0} b={0.8}>
-        <FloClose t0={t0} tag look={{ brow: -0.8 }} />
-      </Cut>
-      <Cut T={T} a={0.8} b={1.8}>
-        <RewindShot t0={t0 + T(0.8) / FPS} />
-      </Cut>
-      <Cut T={T} a={1.8} b={4.1}>
-        <Vintage strength={0.35}>
-          <BishopShot />
-        </Vintage>
-        <YearTag text="vor über 1600 Jahren" />
-      </Cut>
-      <Cut T={T} a={4.1} b={7.613 + 1}>
-        <PaintingFrameShot redAt={T(6.54 - 4.1)} />
-      </Cut>
-    </AbsoluteFill>
-  );
-};
-
-const RewindShot: React.FC<{ t0: number }> = ({ t0 }) => {
-  const frame = useCurrentFrame();
-  const p = Math.min(1, frame / 30);
-  const cam: V3 = [Math.sin(frame * 0.4) * 0.05, 1.6, 4.6 + p * 5];
-  return (
-    <AbsoluteFill style={{ filter: `grayscale(${p}) sepia(${p * 0.8}) contrast(1.1)` }}>
-      <CityBg />
-      <CityScene t0={t0} cam={cam} look={[0, 1.1, 0]} />
-      <Vhs label="ca. 300" />
-    </AbsoluteFill>
-  );
-};
-
-// Kirchenraum: Säulen, warmes Licht
 const Church: React.FC = () => (
   <group>
     <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
@@ -462,105 +299,6 @@ const Church: React.FC = () => (
   </group>
 );
 
-const BishopShot: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const s = spring({ frame, fps, config: { damping: 18, stiffness: 200 } });
-  const cam: V3 = [0.3, 1.5, interpolate(s, [0, 1], [7, 4.6]) - frame * 0.006];
-  return (
-    <AbsoluteFill>
-      <AbsoluteFill style={{ background: "linear-gradient(#E3D3AE, #9C805A)" }} />
-      <CineStage cam={cam} look={[0, 1.25, 0]} fov={36} floor={null} lift={-200} exposure={0.95} rim="#ffd9a0">
-        <Church />
-        <Bishop frame={frame} position={[0, 0, 0]} rotation={[0, -0.2, 0]} pose={{ blink: frame % 90 < 3 }} />
-      </CineStage>
-      <Card top={330} size={64} bg="#2B1D0E" color="#F1E6C8">
-        Heiliger Nikolaus
-        <div style={{ fontSize: 38, fontWeight: 700 }}>Bischof von Myra</div>
-      </Card>
-    </AbsoluteFill>
-  );
-};
-
-// Bischof in goldenem Bilderrahmen (altes Gemälde), roter Mantel leuchtet
-const PaintingFrameShot: React.FC<{ redAt: number }> = ({ redAt }) => {
-  const frame = useCurrentFrame();
-  const glow = interpolate(frame - redAt, [0, 4, 30], [0, 1, 0.4], clamp);
-  const cam = add([0, 1.3, 4.0 - frame * 0.006], shake3(frame, redAt, 8, 0.06));
-  return (
-    <AbsoluteFill style={{ background: "#2B1D0E" }}>
-      <AbsoluteFill style={{ left: 120, right: 120, top: 330, bottom: 640, width: "auto", height: "auto", overflow: "hidden", background: "linear-gradient(#5A3A22, #2B1D0E)" }}>
-        <CineStage cam={cam} look={[0, 1.15, 0]} fov={34} floor={null} lift={0} exposure={0.9 + glow * 0.3} rim="#ffd9a0">
-          <Church />
-          <Bishop frame={frame} rotation={[0, 0.25, 0]} />
-          <pointLight position={[0.6, 1.3, 1.4]} intensity={glow * 8} distance={3} color="#FF4040" />
-        </CineStage>
-      </AbsoluteFill>
-      {/* goldener Rahmen */}
-      <div
-        style={{
-          position: "absolute",
-          left: 100,
-          right: 100,
-          top: 310,
-          bottom: 620,
-          border: "26px solid #C9A24A",
-          borderRadius: 8,
-          boxShadow: "inset 0 0 0 6px #8C6A1E, 0 0 0 6px #8C6A1E, 0 20px 50px rgba(0,0,0,0.6)",
-        }}
-      />
-      <div style={{ position: "absolute", top: 200, left: 0, right: 0 }}>
-        <Txt size={64} color="#F1E6C8" font={FONT_SUB} style={{ fontWeight: 900 }}>
-          Alte Bilder vom Nikolaus
-        </Txt>
-      </div>
-      <Card at={redAt} top={1000} size={64} bg="#C8102E" color="#fff" rotate={-3}>
-        roter Mantel ✓
-      </Card>
-    </AbsoluteFill>
-  );
-};
-
-// =============== Szene 3 / 5 – Lena fragt ===============
-export const Scene3: React.FC<SceneProps> = ({ from }) => (
-  <AbsoluteFill>
-    <LenaClose t0={from / FPS} look={{ brow: 1, headTilt: 0.1 }} tag />
-  </AbsoluteFill>
-);
-
-export const Scene5: React.FC<SceneProps> = ({ from }) => (
-  <AbsoluteFill>
-    <LenaClose t0={from / FPS} look={{ brow: -1, headTilt: -0.12 }} />
-    {/* Spannungs-Moment: jetzt kommt die Auflösung */}
-    <Card at={4} top={900} size={56} bg="#1D2433" color="#FFD166" rotate={-2}>
-      Jetzt kommt der Trick 👀
-    </Card>
-  </AbsoluteFill>
-);
-
-// =============== Szene 4 – Thomas Nast 1863, rote Postkarten um 1900 ===============
-export const Scene4: React.FC<SceneProps> = () => {
-  const T = TS(3);
-  return (
-    <AbsoluteFill>
-      <Cut T={T} a={0} b={1.6}>
-        <Vintage>
-          <YearShot text="1863" color="#2B1D0E" sub="NEW YORK" />
-        </Vintage>
-      </Cut>
-      <Cut T={T} a={1.6} b={4.4}>
-        <Vintage strength={0.6}>
-          <MagazineShot />
-        </Vintage>
-      </Cut>
-      <Cut T={T} a={4.4} b={8.143 + 1}>
-        <PostcardShot at={[4.6, 4.85, 5.1].map((s) => T(s - 4.4))} stampAt={T(7.39 - 4.4)} />
-        <YearTag text="um 1900" />
-      </Cut>
-    </AbsoluteFill>
-  );
-};
-
 const YearShot: React.FC<{ text: string; color: string; sub: string; bg?: string; subColor?: string }> = ({ text, color, sub, bg = "radial-gradient(circle at 50% 42%, #FFF6DD 0%, #C9AE7E 85%)", subColor = "#2B1D0E" }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -577,154 +315,6 @@ const YearShot: React.FC<{ text: string; color: string; sub: string; bg?: string
           {sub}
         </Txt>
       </div>
-    </AbsoluteFill>
-  );
-};
-
-const MagazineShot: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const tex = useMagazineTexture();
-  const s = spring({ frame, fps, config: { damping: 15, stiffness: 150 } });
-  const cam: V3 = [0, 0.1, 6.4 - frame * 0.01];
-  return (
-    <AbsoluteFill>
-      <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 40%, #5A4632 0%, #1E160F 85%)" }} />
-      <CineStage cam={cam} look={[0, 0.2, 0]} fov={36} floor={null} lift={-40} exposure={1.05}>
-        <group position={[0, interpolate(s, [0, 1], [-4, 0]), 0]} rotation={[interpolate(s, [0, 1], [-1.2, -0.08]), 0.12, 0.04]}>
-          <Sheet tex={tex} size={[2, 2.6]} depth={0.02} color="#EFE4C6" />
-        </group>
-      </CineStage>
-      <Card top={230} size={60} bg="#2B1D0E" color="#F1E6C8">
-        Zeichner Thomas Nast
-        <div style={{ fontSize: 36, fontWeight: 700 }}>Zeitschrift in New York</div>
-      </Card>
-    </AbsoluteFill>
-  );
-};
-
-const PostcardShot: React.FC<{ at: number[]; stampAt: number }> = ({ at, stampAt }) => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const tex = [usePostcardTexture(0), usePostcardTexture(1), usePostcardTexture(2)];
-  const cam = add([0, 0, 7.4 - frame * 0.008], shake3(frame, stampAt, 10, 0.1));
-  const spots: { to: V3; rot: V3; from: V3 }[] = [
-    { from: [-5, 3, 0], to: [-0.1, 1.15, 0], rot: [0, 0.1, 0.08] },
-    { from: [5, 0, 0], to: [0.15, 0.0, 0.1], rot: [0, -0.1, -0.06] },
-    { from: [-4, -4, 0], to: [-0.05, -1.15, 0.2], rot: [0, 0.05, 0.05] },
-  ];
-  return (
-    <AbsoluteFill>
-      <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 40%, #3B2A1A 0%, #120C08 85%)" }} />
-      <Snow n={25} />
-      <CineStage cam={cam} look={[0, 0, 0]} fov={36} floor={null} lift={60} exposure={1.05}>
-        {spots.map((p, i) => {
-          if (frame < at[i]) return null;
-          const s = spring({ frame: frame - at[i], fps, config: { damping: 14, stiffness: 170 } });
-          const pos = p.from.map((v, k) => interpolate(s, [0, 1], [v, p.to[k]])) as V3;
-          const rot = p.rot.map((v, k) => v + (1 - s) * (k === 2 ? 2.5 : 0.8)) as V3;
-          return (
-            <group key={i} position={pos} rotation={rot}>
-              <Sheet tex={tex[i]} size={[2.4, 1.6]} depth={0.02} color="#E9D8A6" />
-            </group>
-          );
-        })}
-      </CineStage>
-      <div style={{ position: "absolute", top: 220, left: 50 }}>
-        <Txt size={60} color="#F1E6C8" font={FONT_SUB} style={{ fontWeight: 900, textAlign: "left" }}>
-          Postkarten:
-        </Txt>
-      </div>
-      <Slam at={stampAt} style={{ left: 0, right: 0, top: 560, display: "flex", justifyContent: "center" }}>
-        <Stamp text="VOR COCA-COLA" size={120} rotate={-10} />
-      </Slam>
-    </AbsoluteFill>
-  );
-};
-
-// =============== Szene 6 – ab 1931: Werbegemälde, jedes Jahr, über 30 Jahre ===============
-export const Scene6: React.FC<SceneProps> = () => {
-  const T = TS(5);
-  return (
-    <AbsoluteFill>
-      <Cut T={T} a={0} b={1.4}>
-        <YearShot text="1931" color="#C8102E" sub="WERBUNG FÜR COCA-COLA" bg="radial-gradient(circle at 50% 42%, #FFF1E6 0%, #E8B4A0 85%)" subColor="#5A0A14" />
-      </Cut>
-      <Cut T={T} a={1.4} b={4.6}>
-        <EaselShot cardAt={T(2.69 - 1.4)} />
-      </Cut>
-      <Cut T={T} a={4.6} b={7.25}>
-        <JollyShot at={[4.67, 5.34, 6.08].map((s) => T(s - 4.6))} />
-      </Cut>
-      <Cut T={T} a={7.25} b={8.962 + 1}>
-        <CalendarShot at={T(7.32 - 7.25)} step={T(0.1)} />
-      </Cut>
-    </AbsoluteFill>
-  );
-};
-
-const EaselShot: React.FC<{ cardAt: number }> = ({ cardAt }) => {
-  const frame = useCurrentFrame();
-  const tex = usePaintingTexture();
-  const cam: V3 = [-0.3, 1.5, 5.6 - frame * 0.01];
-  return (
-    <AbsoluteFill>
-      <AbsoluteFill style={{ background: "linear-gradient(#F1E6D8, #C9B49A)" }} />
-      <CineStage cam={cam} look={[0, 1.35, 0]} fov={36} floor={0} lift={-140} exposure={1.0}>
-        <Easel tex={tex} rotation={[0, 0.15, 0]} />
-      </CineStage>
-      <Card top={230} size={58} bg="#C8102E" color="#fff">
-        Bestellt von der Werbung
-      </Card>
-      <Card at={cardAt} top={380} size={52} rotate={-3}>
-        📅 jedes Jahr ein neues Bild
-      </Card>
-    </AbsoluteFill>
-  );
-};
-
-const JollyShot: React.FC<{ at: number[] }> = ({ at }) => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const cam: V3 = [0.3, 1.35, 4.4 - frame * 0.008];
-  const bounce = 1 + Math.sin(frame * 0.3) * 0.02;
-  const labels = ["😄 fröhlich", "⚪ rund", "🥤 Cola in der Hand"];
-  return (
-    <AbsoluteFill>
-      <XmasBg />
-      <Snow n={25} />
-      <CineStage cam={cam} look={[0, 1.05, 0]} fov={36} floor={0} lift={-180} exposure={1.0} bloom={1.2} rim="#FF9A7A">
-        <Snow3D frame={frame} n={160} area={[6, 4, 4]} center={[0, -0.5, 0]} />
-        <BokehLights frame={frame} />
-        <Santa
-          frame={frame}
-          rotation={[0, -0.15, 0]}
-          belly={frame >= at[1] ? 1 + 0.25 * spring({ frame: frame - at[1], fps, config: { damping: 8, stiffness: 200 } }) : 1}
-          pose={{ smile: frame >= at[0] ? 1 : 0.4, armR: frame >= at[2] ? 0.55 : 0.1, bendR: frame >= at[2] ? 1.3 : 0.15, blink: frame % 70 < 3, headTilt: Math.sin(frame * 0.2) * 0.06 }}
-          hand={frame >= at[2] ? <Bottle scale={0.17} rotation={[Math.PI / 2 - 0.2, 0, 0]} /> : undefined}
-          scale={bounce}
-        />
-      </CineStage>
-      {labels.map((l, i) =>
-        frame >= at[i] ? (
-          <div
-            key={l}
-            style={{
-              position: "absolute",
-              top: 230 + i * 110,
-              left: 0,
-              right: 0,
-              display: "flex",
-              justifyContent: "center",
-              transform: `scale(${spring({ frame: frame - at[i], fps, config: { damping: 11, stiffness: 260 } })})`,
-            }}
-          >
-            <div style={{ background: "#fff", color: "#C8102E", fontFamily: FONT_SUB, fontWeight: 900, fontSize: 58, padding: "6px 30px", borderRadius: 16, boxShadow: "0 8px 20px rgba(0,0,0,0.35)" }}>
-              {l}
-            </div>
-          </div>
-        ) : null,
-      )}
     </AbsoluteFill>
   );
 };
@@ -750,54 +340,6 @@ const CalendarShot: React.FC<{ at: number; step: number }> = ({ at, step }) => {
       <Card at={at + step * 11} top={880} size={70} bg="#FFD166" color="#1D2433" rotate={-3}>
         über 30 Jahre lang!
       </Card>
-    </AbsoluteFill>
-  );
-};
-
-// =============== Szene 7 – Der Trick: so oft gezeigt, bis er zur Marke gehört ===============
-export const Scene7: React.FC<SceneProps> = ({ from }) => {
-  const t0 = from / FPS;
-  const T = TS(6);
-  return (
-    <AbsoluteFill>
-      <Cut T={T} a={0} b={1.1}>
-        <LenaClose t0={t0} look={{ smile: 0.4, brow: 0.4 }} />
-      </Cut>
-      <Cut T={T} a={1.1} b={3.9}>
-        <NotInventedShot stampAt={T(3.06 - 1.1)} />
-      </Cut>
-      <Cut T={T} a={3.9} b={8.15}>
-        <WallShot waveAt={T(4.4 - 3.9)} waveStep={T(0.2)} stampAt={T(7.46 - 3.9)} />
-      </Cut>
-      <Cut T={T} a={8.15} b={10.548 + 1}>
-        <OutroShot t0={t0 + T(8.15) / FPS} />
-      </Cut>
-    </AbsoluteFill>
-  );
-};
-
-const NotInventedShot: React.FC<{ stampAt: number }> = ({ stampAt }) => {
-  const frame = useCurrentFrame();
-  const label = useCanLabel();
-  const cam = add([0.2, 1.3, 6.0 - frame * 0.008], shake3(frame, stampAt, 10, 0.1));
-  return (
-    <AbsoluteFill>
-      <XmasBg />
-      <Snow n={25} />
-      <CineStage cam={cam} look={[0.2, 0.95, 0]} fov={34} floor={0} lift={-100} exposure={1.0} bloom={1.2} rim="#FF9A7A">
-        <Snow3D frame={frame} n={160} area={[6, 4, 4]} center={[0, -0.5, 0]} />
-        <BokehLights frame={frame} />
-        <Santa frame={frame} position={[-0.35, 0, 0]} rotation={[0, 0.35, 0]} pose={{ blink: frame % 80 < 3 }} />
-        <Can label={label} position={[0.75, 0.85, 0.2]} rotation={[0, -frame * 0.02, 0]} scale={0.55} />
-      </CineStage>
-      <div style={{ position: "absolute", top: 230, left: 0, right: 0 }}>
-        <Txt size={80} color="#fff">
-          ERFUNDEN?
-        </Txt>
-      </div>
-      <Slam at={stampAt} style={{ left: 0, right: 0, top: 380, display: "flex", justifyContent: "center" }}>
-        <Stamp text="NEIN" size={190} rotate={-10} />
-      </Slam>
     </AbsoluteFill>
   );
 };
@@ -894,3 +436,575 @@ const OutroShot: React.FC<{ t0: number }> = ({ t0 }) => {
     </AbsoluteFill>
   );
 };
+
+
+// =============== Szene 1 – Hook: Weihnachtsmann + Dose, Lena läuft durch die Straße, MYTHOS?, zurückspulen ===============
+export const Scene1: React.FC<SceneProps> = ({ from }) => {
+  const t0 = from / FPS;
+  const T = TS(0);
+  return (
+    <AbsoluteFill>
+      <Cut T={T} a={0} b={1.4}>
+        <AdHookShot />
+      </Cut>
+      <Cut T={T} a={1.4} b={3.4}>
+        <WalkShot t0={t0 + T(1.4) / FPS} />
+      </Cut>
+      <Cut T={T} a={3.4} b={6.8}>
+        <LenaClose t0={t0 + T(3.4) / FPS} look={{ brow: 0.5 }} />
+        <Slam at={T(5.84 - 3.4)} style={{ left: 0, right: 0, top: 300, display: "flex", justifyContent: "center" }}>
+          <Stamp text="MYTHOS?" size={170} rotate={-10} />
+        </Slam>
+      </Cut>
+      <Cut T={T} a={6.8} b={9.582 + 1}>
+        <SkyRewindShot t0={t0 + T(6.8) / FPS} />
+      </Cut>
+    </AbsoluteFill>
+  );
+};
+
+// harter Zoom auf den Werbe-Weihnachtsmann mit Dose (Bild 0 schon voll da)
+const AdHookShot: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const label = useCanLabel();
+  const z = spring({ frame, fps, config: { damping: 16, stiffness: 240 } });
+  const cam: V3 = [0.15, 1.45, interpolate(z, [0, 1], [7.5, 3.4]) - frame * 0.005];
+  return (
+    <AbsoluteFill>
+      <XmasBg />
+      <CineStage cam={cam} look={[0.1, 1.25, 0]} fov={34} floor={0} lift={-80} bloom={1.2} rim="#FF9A7A" keyI={2.4}>
+        <Snow3D frame={frame} n={160} area={[6, 4, 4]} center={[0, -0.5, 0]} />
+        <BokehLights frame={frame} />
+        <SantaFigure frame={frame} position={[-0.25, 0, 0]} rotation={[0, 0.3, 0]} pose={{ laugh: 0.6, holdR: 0.6 }} hand={<Bottle scale={0.22} rotation={[0.3, 0, 0]} />} />
+        <Can label={label} position={[0.75, 0.82, 0.3]} rotation={[0, -frame * 0.03, 0]} scale={0.55} />
+      </CineStage>
+      <div style={{ position: "absolute", top: 210, left: 0, right: 0 }}>
+        <Txt size={100} color="#FFF8E7" style={{ WebkitTextStroke: "4px #3A0A10" }}>
+          HAT COLA DEN
+        </Txt>
+        <Txt size={120} color="#FF4D5E" style={{ WebkitTextStroke: "5px #3A0A10" }}>
+          WEIHNACHTSMANN
+        </Txt>
+        <Txt size={100} color="#FFF8E7" style={{ WebkitTextStroke: "4px #3A0A10" }}>
+          ERFUNDEN?
+        </Txt>
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+// Lena läuft an den Plakaten vorbei, Kamera fährt mit
+const WalkShot: React.FC<{ t0: number }> = ({ t0 }) => {
+  const frame = useCurrentFrame();
+  const v = useVoices(t0);
+  const posters = [useAdPoster(0), useAdPoster(1), useAdPoster(2)];
+  const x = -1.6 + frame * 0.025;
+  return (
+    <AbsoluteFill>
+      <CityBg />
+      <CineStage cam={[x + 0.4, 1.5, 3.4]} look={[x + 0.1, 1.2, 0]} fov={34} exposure={1.05} key1="#9FB4FF" keyI={0.7} rim="#FFB870" rimI={1.4} amb={0.35} bloom={1.1} fog={{ color: "#141C33", near: 9, far: 26 }}>
+        <XmasStreet frame={frame} posters={posters} />
+        <pointLight position={[x, 2.1, 3]} intensity={7} distance={9} decay={1.4} color="#FFD7A8" />
+        <Human
+          frame={frame}
+          seed={1}
+          position={[x, 0.14, 0.3]}
+          rotation={[0, Math.PI / 2 - 0.35, 0]}
+          top="#E76F51"
+          bottom="#2E3A59"
+          shoes="#5A3A2A"
+          skin="#EDC3A3"
+          hair="#5A3A1A"
+          hairStyle="long"
+          iris="#4A6B3A"
+          collar="#F4E4D4"
+          pose={{ ...v.lena, walk: frame * 0.28, headTurn: -0.7, gesture: 0 }}
+        />
+      </CineStage>
+      <NameTag name="Lena" color="#E76F51" />
+    </AbsoluteFill>
+  );
+};
+
+// Kamera steigt in den Schneehimmel, dann wird zurückgespult
+const SkyRewindShot: React.FC<{ t0: number }> = ({ t0 }) => {
+  const frame = useCurrentFrame();
+  const p = interpolate(frame, [0, 40], [0, 1], clamp);
+  const e = p * p * (3 - 2 * p);
+  const rw = interpolate(frame, [30, 60], [0, 1], clamp);
+  return (
+    <AbsoluteFill style={{ filter: `sepia(${rw * 0.8}) contrast(${1 + rw * 0.1})` }}>
+      <CityBg />
+      <CityScene t0={t0} cam={[0, 1.6 + e * 3.2, 4.4 + e * 1.5]} look={[0, 1.2 + e * 4.5, -1]} lena={{ headTurn: 0.2 }} />
+      {frame >= 30 && <Vhs label="1600 Jahre" />}
+    </AbsoluteFill>
+  );
+};
+
+// =============== Szene 2 – Die Legende: Bischof wirft nachts Gold durchs Fenster ===============
+export const Scene2: React.FC<SceneProps> = () => {
+  const T = TS(1);
+  return (
+    <AbsoluteFill>
+      <Cut T={T} a={0} b={3.0}>
+        <TownShot />
+        <YearTag text="Kleinasien · vor 1600 Jahren" />
+      </Cut>
+      <Cut T={T} a={3.0} b={7.4}>
+        <SneakShot goldAt={T(5.06 - 3.0)} />
+      </Cut>
+      <Cut T={T} a={7.4} b={9.3}>
+        <BishopFaceShot nameAt={T(8.42 - 7.4)} />
+      </Cut>
+      <Cut T={T} a={9.3} b={11.86 + 1}>
+        <PaintingFrameShot redAt={T(10.7 - 9.3)} />
+      </Cut>
+    </AbsoluteFill>
+  );
+};
+
+const NightBg: React.FC = () => <AbsoluteFill style={{ background: "linear-gradient(#03060F 0%, #0B1633 60%, #1B2547 100%)" }} />;
+
+const TownShot: React.FC = () => {
+  const frame = useCurrentFrame();
+  const cam: V3 = [0.6, 2.4 - frame * 0.006, 8.5 - frame * 0.03];
+  return (
+    <AbsoluteFill>
+      <NightBg />
+      <CineStage cam={cam} look={[0, 1.6, -2]} fov={36} key1="#6F88D8" keyI={0.45} keyPos={[-4, 8, 3]} rim="#3A5AB4" rimI={0.6} amb={0.1} env={0.12} bloom={1.3} exposure={0.95} fog={{ color: "#0B1633", near: 10, far: 30 }}>
+        <OldTown frame={frame} />
+      </CineStage>
+    </AbsoluteFill>
+  );
+};
+
+const SneakShot: React.FC<{ goldAt: number }> = ({ goldAt }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  // Bischof schleicht von links zum Fenster, bleibt stehen, wirft
+  const walkEnd = goldAt - 8;
+  const x = interpolate(frame, [0, walkEnd], [-1.8, 0.15], clamp);
+  const walking = frame < walkEnd;
+  const throwP = spring({ frame: frame - (goldAt - 6), fps, config: { damping: 14, stiffness: 160 } });
+  const coins = Array.from({ length: 7 });
+  const cam: V3 = [x * 0.5 + 1.2, 1.5, 3.2];
+  return (
+    <AbsoluteFill>
+      <NightBg />
+      <CineStage cam={cam} look={[x * 0.5 + 0.3, 1.2, -1.2]} fov={36} key1="#6F88D8" keyI={0.45} keyPos={[-4, 8, 3]} rim="#3A5AB4" rimI={0.6} amb={0.12} env={0.12} bloom={1.3} exposure={1.0} fog={{ color: "#0B1633", near: 10, far: 30 }}>
+        <OldTown frame={frame} windowGlow={frame > goldAt ? 1.4 : 1} />
+        <Bishop
+          frame={frame}
+          position={[x, 0, -0.7]}
+          rotation={[0, walking ? Math.PI / 2 : Math.PI - 0.5, 0]}
+          pose={{ walk: walking ? frame * 0.22 : undefined, armR: throwP * 1.3, bendR: 0.3 + (1 - throwP) * 0.8, headTurn: walking ? -0.5 : 0, gesture: 0 }}
+        />
+        {frame >= goldAt - 2 &&
+          coins.map((_, i) => {
+            const t = Math.min(1, (frame - goldAt + 2 - i * 2) / 14);
+            if (t <= 0) return null;
+            // Bogen von der Hand zum Fenster
+            const p0: V3 = [x + 0.25, 1.55, -0.5];
+            const p1: V3 = [0.75 + (i % 3 - 1) * 0.08, 1.35 + (i % 2) * 0.08, -1.62];
+            const pos: V3 = [p0[0] + (p1[0] - p0[0]) * t, p0[1] + (p1[1] - p0[1]) * t + Math.sin(Math.PI * t) * 0.45, p0[2] + (p1[2] - p0[2]) * t];
+            return t < 1 ? (
+              <group key={i}>
+                <Coin position={pos} rotation={[frame * 0.4 + i, frame * 0.3, 0]} scale={1.3} />
+                <Glow position={pos} color="#FFD27A" size={0.45} core={0.001} />
+              </group>
+            ) : null;
+          })}
+        {frame >= goldAt && <Glow position={[0.75, 1.35, -1.5]} color="#FFD27A" size={1.4 * Math.max(0, 1 - (frame - goldAt) / 25)} core={0.01} />}
+      </CineStage>
+      <Card at={goldAt} top={320} size={52} bg="#1D2433" color="#FFD166" rotate={-2}>
+        heimlich Gold für eine arme Familie
+      </Card>
+    </AbsoluteFill>
+  );
+};
+
+const BishopFaceShot: React.FC<{ nameAt: number }> = ({ nameAt }) => {
+  const frame = useCurrentFrame();
+  const cam: V3 = [0.15, 1.66, 1.75 - frame * 0.004];
+  return (
+    <AbsoluteFill>
+      <NightBg />
+      <CineStage cam={cam} look={[0, 1.55, 0]} fov={32} key1="#FFC98A" keyI={1.3} keyPos={[2, 3, 3]} rim="#3A5AB4" rimI={1.0} amb={0.12} env={0.15} bloom={1.1}>
+        <OldTown frame={frame} />
+        <Bishop frame={frame} position={[0, 0, 0]} rotation={[0, 0.1, 0]} pose={{ smile: 0.5, blink: frame % 80 < 3, gesture: 0 }} />
+        <pointLight position={[0.5, 1.6, 1]} intensity={3} distance={3} color="#FFB45C" />
+      </CineStage>
+      {frame >= nameAt && (
+        <Card at={nameAt} top={300} size={72} bg="#2B1D0E" color="#F1E6C8">
+          NIKOLAUS
+          <div style={{ fontSize: 36, fontWeight: 700 }}>Bischof · Legende</div>
+        </Card>
+      )}
+    </AbsoluteFill>
+  );
+};
+
+// Bischof in goldenem Bilderrahmen (altes Gemälde), roter Mantel leuchtet
+const PaintingFrameShot: React.FC<{ redAt: number }> = ({ redAt }) => {
+  const frame = useCurrentFrame();
+  const glow = interpolate(frame - redAt, [0, 4, 30], [0, 1, 0.4], clamp);
+  const cam = add([0, 1.25, 3.6 - frame * 0.006], shake3(frame, redAt, 8, 0.05));
+  return (
+    <AbsoluteFill style={{ background: "#2B1D0E" }}>
+      <AbsoluteFill style={{ left: 120, right: 120, top: 330, bottom: 640, width: "auto", height: "auto", overflow: "hidden", background: "linear-gradient(#5A3A22, #2B1D0E)" }}>
+        <CineStage cam={cam} look={[0, 1.2, 0]} fov={34} lift={0} exposure={0.95 + glow * 0.3} rim="#ffd9a0" shake={0.5} bloom={0.6}>
+          <Church />
+          <Bishop frame={frame} rotation={[0, 0.25, 0]} pose={{ gesture: 0 }} />
+          <pointLight position={[0.6, 1.3, 1.4]} intensity={glow * 8} distance={3} color="#FF4040" />
+        </CineStage>
+      </AbsoluteFill>
+      <div
+        style={{
+          position: "absolute",
+          left: 100,
+          right: 100,
+          top: 310,
+          bottom: 620,
+          border: "26px solid #C9A24A",
+          borderRadius: 8,
+          boxShadow: "inset 0 0 0 6px #8C6A1E, 0 0 0 6px #8C6A1E, 0 20px 50px rgba(0,0,0,0.6)",
+        }}
+      />
+      <div style={{ position: "absolute", top: 200, left: 0, right: 0 }}>
+        <Txt size={64} color="#F1E6C8" font={FONT_SUB} style={{ fontWeight: 900 }}>
+          Alte Bilder vom Nikolaus
+        </Txt>
+      </div>
+      <Card at={redAt} top={1000} size={64} bg="#C8102E" color="#fff" rotate={-3}>
+        roter Mantel ✓
+      </Card>
+    </AbsoluteFill>
+  );
+};
+
+// =============== Szene 3 – New York 1863: die Zeichnung entsteht ===============
+export const Scene3: React.FC<SceneProps> = () => {
+  const T = TS(2);
+  return (
+    <AbsoluteFill>
+      <Cut T={T} a={0} b={2.9}>
+        <Vintage strength={0.6}>
+          <YearShot text="1863" color="#2B1D0E" sub="NEW YORK" />
+        </Vintage>
+      </Cut>
+      <Cut T={T} a={2.9} b={7.997 + 1}>
+        <Vintage strength={0.45}>
+          <DrawingShot start={T(4.7 - 2.9)} end={T(7.3 - 2.9)} marks={[5.16, 6.24, 7.21].map((s) => T(s - 2.9))} />
+        </Vintage>
+      </Cut>
+    </AbsoluteFill>
+  );
+};
+
+const DrawingShot: React.FC<{ start: number; end: number; marks: number[] }> = ({ start, end, marks }) => {
+  const frame = useCurrentFrame();
+  const progress = interpolate(frame, [start, end], [0, 1], clamp);
+  const tex = useDrawingTexture(progress);
+  const cam: V3 = [0.2, 2.6 - frame * 0.004, 1.9 - frame * 0.004];
+  // Feder folgt der Zeichenlinie (von unten nach oben), wackelt beim Zeichnen
+  const penY = -0.6 + progress * 1.15;
+  const penX = Math.sin(frame * 0.9) * 0.18 * (progress > 0 && progress < 1 ? 1 : 0.2);
+  const labels = ["dicker Bauch", "weißer Bart", "fröhliches Lachen"];
+  return (
+    <AbsoluteFill>
+      <AbsoluteFill style={{ background: "#1A120B" }} />
+      <CineStage cam={cam} look={[0, 0, -0.05]} fov={40} key1="#FFE2B0" keyI={0.5} rim="#6A4A2A" rimI={0.4} amb={0.2} bloom={1.0} lift={-80}>
+        <Desk frame={frame} />
+        <group position={[0, 0.01, 0]} rotation={[-Math.PI / 2, 0, 0.05]}>
+          <Sheet tex={tex} size={[1.0, 1.3]} depth={0.005} color="#EFE4C6" />
+          <Quill position={[penX * 0.6 + 0.05, penY * 0.55, 0.02]} rotation={[0.5, 0.2, -0.4]} />
+        </group>
+        <Coin position={[1.2, 0.01, 0.5]} rotation={[0, 0, 0]} />
+      </CineStage>
+      <div style={{ position: "absolute", top: 220, left: 50 }}>
+        <Txt size={54} color="#F1E6C8" font={FONT_SUB} style={{ fontWeight: 900, textAlign: "left" }}>
+          ✒️ Zeichner Thomas Nast
+        </Txt>
+      </div>
+      {labels.map((l, i) =>
+        frame >= marks[i] ? (
+          <div
+            key={l}
+            style={{
+              position: "absolute",
+              top: 320 + i * 100,
+              right: 50,
+              transform: `scale(${spring({ frame: frame - marks[i], fps: FPS, config: { damping: 11, stiffness: 260 } })})`,
+              background: "rgba(255,248,231,0.95)",
+              color: "#2B1D0E",
+              fontFamily: FONT_SUB,
+              fontWeight: 900,
+              fontSize: 48,
+              padding: "6px 24px",
+              borderRadius: 14,
+              boxShadow: "0 8px 20px rgba(0,0,0,0.35)",
+            }}
+          >
+            + {l}
+          </div>
+        ) : null,
+      )}
+    </AbsoluteFill>
+  );
+};
+
+// =============== Szene 4 – Postkarten um 1900: erst grau, dann rot ===============
+export const Scene4: React.FC<SceneProps> = () => {
+  const T = TS(3);
+  return (
+    <AbsoluteFill>
+      <PostcardShot at={[0.15, 0.45, 0.75].map((s) => T(s))} redAt={T(3.41)} stampAt={T(4.75)} />
+      <YearTag text="um 1900" />
+    </AbsoluteFill>
+  );
+};
+
+const PostcardShot: React.FC<{ at: number[]; redAt: number; stampAt: number }> = ({ at, redAt, stampAt }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const tex = [usePostcardTexture(0), usePostcardTexture(1), usePostcardTexture(2)];
+  const color = interpolate(frame, [redAt, redAt + 8], [0, 1], clamp);
+  const cam = add([0, 0, 7.4 - frame * 0.01], shake3(frame, stampAt, 10, 0.1));
+  const spots: { to: V3; rot: V3; from: V3 }[] = [
+    { from: [-5, 3, 0], to: [-0.1, 1.15, 0], rot: [0, 0.1, 0.08] },
+    { from: [5, 0, 0], to: [0.15, 0.0, 0.1], rot: [0, -0.1, -0.06] },
+    { from: [-4, -4, 0], to: [-0.05, -1.15, 0.2], rot: [0, 0.05, 0.05] },
+  ];
+  return (
+    <AbsoluteFill>
+      <AbsoluteFill style={{ filter: `grayscale(${1 - color}) sepia(${(1 - color) * 0.5})` }}>
+        <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 40%, #3B2A1A 0%, #120C08 85%)" }} />
+        <CineStage cam={cam} look={[0, 0, 0]} fov={36} lift={60} exposure={1.05} bloom={0.8}>
+          <Snow3D frame={frame} n={120} area={[6, 5, 3]} center={[0, -2.5, 1]} />
+          {spots.map((p, i) => {
+            if (frame < at[i]) return null;
+            const s = spring({ frame: frame - at[i], fps, config: { damping: 14, stiffness: 170 } });
+            const pos = p.from.map((v, k) => interpolate(s, [0, 1], [v, p.to[k]])) as V3;
+            const rot = p.rot.map((v, k) => v + (1 - s) * (k === 2 ? 2.5 : 0.8)) as V3;
+            return (
+              <group key={i} position={pos} rotation={rot}>
+                <Sheet tex={tex[i]} size={[2.4, 1.6]} depth={0.02} color="#E9D8A6" />
+              </group>
+            );
+          })}
+        </CineStage>
+      </AbsoluteFill>
+      {frame >= redAt && (
+        <Card at={redAt} top={330} size={64} bg="#C8102E" color="#fff" rotate={-3}>
+          IN ROT ✓
+        </Card>
+      )}
+      <Slam at={stampAt} style={{ left: 0, right: 0, top: 560, display: "flex", justifyContent: "center" }}>
+        <Stamp text="VOR COCA-COLA" size={120} rotate={-10} />
+      </Slam>
+    </AbsoluteFill>
+  );
+};
+
+// =============== Szene 5 – 1931: Problem Winter ===============
+export const Scene5: React.FC<SceneProps> = () => {
+  const T = TS(4);
+  return (
+    <AbsoluteFill>
+      <Cut T={T} a={0} b={1.4}>
+        <YearShot text="1931" color="#C8102E" sub="COCA-COLA HAT EIN PROBLEM" bg="radial-gradient(circle at 50% 42%, #FFF1E6 0%, #E8B4A0 85%)" subColor="#5A0A14" />
+      </Cut>
+      <Cut T={T} a={1.4} b={6.068 + 1}>
+        <WinterShot barsAt={T(3.31 - 1.4)} />
+      </Cut>
+    </AbsoluteFill>
+  );
+};
+
+const MONTHS = ["Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez", "Jan", "Feb"];
+const SALES = [0.8, 0.95, 1, 0.98, 0.8, 0.55, 0.35, 0.22, 0.18, 0.2];
+
+const WinterShot: React.FC<{ barsAt: number }> = ({ barsAt }) => {
+  const frame = useCurrentFrame();
+  const label = useCanLabel();
+  const cam: V3 = [0.3, 0.9, 3.0 - frame * 0.006];
+  return (
+    <AbsoluteFill>
+      <AbsoluteFill style={{ background: "linear-gradient(#5E7396, #C9D6E8)" }} />
+      <CineStage cam={cam} look={[0, 0.5, 0]} fov={36} key1="#CFE0FF" keyI={1.6} rim="#9FB4FF" rimI={1.2} amb={0.5} bloom={0.6} fog={{ color: "#C9D6E8", near: 4, far: 14 }} lift={-260}>
+        <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+          <planeGeometry args={[30, 30]} />
+          <meshPhysicalMaterial color="#F4F7FB" roughness={0.9} sheen={1} />
+        </mesh>
+        {/* Dose halb im Schnee, mit Schneehaube */}
+        <Can label={label} position={[0, 0.55, 0]} rotation={[0.25, -0.4, 0.15]} scale={0.6} />
+        <mesh position={[0.04, 1.02, 0.08]} scale={[1, 0.35, 1]}>
+          <sphereGeometry args={[0.3, 24, 16]} />
+          <meshPhysicalMaterial color="#FFFFFF" roughness={1} sheen={1} />
+        </mesh>
+        <Snow3D frame={frame} n={220} area={[5, 4, 4]} center={[0, 0, 0]} />
+      </CineStage>
+      <div style={{ position: "absolute", top: 220, left: 0, right: 0 }}>
+        <Txt size={70} color="#1D2433" font={FONT_SUB} style={{ fontWeight: 900, textShadow: "0 4px 0 rgba(255,255,255,0.6)" }}>
+          ❄️ Im Winter: kaum Umsatz
+        </Txt>
+      </div>
+      {/* Umsatz-Balken */}
+      <div style={{ position: "absolute", top: 330, left: 90, right: 90, height: 300, display: "flex", alignItems: "flex-end", gap: 12, background: "rgba(255,255,255,0.75)", borderRadius: 20, padding: "20px 24px 50px" }}>
+        {MONTHS.map((m, i) => {
+          const h = interpolate(frame - barsAt - i * 3, [0, 8], [0, SALES[i]], clamp);
+          const winter = i >= 6;
+          return (
+            <div key={m} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-end", height: "100%" }}>
+              <div style={{ width: "100%", height: `${h * 100}%`, background: winter ? "#3A86FF" : "#C8102E", borderRadius: 6 }} />
+              <div style={{ marginTop: 6, fontFamily: FONT_SUB, fontWeight: 800, fontSize: 22, color: "#1D2433", height: 0, overflow: "visible", whiteSpace: "nowrap" }}>{m}</div>
+            </div>
+          );
+        })}
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+// =============== Szene 6 – Der Maler: jedes Jahr ein Bild, Weihnachtsmann lacht, Cola in der Hand ===============
+export const Scene6: React.FC<SceneProps> = () => {
+  const T = TS(5);
+  return (
+    <AbsoluteFill>
+      <Cut T={T} a={0} b={3.3}>
+        <PainterShot end={T(3.2)} />
+      </Cut>
+      <Cut T={T} a={3.3} b={6.45}>
+        <JollyShot at={[3.99, 4.65, 5.37].map((s) => T(s - 3.3))} />
+      </Cut>
+      <Cut T={T} a={6.45} b={8.214 + 1}>
+        <CalendarShot at={T(6.6 - 6.45)} step={T(0.1)} />
+      </Cut>
+    </AbsoluteFill>
+  );
+};
+
+const PainterShot: React.FC<{ end: number }> = ({ end }) => {
+  const frame = useCurrentFrame();
+  const progress = interpolate(frame, [6, end], [0, 1], clamp);
+  const tex = usePaintingProgress(progress);
+  const stroke = Math.sin(frame * 0.35);
+  const cam: V3 = [1.1, 1.65, 4.9 - frame * 0.006];
+  return (
+    <AbsoluteFill>
+      <AbsoluteFill style={{ background: "#2A2420" }} />
+      <CineStage cam={cam} look={[-0.15, 1.25, -0.3]} fov={36} key1="#CFE0FF" keyI={1.2} keyPos={[-4, 5, 3]} rim="#FFC98A" rimI={1.0} amb={0.4} bloom={0.8} lift={-120}>
+        <Studio />
+        <Easel tex={tex} position={[0.35, 0, -0.6]} rotation={[0, -0.25, 0]} />
+        <Human
+          frame={frame}
+          seed={9}
+          position={[-0.75, 0, 0.15]}
+          rotation={[0, 0.95, 0]}
+          top="#E9E2D0"
+          bottom="#3A3A3A"
+          skin="#E8B996"
+          hair="#3B2A1A"
+          hairStyle="short"
+          collar="#2B2D42"
+          pose={{ armR: 1.15 + stroke * 0.12, bendR: 0.35 + stroke * 0.15, headTurn: 0.1, blink: frame % 90 < 3, gesture: 0 }}
+          hand={<Brush />}
+          headExtra={<Beret />}
+        />
+      </CineStage>
+      <Card top={230} size={58} bg="#1D2433" color="#fff">
+        🎨 Maler Haddon Sundblom
+      </Card>
+      <Card at={30} top={350} size={46} bg="#C8102E" color="#fff" rotate={-2}>
+        Auftrag von Coca-Cola
+      </Card>
+    </AbsoluteFill>
+  );
+};
+
+const JollyShot: React.FC<{ at: number[] }> = ({ at }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const cam: V3 = [0.4, 1.4, 3.6 - frame * 0.008];
+  const labels = ["😄 fröhlich", "⚪ rund", "🥤 Cola in der Hand"];
+  const hold = spring({ frame: frame - at[2] + 4, fps, config: { damping: 14, stiffness: 180 } });
+  return (
+    <AbsoluteFill>
+      <XmasBg />
+      <CineStage cam={cam} look={[0, 1.15, 0]} fov={34} floor={0} lift={-170} bloom={1.2} rim="#FF9A7A" keyI={2.4}>
+        <Snow3D frame={frame} n={160} area={[6, 4, 4]} center={[0, -0.5, 0]} />
+        <BokehLights frame={frame} />
+        <SantaFigure
+          frame={frame}
+          rotation={[0, -0.15, 0]}
+          pose={{ laugh: frame >= at[0] ? 0.9 : 0.3, holdR: hold * 0.9, blink: frame % 70 < 3 }}
+          hand={frame >= at[2] - 4 ? <Bottle scale={0.22} rotation={[0.3, 0, 0]} /> : undefined}
+        />
+      </CineStage>
+      {labels.map((l, i) =>
+        frame >= at[i] ? (
+          <div
+            key={l}
+            style={{
+              position: "absolute",
+              top: 230 + i * 110,
+              left: 0,
+              right: 0,
+              display: "flex",
+              justifyContent: "center",
+              transform: `scale(${spring({ frame: frame - at[i], fps, config: { damping: 11, stiffness: 260 } })})`,
+            }}
+          >
+            <div style={{ background: "#fff", color: "#C8102E", fontFamily: FONT_SUB, fontWeight: 900, fontSize: 58, padding: "6px 30px", borderRadius: 16, boxShadow: "0 8px 20px rgba(0,0,0,0.35)" }}>
+              {l}
+            </div>
+          </div>
+        ) : null,
+      )}
+    </AbsoluteFill>
+  );
+};
+
+// =============== Szene 7 – Der Trick ===============
+export const Scene7: React.FC<SceneProps> = ({ from }) => {
+  const t0 = from / FPS;
+  const T = TS(6);
+  return (
+    <AbsoluteFill>
+      <Cut T={T} a={0} b={2.6}>
+        <LenaClose t0={t0} look={{ brow: 0.4 }} />
+        <Slam at={T(1.98)} style={{ left: 0, right: 0, top: 300, display: "flex", justifyContent: "center" }}>
+          <Stamp text="NICHT ERFUNDEN" size={110} rotate={-8} />
+        </Slam>
+      </Cut>
+      <Cut T={T} a={2.6} b={6.6}>
+        <WallShot waveAt={T(3.3 - 2.6)} waveStep={T(0.2)} stampAt={T(5.88 - 2.6)} />
+      </Cut>
+      <Cut T={T} a={6.6} b={8.6}>
+        <TrickShot t0={t0 + T(6.6) / FPS} stampAt={T(7.95 - 6.6)} />
+      </Cut>
+      <Cut T={T} a={8.6} b={10.984 + 1}>
+        <OutroShot t0={t0 + T(8.6) / FPS} />
+      </Cut>
+    </AbsoluteFill>
+  );
+};
+
+// "Genau das ist der Trick": Lena im Spotlicht, alles andere dunkel
+const TrickShot: React.FC<{ t0: number; stampAt: number }> = ({ t0, stampAt }) => {
+  const frame = useCurrentFrame();
+  const c = closeUp(LENA, 2.2 - frame * 0.006);
+  const dark = interpolate(frame, [0, 10], [0, 0.6], clamp);
+  return (
+    <AbsoluteFill>
+      <CityBg />
+      <CityScene t0={t0} cam={c.cam} look={c.look} lena={{ brow: -0.6 }} fov={30} />
+      <AbsoluteFill style={{ background: `radial-gradient(ellipse at 45% 30%, transparent 25%, rgba(0,0,0,${dark}) 70%)` }} />
+      <Slam at={stampAt} style={{ left: 0, right: 0, top: 820, display: "flex", justifyContent: "center" }}>
+        <Stamp text="WERBUNG" size={170} rotate={-10} />
+      </Slam>
+    </AbsoluteFill>
+  );
+};
+

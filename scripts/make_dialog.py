@@ -6,7 +6,8 @@ Aufruf:
 dialog.json: {"voices": {"ich": {"voice": "...", "rate": "+10%", "pitch": "+0Hz"}, ...},
               "gap": 0.18, "scenes": [{"lines": [{"who": "lena", "display": "...", "spoken": "..."}]}]}
 "display" = Untertitel, "spoken" = gesprochener Text (Zahlen ausgeschrieben, gleiche Wortzahl).
-Optional pro Zeile "rate" (z. B. "+16%"), überschreibt das Tempo der Stimme nur für diese Zeile.
+Optional pro Zeile "rate" (z. B. "+16%") und "pitch" (z. B. "-4Hz"), überschreiben Tempo/Tonhöhe nur für diese Zeile;
+"pause" = Pause nach der Zeile in Sekunden.
 Ergebnis-JSON: sceneSeconds, wordStarts (pro Szene), speakers (pro Szene: Sprecher jedes Worts),
 lines (pro Szene: who/start/end in Sekunden ab Videostart).
 """
@@ -70,10 +71,10 @@ def main(cfg_path, out_mp3, out_json):
         for li, line in enumerate(sc["lines"]):
             disp, spok = tokens(line["display"]), tokens(line["spoken"])
             assert len(disp) == len(spok), f"Szene {si+1}, Zeile {li+1}: {len(disp)} vs {len(spok)} Wörter"
-            v = {**cfg["voices"][line["who"]], **({"rate": line["rate"]} if "rate" in line else {})}  # Tempo pro Zeile möglich
+            v = {**cfg["voices"][line["who"]], **{k: line[k] for k in ("rate", "pitch") if k in line}}  # Tempo/Tonhöhe pro Zeile möglich
             raw = f"{tmp}/s{si}_{li}.mp3"
             words = speak_retry(line["spoken"], v, raw)
-            a = max(0.0, words[0][1] - 0.04); b = words[-1][2] + 0.1
+            a = max(0.0, words[0][1] - 0.04); b = words[-1][2] + line.get("tail", 0.1)  # tail: mehr Platz für Endlaute
             last = li == len(sc["lines"]) - 1
             pad = scene_pause if last else line.get("pause", gap)
             seg = f"{tmp}/s{si}_{li}.wav"

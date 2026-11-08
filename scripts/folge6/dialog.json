@@ -2,24 +2,43 @@
  "voices": {
   "florian": {
    "voice": "de-DE-FlorianMultilingualNeural",
-   "rate": "+18%",
+   "rate": "+16%",
    "pitch": "+0Hz"
   },
   "lena": {
    "voice": "de-DE-SeraphinaMultilingualNeural",
-   "rate": "+16%",
+   "rate": "+14%",
    "pitch": "+0Hz"
   }
  },
  "gap": 0.12,
- "scenePause": 0.18,
+ "scenePause": 0.2,
  "scenes": [
   {
    "lines": [
     {
      "who": "lena",
-     "display": "Coca-Cola hat den Weihnachtsmann erfunden. Rot und weiß, wie die Dose. Das glauben fast alle. Aber stimmt das?",
-     "spoken": "Coca-Cola hat den Weihnachtsmann erfunden. Rot und weiß, wie die Dose. Das glauben fast alle. Aber stimmt das?"
+     "display": "Jedes Jahr im Dezember lächelt er uns aus der Werbung an.",
+     "spoken": "Jedes Jahr im Dezember lächelt er uns aus der Werbung an.",
+     "rate": "+18%",
+     "pause": 0.08,
+     "tail": 0.18
+    },
+    {
+     "who": "lena",
+     "display": "Fast alle glauben: Coca-Cola hat ihn erfunden.",
+     "spoken": "Fast alle glauben: Coca-Cola hat ihn erfunden.",
+     "rate": "+16%",
+     "pause": 0.25,
+     "tail": 0.18
+    },
+    {
+     "who": "lena",
+     "display": "Aber die Geschichte fängt viel früher an.",
+     "spoken": "Aber die Geschichte fängt viel früher an.",
+     "rate": "+8%",
+     "pitch": "-3Hz",
+     "tail": 0.18
     }
    ]
   },
@@ -27,18 +46,27 @@
    "lines": [
     {
      "who": "florian",
-     "display": "Nein. Den heiligen Nikolaus gab es schon vor über 1600 Jahren. Und auf alten Bildern trägt er als Bischof oft einen roten Mantel.",
-     "spoken": "Nein. Den heiligen Nikolaus gab es schon vor über sechzehnhundert Jahren. Und auf alten Bildern trägt er als Bischof oft einen roten Mantel."
-    }
-   ]
-  },
-  {
-   "lines": [
+     "display": "Kleinasien, vor über 1600 Jahren.",
+     "spoken": "Kleinasien, vor über sechzehnhundert Jahren.",
+     "rate": "+8%",
+     "pitch": "-4Hz",
+     "pause": 0.25,
+     "tail": 0.18
+    },
     {
-     "who": "lena",
-     "rate": "+21%",
-     "display": "Und der dicke Mann mit Bart?",
-     "spoken": "Und der dicke Mann mit Bart?"
+     "who": "florian",
+     "display": "Der Legende nach wirft ein Bischof nachts heimlich Gold durch das Fenster einer armen Familie.",
+     "spoken": "Der Legende nach wirft ein Bischof nachts heimlich Gold durch das Fenster einer armen Familie.",
+     "rate": "+18%",
+     "pause": 0.2,
+     "tail": 0.18
+    },
+    {
+     "who": "florian",
+     "display": "Sein Name: Nikolaus. Auf alten Bildern: im roten Mantel.",
+     "spoken": "Sein Name: Nikolaus. Auf alten Bildern: im roten Mantel.",
+     "rate": "+12%",
+     "tail": 0.18
     }
    ]
   },
@@ -46,18 +74,19 @@
    "lines": [
     {
      "who": "florian",
-     "display": "Den zeichnete Thomas Nast schon ab 1863 für eine Zeitschrift in New York. Und um 1900 war der Weihnachtsmann auf vielen Bildern längst rot.",
-     "spoken": "Den zeichnete Thomas Nast schon ab achtzehnhundertdreiundsechzig für eine Zeitschrift in New York. Und um neunzehnhundert war der Weihnachtsmann auf vielen Bildern längst rot."
-    }
-   ]
-  },
-  {
-   "lines": [
+     "display": "New York, im Jahr 1863.",
+     "spoken": "New York, im Jahr achtzehnhundertdreiundsechzig.",
+     "rate": "+12%",
+     "pitch": "+1Hz",
+     "pause": 0.15,
+     "tail": 0.18
+    },
     {
-     "who": "lena",
-     "rate": "+21%",
-     "display": "Und Coca-Cola?",
-     "spoken": "Und Coca-Cola?"
+     "who": "florian",
+     "display": "Der Zeichner Thomas Nast gibt dem Bischof einen dicken Bauch, einen weißen Bart und ein fröhliches Lachen.",
+     "spoken": "Der Zeichner Thomas Nahst gibt dem Bischof einen dicken Bauch, einen weißen Bahrt und ein fröhliches Lachen.",
+     "rate": "+18%",
+     "tail": 0.18
     }
    ]
   },
@@ -65,8 +94,58 @@
    "lines": [
     {
      "who": "florian",
-     "display": "Ab 1931 ließ Coca-Cola jedes Jahr einen Weihnachtsmann malen. Fröhlich, rund, mit Cola in der Hand. Über 30 Jahre lang.",
-     "spoken": "Ab neunzehnhunderteinunddreißig ließ Coca-Cola jedes Jahr einen Weihnachtsmann malen. Fröhlich, rund, mit Cola in der Hand. Über dreißig Jahre lang."
+     "display": "Um 1900 lächelt er schon von unzähligen Postkarten.",
+     "spoken": "Um neunzehnhundert lächelt er schon von unzähligen Postkarten.",
+     "rate": "+18%",
+     "pause": 0.12,
+     "tail": 0.18
+    },
+    {
+     "who": "florian",
+     "display": "In Rot. Lange vor Coca-Cola.",
+     "spoken": "In Rot. Lange vor Koka-Kola.",
+     "rate": "+8%",
+     "pitch": "-2Hz",
+     "tail": 0.18
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "1931 hat Coca-Cola ein Problem:",
+     "spoken": "Neunzehnhunderteinunddreißig hat Koka-Kola ein Problem:",
+     "rate": "+14%",
+     "pitch": "-2Hz",
+     "pause": 0.15,
+     "tail": 0.18
+    },
+    {
+     "who": "florian",
+     "display": "Im Winter verkauft sich ein kaltes Getränk schlecht.",
+     "spoken": "Im Winter verkauft sich ein kaltes Getränk schlecht.",
+     "rate": "+18%",
+     "tail": 0.18
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "Also lässt die Firma den Maler Haddon Sundblom jedes Jahr einen Weihnachtsmann malen.",
+     "spoken": "Also lässt die Firma den Maler Haddon Sundblom jedes Jahr einen Weihnachtsmann malen.",
+     "rate": "+18%",
+     "pause": 0.12,
+     "tail": 0.18
+    },
+    {
+     "who": "florian",
+     "display": "Fröhlich, rund, mit Cola in der Hand. Über 30 Jahre lang.",
+     "spoken": "Fröhlich, rund, mit Kola in der Hand. Über dreißig Jahre lang.",
+     "rate": "+16%",
+     "tail": 0.18
     }
    ]
   },
@@ -74,8 +153,35 @@
    "lines": [
     {
      "who": "lena",
-     "display": "Der Trick: Coca-Cola hat den Weihnachtsmann nicht erfunden. Aber so oft gezeigt, bis alle dachten, er gehört zur Marke. Folg mir für mehr Werbelügen.",
-     "spoken": "Der Trick: Coca-Cola hat den Weihnachtsmann nicht erfunden. Aber so oft gezeigt, bis alle dachten, er gehört zur Marke. Folg mir für mehr Werbelügen."
+     "display": "Erfunden hat Coca-Cola ihn also nicht.",
+     "spoken": "Erfunden hat Coca-Cola ihn also nicht.",
+     "rate": "+16%",
+     "pause": 0.08,
+     "tail": 0.18
+    },
+    {
+     "who": "lena",
+     "display": "Aber so oft gezeigt, bis wir dachten, er gehört zur Marke.",
+     "spoken": "Aber so oft gezeigt, bis wir dachten, er gehört zur Marke.",
+     "rate": "+16%",
+     "pause": 0.2,
+     "tail": 0.18
+    },
+    {
+     "who": "lena",
+     "display": "Genau das ist der Trick.",
+     "spoken": "Genau das ist der Trick.",
+     "rate": "+6%",
+     "pitch": "-3Hz",
+     "pause": 0.2,
+     "tail": 0.18
+    },
+    {
+     "who": "lena",
+     "display": "Folg mir für mehr Werbelügen.",
+     "spoken": "Folg mir für mehr Werbelügen.",
+     "rate": "+16%",
+     "tail": 0.18
     }
    ]
   }

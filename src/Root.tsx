@@ -8,6 +8,7 @@ import { calculateMetadata as calculateFolge5, Folge5Fackeln } from "./Folge5Fac
 import { Folge5Story } from "./folge5/StoryImage";
 import { calculateMetadata as calculateFolge6, Folge6Weihnachtsmann } from "./Folge6Weihnachtsmann";
 import { Folge6Story } from "./folge6/StoryImage";
+import { ModelCheck } from "./folge6/Check";
 import { calculateMetadata as calculateFolge3, Folge3Diamant, FOLGE3_DEFAULTS } from "./Folge3Diamant";
 
 export const RemotionRoot: React.FC = () => {
@@ -85,6 +86,7 @@ export const RemotionRoot: React.FC = () => {
       />
       <Still id="Folge3Story" component={Folge3Story} width={1080} height={1920} />
       <Still id="Folge5Story" component={Folge5Story} width={1080} height={1920} />
+      <Still id="ModelCheck" component={ModelCheck} width={540} height={960} defaultProps={{ view: "front", laugh: 0 }} />
       <Still id="Folge6Story" component={Folge6Story} width={1080} height={1920} />
     </>
   );
