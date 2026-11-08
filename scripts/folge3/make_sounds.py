@@ -142,11 +142,12 @@ def save_quiet(name, x, peak):  # wie save, aber mit festem Spitzenpegel (für l
                    input=x.astype(np.float32).tobytes(), check=True)
 
 # ---------- Folge 6: spannender Teppich (Moll, pulsierender Bass, wird lauter) + Riser ----------
-def music_tense(seconds=47, bpm=92):
-    base = music(seconds, chords=[[38, 57, 62, 65], [34, 58, 62, 65], [41, 57, 60, 65], [33, 57, 61, 64]], bpm=bpm)
+def music_tense(seconds=47, bpm=92, chords=None, roots=None):
+    chords = chords or [[38, 57, 62, 65], [34, 58, 62, 65], [41, 57, 60, 65], [33, 57, 61, 64]]
+    base = music(seconds, chords=chords, bpm=bpm)
     n = base.shape[1]; pulse = np.zeros(n)
     f = lambda m: 440 * 2 ** ((m - 69) / 12)
-    roots = [38, 34, 41, 33]; beat = 60 / bpm / 2  # Achtel
+    roots = roots or [c[0] for c in chords]; beat = 60 / bpm / 2  # Achtel
     bar = 4 * 60 / bpm; k = 0; t0 = 0.0
     while t0 < seconds:
         root = roots[int(t0 // bar) % 4]; s0 = int(t0 * SR); m = min(n - s0, int(0.22 * SR))
@@ -170,6 +171,11 @@ def riser_clean(d=1.2):  # ansteigender Ton vor einer Auflösung, endet sauber
 if len(sys.argv) > 2 and sys.argv[2] == "folge6":
     save("music-folge6.mp3", music_tense(), stereo=True)
     save("sfx-riser.mp3", riser_clean())
+    print("fertig"); sys.exit()
+
+if len(sys.argv) > 2 and sys.argv[2] == "folge7":
+    # e-Moll / C / a-Moll / H-Dur, 96 BPM – düster-klinisch, treibend
+    save("music-folge7.mp3", music_tense(46, bpm=96, chords=[[40, 59, 64, 67], [36, 55, 60, 64], [33, 57, 60, 64], [35, 59, 63, 66]]), stereo=True)
     print("fertig"); sys.exit()
 
 if len(sys.argv) > 2 and sys.argv[2] == "clean":

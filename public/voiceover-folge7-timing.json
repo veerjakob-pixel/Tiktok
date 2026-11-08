@@ -1,0 +1,336 @@
+{
+ "sceneSeconds": [
+  5.932,
+  6.67,
+  6.84,
+  7.849,
+  5.677,
+  4.44,
+  6.396
+ ],
+ "wordStarts": [
+  [
+   0.04,
+   0.794,
+   1.053,
+   1.398,
+   1.678,
+   1.85,
+   2.91,
+   3.223,
+   3.489,
+   3.929,
+   4.565,
+   5.121
+  ],
+  [
+   5.972,
+   6.273,
+   6.954,
+   7.055,
+   7.3,
+   9.149,
+   9.332,
+   9.645,
+   9.979,
+   10.108,
+   10.356,
+   10.485,
+   11.617
+  ],
+  [
+   12.642,
+   13.023,
+   13.14,
+   13.934,
+   14.136,
+   14.22,
+   14.506,
+   14.739,
+   15.577,
+   15.722,
+   16.001,
+   16.169,
+   16.738,
+   16.983,
+   17.408,
+   18.334
+  ],
+  [
+   19.482,
+   19.588,
+   19.99,
+   20.361,
+   20.52,
+   20.689,
+   20.954,
+   21.627,
+   21.903,
+   22.792,
+   22.941,
+   23.036,
+   23.84,
+   23.968,
+   24.639,
+   24.847,
+   25.681,
+   25.866,
+   26.213,
+   26.479,
+   26.607
+  ],
+  [
+   27.331,
+   27.737,
+   28.018,
+   28.206,
+   28.931,
+   29.129,
+   29.327,
+   29.66,
+   29.91,
+   30.014,
+   30.347,
+   30.472,
+   30.67,
+   31.327,
+   31.483,
+   31.691,
+   31.91,
+   32.254
+  ],
+  [
+   33.008,
+   33.213,
+   33.665,
+   33.881,
+   34.139,
+   34.549,
+   35.397,
+   35.715,
+   35.986,
+   36.328
+  ],
+  [
+   37.448,
+   37.788,
+   37.963,
+   38.566,
+   38.753,
+   38.917,
+   39.509,
+   40.244,
+   40.562,
+   40.748,
+   40.88,
+   41.623,
+   42.032,
+   42.237,
+   42.452,
+   42.711
+  ]
+ ],
+ "speakers": [
+  [
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena"
+  ],
+  [
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian"
+  ],
+  [
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian"
+  ],
+  [
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian"
+  ],
+  [
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian",
+   "florian"
+  ],
+  [
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena"
+  ],
+  [
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena",
+   "lena"
+  ]
+ ],
+ "lines": [
+  [
+   {
+    "who": "lena",
+    "start": 0.0,
+    "end": 2.72
+   },
+   {
+    "who": "lena",
+    "start": 2.87,
+    "end": 5.752
+   }
+  ],
+  [
+   {
+    "who": "florian",
+    "start": 5.932,
+    "end": 9.009
+   },
+   {
+    "who": "florian",
+    "start": 9.109,
+    "end": 12.422
+   }
+  ],
+  [
+   {
+    "who": "florian",
+    "start": 12.602,
+    "end": 15.417
+   },
+   {
+    "who": "florian",
+    "start": 15.537,
+    "end": 19.262
+   }
+  ],
+  [
+   {
+    "who": "florian",
+    "start": 19.442,
+    "end": 23.65
+   },
+   {
+    "who": "florian",
+    "start": 23.8,
+    "end": 27.111
+   }
+  ],
+  [
+   {
+    "who": "florian",
+    "start": 27.291,
+    "end": 32.788
+   }
+  ],
+  [
+   {
+    "who": "lena",
+    "start": 32.968,
+    "end": 35.257
+   },
+   {
+    "who": "lena",
+    "start": 35.357,
+    "end": 37.228
+   }
+  ],
+  [
+   {
+    "who": "lena",
+    "start": 37.408,
+    "end": 41.433
+   },
+   {
+    "who": "lena",
+    "start": 41.583,
+    "end": 43.624
+   }
+  ]
+ ]
+}

@@ -1,0 +1,147 @@
+{
+ "voices": {
+  "florian": {
+   "voice": "de-DE-FlorianMultilingualNeural",
+   "rate": "+16%",
+   "pitch": "+0Hz"
+  },
+  "lena": {
+   "voice": "de-DE-SeraphinaMultilingualNeural",
+   "rate": "+14%",
+   "pitch": "+0Hz"
+  }
+ },
+ "gap": 0.1,
+ "scenePause": 0.18,
+ "scenes": [
+  {
+   "lines": [
+    {
+     "who": "lena",
+     "display": "Mundgeruch galt früher nicht als Krankheit.",
+     "spoken": "Mundgeruch galt früher nicht als Krankheit.",
+     "tail": 0.18,
+     "rate": "+16%",
+     "pause": 0.15
+    },
+    {
+     "who": "lena",
+     "display": "Bis eine Firma Mundwasser verkaufen wollte.",
+     "spoken": "Bis eine Firma Mundwasser verkaufen wollte.",
+     "tail": 0.18,
+     "rate": "+8%",
+     "pitch": "-3Hz"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "St. Louis, im Jahr 1879.",
+     "spoken": "Sankt Luis, im Jahr achtzehnhundertneunundsiebzig.",
+     "tail": 0.18,
+     "rate": "+12%",
+     "pause": 0.1
+    },
+    {
+     "who": "florian",
+     "display": "Ein Arzt erfindet ein Mittel für Operationen: Listerine.",
+     "spoken": "Ein Arzt erfindet ein Mittel für Operationen: Listerine.",
+     "tail": 0.18,
+     "rate": "+16%"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "Anfang der 1920er-Jahre sucht die Firma neue Kunden.",
+     "spoken": "Anfang der Zwanzigerjahre sucht die Firma neue Kunden.",
+     "tail": 0.18,
+     "rate": "+18%",
+     "pause": 0.12
+    },
+    {
+     "who": "florian",
+     "display": "Sie findet ein altes, kaum bekanntes Fachwort: Halitosis.",
+     "spoken": "Sie findet ein altes, kaum bekanntes Fachwort: Halitosis.",
+     "tail": 0.18,
+     "rate": "+12%",
+     "pitch": "-2Hz"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "Die Werbung erzählt von einer jungen Frau. Immer Brautjungfer, nie die Braut.",
+     "spoken": "Die Werbung erzählt von einer jungen Frau. Immer Brautjungfer, nie die Braut.",
+     "tail": 0.18,
+     "rate": "+18%",
+     "pause": 0.15
+    },
+    {
+     "who": "florian",
+     "display": "Der Grund: ihr Atem. Und keiner sagt es ihr.",
+     "spoken": "Der Grund: ihr Atem. Und keiner sagt es ihr.",
+     "tail": 0.18,
+     "rate": "+8%",
+     "pitch": "-3Hz"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "Plötzlich haben alle Angst. In sieben Jahren steigt der Umsatz von rund 100.000 auf über acht Millionen Dollar.",
+     "spoken": "Plötzlich haben alle Angst. In sieben Jahren steigt der Umsatz von rund hunderttausend auf über acht Millionen Dollar.",
+     "tail": 0.18,
+     "rate": "+20%"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "lena",
+     "display": "Die Firma hat kein Problem gelöst.",
+     "spoken": "Die Firma hat kein Problem gelöst.",
+     "tail": 0.18,
+     "rate": "+16%",
+     "pause": 0.1
+    },
+    {
+     "who": "lena",
+     "display": "Sie hat eins erfunden.",
+     "spoken": "Sie hat eins erfunden.",
+     "tail": 0.18,
+     "rate": "+6%",
+     "pitch": "-3Hz"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "lena",
+     "display": "Erst die Angst, dann das Produkt. Genau das ist der Trick.",
+     "spoken": "Erst die Angst, dann das Produkt. Genau das ist der Trick.",
+     "tail": 0.18,
+     "rate": "+14%",
+     "pause": 0.15
+    },
+    {
+     "who": "lena",
+     "display": "Folg mir für mehr Werbelügen.",
+     "spoken": "Folg mir für mehr Werbelügen.",
+     "tail": 0.18,
+     "rate": "+16%"
+    }
+   ]
+  }
+ ]
+}
