@@ -1,5 +1,25 @@
 # Hinweise für alle Folgen (Werbelügen-Videos)
 
+## Vorlage: Folge 6 ist der Standard für ALLE neuen Folgen
+Jede neue Folge wird genauso gebaut wie Folge 6 (`Folge6Weihnachtsmann`, Ordner `src/folge6/`, `scripts/folge6/`):
+- **Geschichte erzählen, kein Interview:** Lena macht den Hook (1–3 Sätze) und den Schluss (Trick + "Folg mir für
+  mehr Werbelügen."). Florian erzählt dazwischen die Geschichte chronologisch mit Ort + Zeit
+  ("Kleinasien, vor über 1600 Jahren.", "New York, im Jahr 1863."), kurze Sätze, Spannung, Wendepunkt.
+  Keine Frage-Antwort-Ping-Pongs. Nur gesicherte Fakten, Legenden als "Der Legende nach" kennzeichnen.
+- **Länge** ca. 55–65 s, 7 Szenen, alle ~2 s ein neues Bild. Jede Einstellung zeigt HANDLUNG (Figur läuft,
+  etwas wird gezeichnet/gemalt, Dinge fliegen, Farbe kommt dazu), nicht nur Standbilder.
+- **Hook:** ab Bild 0 harter Zoom + großer Bildschirm-Text mit der Frage; Stempel ("MYTHOS?" o. ä.) nach ~6 s.
+- **Look:** `CineStage` (Leuchten, Vignette, weiche Schatten, Handkamera), Figuren `Human` mit Atmen/Gesten,
+  Spezialfiguren als eigene, sorgfältig gebaute Modelle (wie `SantaFigure`), Bokeh-Lichter, 3D-Schnee/Partikel,
+  Nachtszenen wirklich dunkel (`env` klein), Wisch-Übergänge (`WhipIn`) statt weißem Blitz.
+- **Ton:** eigene spannende Musik aus reinen Tönen (`make_sounds.py ... folge6` als Vorlage, Lautstärke 0.1),
+  Riser-Ton ~1,2 s vor jeder Auflösung/jedem Stempel, Effekte wie in Folge 6.
+- **Untertitel, Fortschrittsbalken, Serien-Label, Format 1080x1920** wie bisher; Story-Bild als Still
+  (`Folge<N>Story`, gespeichert als `out/folge<N>-story.png`).
+- **Ablauf:** Dialog schreiben -> Stimme erzeugen -> Rausch-Prüfung -> Aussprache-Prüfung (0 Abweichungen) ->
+  Modelle mit `ModelCheck` prüfen -> Kontaktbogen aus jeder Einstellung prüfen und nachbessern -> rendern
+  (`--gl=swangle`) -> Rausch-Prüfung + ffprobe + Bilder aus dem fertigen Video prüfen -> commit + push.
+
 ## Ton: nie Rauschen
 - Nach JEDEM Rendern mit Ton die Rausch-Prüfung laufen lassen:
   `python3 scripts/check_noise.py out/<video>.mp4`
@@ -10,7 +30,9 @@
 - Neue Tondateien (Musik, Effekte, Stimme) vor dem Einbauen ebenfalls mit `check_noise.py` prüfen.
 
 ## Stimme
-- Florian (`de-DE-FlorianMultilingualNeural`) als Erzähler, Lena = Seraphina. Tempo Florian +13 %, Lena +11 %.
+- Florian (`de-DE-FlorianMultilingualNeural`) als Erzähler, Lena = Seraphina. Grundtempo Florian +16 %, Lena +14 %
+  (wie Folge 6), pro Satz variieren: spannende/ruhige Sätze langsamer (+4 bis +10 %, Tonhöhe -2 bis -4 Hz),
+  Aufzählungen schneller (+18 bis +22 %). `tail: 0.18` pro Zeile, damit Endlaute nicht abgeschnitten werden.
 - "Haarvard" statt "Harvard" schreiben (sonst klingt es wie "Harz").
 - Dialoge mit `scripts/make_dialog.py`, Erzähler allein mit `scripts/make_voice_florian.py`.
 - edge-tts hinter dem Proxy: `EDGE_TTS_CA=/root/.ccr/ca-bundle.crt` setzen.
@@ -22,7 +44,7 @@
 - Erzählen statt Interview: Tempo/Tonhöhe pro Satz variieren (`rate`, `pitch`, `pause` in dialog.json).
 
 ## Rendern
-- 3D (Three.js) hier ohne Grafikkarte: `--gl=swangle`. Story-Version dauert ca. 25 Minuten.
+- 3D (Three.js) hier ohne Grafikkarte: `--gl=swangle`. Eine Folge im Kino-Look dauert ca. 30–40 Minuten.
 - Nach dem Rendern mit `ffprobe` prüfen, dass eine Tonspur da ist (außer bei "ohne Ton"-Versionen).
 
 ## Bild-Qualität selbst kontrollieren
