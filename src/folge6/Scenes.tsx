@@ -140,21 +140,6 @@ const NameTag: React.FC<{ name: string; color: string; top?: number }> = ({ name
   );
 };
 
-const LenaClose: React.FC<{ t0: number; look?: Pose; tag?: boolean }> = ({ t0, look = {}, tag }) => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  // kurzer, harter Push-In am Schnittanfang
-  const s = spring({ frame, fps, config: { damping: 18, stiffness: 240 } });
-  const c = closeUp(LENA, interpolate(s, [0, 1], [2.6, 1.85]) - frame * 0.002);
-  return (
-    <AbsoluteFill>
-      <CityBg />
-      <CityScene t0={t0} cam={c.cam} look={c.look} lena={look} fov={30} />
-      {tag && <NameTag name="Lena" color="#E76F51" />}
-    </AbsoluteFill>
-  );
-};
-
 const YearTag: React.FC<{ text: string }> = ({ text }) => (
   <div
     style={{
@@ -444,20 +429,14 @@ export const Scene1: React.FC<SceneProps> = ({ from }) => {
   const T = TS(0);
   return (
     <AbsoluteFill>
-      <Cut T={T} a={0} b={1.4}>
+      <Cut T={T} a={0} b={2.7}>
         <AdHookShot />
-      </Cut>
-      <Cut T={T} a={1.4} b={3.4}>
-        <WalkShot t0={t0 + T(1.4) / FPS} />
-      </Cut>
-      <Cut T={T} a={3.4} b={6.8}>
-        <LenaClose t0={t0 + T(3.4) / FPS} look={{ brow: 0.5 }} />
-        <Slam at={T(5.84 - 3.4)} style={{ left: 0, right: 0, top: 300, display: "flex", justifyContent: "center" }}>
-          <Stamp text="MYTHOS?" size={170} rotate={-10} />
+        <Slam at={T(1.95)} style={{ left: 0, right: 0, top: 560, display: "flex", justifyContent: "center" }}>
+          <Stamp text="NEIN!" size={280} rotate={-10} />
         </Slam>
       </Cut>
-      <Cut T={T} a={6.8} b={9.582 + 1}>
-        <SkyRewindShot t0={t0 + T(6.8) / FPS} />
+      <Cut T={T} a={2.7} b={5.666 + 1}>
+        <SkyRewindShot t0={t0 + T(2.7) / FPS} />
       </Cut>
     </AbsoluteFill>
   );
@@ -494,50 +473,18 @@ const AdHookShot: React.FC = () => {
   );
 };
 
-// Lena läuft an den Plakaten vorbei, Kamera fährt mit
-const WalkShot: React.FC<{ t0: number }> = ({ t0 }) => {
-  const frame = useCurrentFrame();
-  const v = useVoices(t0);
-  const posters = [useAdPoster(0), useAdPoster(1), useAdPoster(2)];
-  const x = -1.6 + frame * 0.025;
-  return (
-    <AbsoluteFill>
-      <CityBg />
-      <CineStage cam={[x + 0.4, 1.5, 3.4]} look={[x + 0.1, 1.2, 0]} fov={34} exposure={1.05} key1="#9FB4FF" keyI={0.7} rim="#FFB870" rimI={1.4} amb={0.35} bloom={1.1} fog={{ color: "#141C33", near: 9, far: 26 }}>
-        <XmasStreet frame={frame} posters={posters} />
-        <pointLight position={[x, 2.1, 3]} intensity={7} distance={9} decay={1.4} color="#FFD7A8" />
-        <Human
-          frame={frame}
-          seed={1}
-          position={[x, 0.14, 0.3]}
-          rotation={[0, Math.PI / 2 - 0.35, 0]}
-          top="#E76F51"
-          bottom="#2E3A59"
-          shoes="#5A3A2A"
-          skin="#EDC3A3"
-          hair="#5A3A1A"
-          hairStyle="long"
-          iris="#4A6B3A"
-          collar="#F4E4D4"
-          pose={{ ...v.lena, walk: frame * 0.28, headTurn: -0.7, gesture: 0 }}
-        />
-      </CineStage>
-      <NameTag name="Lena" color="#E76F51" />
-    </AbsoluteFill>
-  );
-};
-
 // Kamera steigt in den Schneehimmel, dann wird zurückgespult
 const SkyRewindShot: React.FC<{ t0: number }> = ({ t0 }) => {
   const frame = useCurrentFrame();
-  const p = interpolate(frame, [0, 40], [0, 1], clamp);
+  const p = interpolate(frame, [0, 34], [0, 1], clamp);
   const e = p * p * (3 - 2 * p);
-  const rw = interpolate(frame, [30, 60], [0, 1], clamp);
+  const rw = interpolate(frame, [26, 50], [0, 1], clamp);
   return (
     <AbsoluteFill style={{ filter: `sepia(${rw * 0.8}) contrast(${1 + rw * 0.1})` }}>
       <CityBg />
       <CityScene t0={t0} cam={[0, 1.6 + e * 3.2, 4.4 + e * 1.5]} look={[0, 1.2 + e * 4.5, -1]} lena={{ headTurn: 0.2 }} />
-      {frame >= 30 && <Vhs label="1600 Jahre" />}
+      {frame < 26 && <NameTag name="Lena" color="#E76F51" />}
+      {frame >= 26 && <Vhs label="1600 Jahre" />}
     </AbsoluteFill>
   );
 };
@@ -547,18 +494,19 @@ export const Scene2: React.FC<SceneProps> = () => {
   const T = TS(1);
   return (
     <AbsoluteFill>
-      <Cut T={T} a={0} b={3.0}>
+      <Cut T={T} a={0} b={1.0}>
         <TownShot />
         <YearTag text="Kleinasien · vor 1600 Jahren" />
       </Cut>
-      <Cut T={T} a={3.0} b={7.4}>
-        <SneakShot goldAt={T(5.06 - 3.0)} />
+      <Cut T={T} a={1.0} b={3.4}>
+        <SneakShot goldAt={T(2.12 - 1.0)} />
+        <YearTag text="Kleinasien · vor 1600 Jahren" />
       </Cut>
-      <Cut T={T} a={7.4} b={9.3}>
-        <BishopFaceShot nameAt={T(8.42 - 7.4)} />
+      <Cut T={T} a={3.4} b={5.3}>
+        <BishopFaceShot nameAt={T(4.48 - 3.4)} />
       </Cut>
-      <Cut T={T} a={9.3} b={11.86 + 1}>
-        <PaintingFrameShot redAt={T(10.7 - 9.3)} />
+      <Cut T={T} a={5.3} b={7.242 + 1}>
+        <PaintingFrameShot redAt={T(6.44 - 5.3)} />
       </Cut>
     </AbsoluteFill>
   );
@@ -583,7 +531,7 @@ const SneakShot: React.FC<{ goldAt: number }> = ({ goldAt }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   // Bischof schleicht von links zum Fenster, bleibt stehen, wirft
-  const walkEnd = goldAt - 8;
+  const walkEnd = Math.max(10, goldAt - 6);
   const x = interpolate(frame, [0, walkEnd], [-1.8, 0.15], clamp);
   const walking = frame < walkEnd;
   const throwP = spring({ frame: frame - (goldAt - 6), fps, config: { damping: 14, stiffness: 160 } });
@@ -688,14 +636,14 @@ export const Scene3: React.FC<SceneProps> = () => {
   const T = TS(2);
   return (
     <AbsoluteFill>
-      <Cut T={T} a={0} b={2.9}>
+      <Cut T={T} a={0} b={2.8}>
         <Vintage strength={0.6}>
           <YearShot text="1863" color="#2B1D0E" sub="NEW YORK" />
         </Vintage>
       </Cut>
-      <Cut T={T} a={2.9} b={7.997 + 1}>
+      <Cut T={T} a={2.8} b={6.614 + 1}>
         <Vintage strength={0.45}>
-          <DrawingShot start={T(4.7 - 2.9)} end={T(7.3 - 2.9)} marks={[5.16, 6.24, 7.21].map((s) => T(s - 2.9))} />
+          <DrawingShot start={T(3.3 - 2.8)} end={T(6.1 - 2.8)} marks={[4.92, 5.89].map((s) => T(s - 2.8))} />
         </Vintage>
       </Cut>
     </AbsoluteFill>
@@ -710,7 +658,7 @@ const DrawingShot: React.FC<{ start: number; end: number; marks: number[] }> = (
   // Feder folgt der Zeichenlinie (von unten nach oben), wackelt beim Zeichnen
   const penY = -0.6 + progress * 1.15;
   const penX = Math.sin(frame * 0.9) * 0.18 * (progress > 0 && progress < 1 ? 1 : 0.2);
-  const labels = ["dicker Bauch", "weißer Bart", "fröhliches Lachen"];
+  const labels = ["dicker Bauch", "weißer Bart"];
   return (
     <AbsoluteFill>
       <AbsoluteFill style={{ background: "#1A120B" }} />
@@ -759,7 +707,7 @@ export const Scene4: React.FC<SceneProps> = () => {
   const T = TS(3);
   return (
     <AbsoluteFill>
-      <PostcardShot at={[0.15, 0.45, 0.75].map((s) => T(s))} redAt={T(3.41)} stampAt={T(4.75)} />
+      <PostcardShot at={[0.1, 0.35, 0.6].map((s) => T(s))} redAt={T(3.12)} stampAt={T(3.28)} />
       <YearTag text="um 1900" />
     </AbsoluteFill>
   );
@@ -812,11 +760,11 @@ export const Scene5: React.FC<SceneProps> = () => {
   const T = TS(4);
   return (
     <AbsoluteFill>
-      <Cut T={T} a={0} b={1.4}>
+      <Cut T={T} a={0} b={1.3}>
         <YearShot text="1931" color="#C8102E" sub="COCA-COLA HAT EIN PROBLEM" bg="radial-gradient(circle at 50% 42%, #FFF1E6 0%, #E8B4A0 85%)" subColor="#5A0A14" />
       </Cut>
-      <Cut T={T} a={1.4} b={6.068 + 1}>
-        <WinterShot barsAt={T(3.31 - 1.4)} />
+      <Cut T={T} a={1.3} b={5.74 + 1}>
+        <WinterShot barsAt={T(3.25 - 1.3)} />
       </Cut>
     </AbsoluteFill>
   );
@@ -872,14 +820,14 @@ export const Scene6: React.FC<SceneProps> = () => {
   const T = TS(5);
   return (
     <AbsoluteFill>
-      <Cut T={T} a={0} b={3.3}>
-        <PainterShot end={T(3.2)} />
+      <Cut T={T} a={0} b={2.4}>
+        <PainterShot end={T(2.3)} />
       </Cut>
-      <Cut T={T} a={3.3} b={6.45}>
-        <JollyShot at={[3.99, 4.65, 5.37].map((s) => T(s - 3.3))} />
+      <Cut T={T} a={2.4} b={5.3}>
+        <JollyShot at={[2.85, 3.49, 4.18].map((s) => T(s - 2.4))} />
       </Cut>
-      <Cut T={T} a={6.45} b={8.214 + 1}>
-        <CalendarShot at={T(6.6 - 6.45)} step={T(0.1)} />
+      <Cut T={T} a={5.3} b={6.925 + 1}>
+        <CalendarShot at={T(5.35 - 5.3)} step={T(0.09)} />
       </Cut>
     </AbsoluteFill>
   );
@@ -916,7 +864,7 @@ const PainterShot: React.FC<{ end: number }> = ({ end }) => {
       <Card top={230} size={58} bg="#1D2433" color="#fff">
         🎨 Maler Haddon Sundblom
       </Card>
-      <Card at={30} top={350} size={46} bg="#C8102E" color="#fff" rotate={-2}>
+      <Card at={18} top={350} size={46} bg="#C8102E" color="#fff" rotate={-2}>
         Auftrag von Coca-Cola
       </Card>
     </AbsoluteFill>
@@ -972,20 +920,14 @@ export const Scene7: React.FC<SceneProps> = ({ from }) => {
   const T = TS(6);
   return (
     <AbsoluteFill>
-      <Cut T={T} a={0} b={2.6}>
-        <LenaClose t0={t0} look={{ brow: 0.4 }} />
-        <Slam at={T(1.98)} style={{ left: 0, right: 0, top: 300, display: "flex", justifyContent: "center" }}>
-          <Stamp text="NICHT ERFUNDEN" size={110} rotate={-8} />
-        </Slam>
+      <Cut T={T} a={0} b={3.5}>
+        <WallShot waveAt={T(0.3)} waveStep={T(0.2)} stampAt={T(2.94)} />
       </Cut>
-      <Cut T={T} a={2.6} b={6.6}>
-        <WallShot waveAt={T(3.3 - 2.6)} waveStep={T(0.2)} stampAt={T(5.88 - 2.6)} />
+      <Cut T={T} a={3.5} b={5.5}>
+        <TrickShot t0={t0 + T(3.5) / FPS} stampAt={T(4.9 - 3.5)} />
       </Cut>
-      <Cut T={T} a={6.6} b={8.6}>
-        <TrickShot t0={t0 + T(6.6) / FPS} stampAt={T(7.95 - 6.6)} />
-      </Cut>
-      <Cut T={T} a={8.6} b={10.984 + 1}>
-        <OutroShot t0={t0 + T(8.6) / FPS} />
+      <Cut T={T} a={5.5} b={7.868 + 1}>
+        <OutroShot t0={t0 + T(5.5) / FPS} />
       </Cut>
     </AbsoluteFill>
   );
@@ -1002,7 +944,7 @@ const TrickShot: React.FC<{ t0: number; stampAt: number }> = ({ t0, stampAt }) =
       <CityScene t0={t0} cam={c.cam} look={c.look} lena={{ brow: -0.6 }} fov={30} />
       <AbsoluteFill style={{ background: `radial-gradient(ellipse at 45% 30%, transparent 25%, rgba(0,0,0,${dark}) 70%)` }} />
       <Slam at={stampAt} style={{ left: 0, right: 0, top: 820, display: "flex", justifyContent: "center" }}>
-        <Stamp text="WERBUNG" size={170} rotate={-10} />
+        <Stamp text="DER TRICK" size={150} rotate={-10} />
       </Slam>
     </AbsoluteFill>
   );

@@ -1,5 +1,6 @@
 import React from "react";
-import { AbsoluteFill, CalculateMetadataFunction, getStaticFiles, Html5Audio, Sequence, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, CalculateMetadataFunction, getStaticFiles, Html5Audio, interpolate, Sequence, spring, staticFile, useCurrentFrame } from "remotion";
+import { FONT_SUB } from "./theme";
 import { getAudioDurationInSeconds } from "@remotion/media-utils";
 import { buildPages, FPS, timeWords } from "./folge3/script";
 import { CalmSubtitles, ProgressBar, SeriesLabel, SpeakerTag } from "./folge3/Overlays";
@@ -51,6 +52,52 @@ const WhipIn: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
+// Mitte des Videos: Like, Folgen, Kommentieren (Herz ploppt, Finger tippt auf Folgen, Sprechblase)
+const MID_LEN = 105;
+const MidCta: React.FC = () => {
+  const frame = useCurrentFrame();
+  const pop = (at: number) => spring({ frame: frame - at, fps: FPS, config: { damping: 9, stiffness: 260 } });
+  const out = interpolate(frame, [MID_LEN - 10, MID_LEN], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const heart = pop(0);
+  const follow = pop(26);
+  const tapped = frame >= 44;
+  const finger = interpolate(frame, [30, 42, 48, 60], [80, 0, 0, 80], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const bubble = pop(58);
+  const pill = (bg: string, children: React.ReactNode, scale: number, extra: React.CSSProperties = {}) => (
+    <div
+      style={{
+        transform: `scale(${scale})`,
+        background: bg,
+        color: "#fff",
+        fontFamily: FONT_SUB,
+        fontWeight: 900,
+        fontSize: 64,
+        padding: "14px 36px",
+        borderRadius: 999,
+        boxShadow: "0 10px 26px rgba(0,0,0,0.45)",
+        whiteSpace: "nowrap",
+        ...extra,
+      }}
+    >
+      {children}
+    </div>
+  );
+  return (
+    <AbsoluteFill style={{ top: 860, height: 260, alignItems: "center", justifyContent: "center", gap: 18, opacity: out, pointerEvents: "none" }}>
+      <div style={{ display: "flex", gap: 22, alignItems: "center" }}>
+        {pill("#FF2D55", `❤️ Like`, heart * (1 + Math.max(0, Math.sin(frame * 0.5)) * 0.06 * (frame < 25 ? 1 : 0)))}
+        <div style={{ position: "relative" }}>
+          {pill(tapped ? "#2E2E35" : "linear-gradient(180deg, #FF3B6B, #E0115F)", tapped ? "✓ Folge ich" : "+ Folgen", follow * (tapped && frame < 50 ? 0.92 : 1))}
+          {frame >= 28 && frame < 62 && (
+            <div style={{ position: "absolute", right: -10, bottom: -80 - finger, fontSize: 96, transform: "rotate(-15deg)" }}>👆</div>
+          )}
+        </div>
+      </div>
+      {frame >= 58 && pill("rgba(255,255,255,0.95)", "💬 Hättest du's gewusst?", bubble, { color: "#1D2433", fontSize: 54 })}
+    </AbsoluteFill>
+  );
+};
+
 export const Folge6Weihnachtsmann: React.FC<Folge6Props> = ({ total }) => {
   const timeline = React.useMemo(() => {
     const secs = [...timing.sceneSeconds];
@@ -66,6 +113,7 @@ export const Folge6Weihnachtsmann: React.FC<Folge6Props> = ({ total }) => {
     );
   }, [timeline]);
   const totalFrames = timeline[timeline.length - 1].from + timeline[timeline.length - 1].duration;
+  const midAt = Math.round(totalFrames * 0.47);
 
   const effects = React.useMemo(() => {
     const list: { at: number; type: keyof typeof SFX_FILE }[] = [];
@@ -92,6 +140,16 @@ export const Folge6Weihnachtsmann: React.FC<Folge6Props> = ({ total }) => {
           </Sequence>
         );
       })}
+
+      {/* Like / Folgen / Kommentieren in der Mitte (ca. 47 % des Videos) */}
+      <Sequence from={midAt} durationInFrames={MID_LEN} name="Mitte: Like + Folgen + Kommentar" layout="none">
+        <MidCta />
+      </Sequence>
+      {[0, 26, 44, 58].map((d, k) => (
+        <Sequence key={`cta${k}`} from={midAt + d} durationInFrames={30} layout="none">
+          <Html5Audio src={staticFile(k === 0 ? SFX_FILE.kaching : SFX_FILE.click)} volume={k === 0 ? 0.3 : 0.4} />
+        </Sequence>
+      ))}
 
       <CalmSubtitles pages={pages} speakers={TAGS} />
       <ProgressBar total={totalFrames} color="#FF5D73" />

@@ -11,34 +11,26 @@
    "pitch": "+0Hz"
   }
  },
- "gap": 0.12,
- "scenePause": 0.2,
+ "gap": 0.1,
+ "scenePause": 0.18,
  "scenes": [
   {
    "lines": [
     {
      "who": "lena",
-     "display": "Jedes Jahr im Dezember lächelt er uns aus der Werbung an.",
-     "spoken": "Jedes Jahr im Dezember lächelt er uns aus der Werbung an.",
-     "rate": "+18%",
-     "pause": 0.08,
-     "tail": 0.18
-    },
-    {
-     "who": "lena",
-     "display": "Fast alle glauben: Coca-Cola hat ihn erfunden.",
-     "spoken": "Fast alle glauben: Coca-Cola hat ihn erfunden.",
+     "display": "Coca-Cola hat den Weihnachtsmann nicht erfunden.",
+     "spoken": "Coca-Cola hat den Weihnachtsmann nicht erfunden.",
+     "tail": 0.18,
      "rate": "+16%",
-     "pause": 0.25,
-     "tail": 0.18
+     "pause": 0.15
     },
     {
      "who": "lena",
-     "display": "Aber die Geschichte fängt viel früher an.",
-     "spoken": "Aber die Geschichte fängt viel früher an.",
+     "display": "Er ist über 1600 Jahre alt.",
+     "spoken": "Er ist über sechzehnhundert Jahre alt.",
+     "tail": 0.18,
      "rate": "+8%",
-     "pitch": "-3Hz",
-     "tail": 0.18
+     "pitch": "-3Hz"
     }
    ]
   },
@@ -46,27 +38,19 @@
    "lines": [
     {
      "who": "florian",
-     "display": "Kleinasien, vor über 1600 Jahren.",
-     "spoken": "Kleinasien, vor über sechzehnhundert Jahren.",
-     "rate": "+8%",
-     "pitch": "-4Hz",
-     "pause": 0.25,
-     "tail": 0.18
-    },
-    {
-     "who": "florian",
-     "display": "Der Legende nach wirft ein Bischof nachts heimlich Gold durch das Fenster einer armen Familie.",
-     "spoken": "Der Legende nach wirft ein Bischof nachts heimlich Gold durch das Fenster einer armen Familie.",
+     "display": "Der Legende nach wirft ein Bischof nachts heimlich Gold durch ein Fenster.",
+     "spoken": "Der Legende nach wirft ein Bischof nachts heimlich Gold durch ein Fenster.",
+     "tail": 0.18,
      "rate": "+18%",
-     "pause": 0.2,
-     "tail": 0.18
+     "pause": 0.1
     },
     {
      "who": "florian",
-     "display": "Sein Name: Nikolaus. Auf alten Bildern: im roten Mantel.",
-     "spoken": "Sein Name: Nikolaus. Auf alten Bildern: im roten Mantel.",
-     "rate": "+12%",
-     "tail": 0.18
+     "display": "Sein Name: Nikolaus. Sein Mantel: rot.",
+     "spoken": "Sein Name: Nikolaus. Sein Mantel: rot.",
+     "tail": 0.18,
+     "rate": "+10%",
+     "pitch": "-2Hz"
     }
    ]
   },
@@ -76,17 +60,16 @@
      "who": "florian",
      "display": "New York, im Jahr 1863.",
      "spoken": "New York, im Jahr achtzehnhundertdreiundsechzig.",
+     "tail": 0.18,
      "rate": "+12%",
-     "pitch": "+1Hz",
-     "pause": 0.15,
-     "tail": 0.18
+     "pause": 0.1
     },
     {
      "who": "florian",
-     "display": "Der Zeichner Thomas Nast gibt dem Bischof einen dicken Bauch, einen weißen Bart und ein fröhliches Lachen.",
-     "spoken": "Der Zeichner Thomas Nahst gibt dem Bischof einen dicken Bauch, einen weißen Bahrt und ein fröhliches Lachen.",
-     "rate": "+18%",
-     "tail": 0.18
+     "display": "Der Zeichner Thomas Nast gibt ihm einen dicken Bauch und einen weißen Bart.",
+     "spoken": "Der Zeichner Thomas Nahst gibt ihm einen dicken Bauch und einen weißen Bahrt.",
+     "tail": 0.18,
+     "rate": "+18%"
     }
    ]
   },
@@ -94,19 +77,10 @@
    "lines": [
     {
      "who": "florian",
-     "display": "Um 1900 lächelt er schon von unzähligen Postkarten.",
-     "spoken": "Um neunzehnhundert lächelt er schon von unzähligen Postkarten.",
-     "rate": "+18%",
-     "pause": 0.12,
-     "tail": 0.18
-    },
-    {
-     "who": "florian",
-     "display": "In Rot. Lange vor Coca-Cola.",
-     "spoken": "In Rot. Lange vor Koka-Kola.",
-     "rate": "+8%",
-     "pitch": "-2Hz",
-     "tail": 0.18
+     "display": "Um 1900 lächelt er schon von unzähligen Postkarten. In Rot.",
+     "spoken": "Um neunzehnhundert lächelt er schon von unzähligen Postkarten. In Rot.",
+     "tail": 0.18,
+     "rate": "+20%"
     }
    ]
   },
@@ -116,17 +90,17 @@
      "who": "florian",
      "display": "1931 hat Coca-Cola ein Problem:",
      "spoken": "Neunzehnhunderteinunddreißig hat Koka-Kola ein Problem:",
+     "tail": 0.18,
      "rate": "+14%",
      "pitch": "-2Hz",
-     "pause": 0.15,
-     "tail": 0.18
+     "pause": 0.1
     },
     {
      "who": "florian",
-     "display": "Im Winter verkauft sich ein kaltes Getränk schlecht.",
-     "spoken": "Im Winter verkauft sich ein kaltes Getränk schlecht.",
-     "rate": "+18%",
-     "tail": 0.18
+     "display": "Im Winter kauft kaum jemand kalte Getränke.",
+     "spoken": "Im Winter kauft kaum jemand kalte Getränke.",
+     "tail": 0.18,
+     "rate": "+20%"
     }
    ]
   },
@@ -134,18 +108,18 @@
    "lines": [
     {
      "who": "florian",
-     "display": "Also lässt die Firma den Maler Haddon Sundblom jedes Jahr einen Weihnachtsmann malen.",
-     "spoken": "Also lässt die Firma den Maler Haddon Sundblom jedes Jahr einen Weihnachtsmann malen.",
-     "rate": "+18%",
-     "pause": 0.12,
-     "tail": 0.18
+     "display": "Also lässt die Firma jedes Jahr einen Weihnachtsmann malen.",
+     "spoken": "Also lässt die Firma jedes Jahr einen Weihnachtsmann malen.",
+     "tail": 0.18,
+     "rate": "+20%",
+     "pause": 0.08
     },
     {
      "who": "florian",
      "display": "Fröhlich, rund, mit Cola in der Hand. Über 30 Jahre lang.",
      "spoken": "Fröhlich, rund, mit Kola in der Hand. Über dreißig Jahre lang.",
-     "rate": "+16%",
-     "tail": 0.18
+     "tail": 0.18,
+     "rate": "+20%"
     }
    ]
   },
@@ -153,35 +127,27 @@
    "lines": [
     {
      "who": "lena",
-     "display": "Erfunden hat Coca-Cola ihn also nicht.",
-     "spoken": "Erfunden hat Coca-Cola ihn also nicht.",
-     "rate": "+16%",
-     "pause": 0.08,
-     "tail": 0.18
-    },
-    {
-     "who": "lena",
-     "display": "Aber so oft gezeigt, bis wir dachten, er gehört zur Marke.",
-     "spoken": "Aber so oft gezeigt, bis wir dachten, er gehört zur Marke.",
-     "rate": "+16%",
-     "pause": 0.2,
-     "tail": 0.18
+     "display": "So oft gezeigt, bis wir dachten, er gehört zur Marke.",
+     "spoken": "So oft gezeigt, bis wir dachten, er gehört zur Marke.",
+     "tail": 0.18,
+     "rate": "+18%",
+     "pause": 0.12
     },
     {
      "who": "lena",
      "display": "Genau das ist der Trick.",
      "spoken": "Genau das ist der Trick.",
+     "tail": 0.18,
      "rate": "+6%",
      "pitch": "-3Hz",
-     "pause": 0.2,
-     "tail": 0.18
+     "pause": 0.15
     },
     {
      "who": "lena",
      "display": "Folg mir für mehr Werbelügen.",
      "spoken": "Folg mir für mehr Werbelügen.",
-     "rate": "+16%",
-     "tail": 0.18
+     "tail": 0.18,
+     "rate": "+16%"
     }
    ]
   }

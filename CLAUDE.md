@@ -10,7 +10,13 @@ Jede neue Folge wird genauso gebaut wie Folge 6 (`Folge6Weihnachtsmann`, Ordner 
   `sceneSeconds` prüfen und bei Bedarf kürzen), 7 Szenen, alle ~2 s ein neues Bild.
   Dafür knapp erzählen: Hook 2 Sätze, pro Station der Geschichte 1–2 kurze Sätze, Schluss 3 Sätze. Jede Einstellung zeigt HANDLUNG (Figur läuft,
   etwas wird gezeichnet/gemalt, Dinge fliegen, Farbe kommt dazu), nicht nur Standbilder.
-- **Hook:** ab Bild 0 harter Zoom + großer Bildschirm-Text mit der Frage; Stempel ("MYTHOS?" o. ä.) nach ~4–5 s.
+- **Hook:** ab Bild 0 harter Zoom + großer Bildschirm-Text mit der Frage. Der ERSTE gesprochene Satz ist eine
+  steile, überraschende Behauptung (wie Folge 5: "Ein Mann hat Frauen zum Rauchen gebracht." oder
+  "Coca-Cola hat den Weihnachtsmann nicht erfunden."), keine langsame Einleitung. Großer Stempel ("NEIN!",
+  "MYTHOS?" o. ä.) nach ~2–5 s.
+- **Mitte (ca. 47 % der Länge): Like + Folgen + Kommentieren** einblenden (`MidCta` in Folge6Weihnachtsmann.tsx:
+  Herz "❤️ Like", Finger tippt auf "+ Folgen" -> "✓ Folge ich", Sprechblase "💬 Hättest du's gewusst?"),
+  mit Klick-Tönen, im Bereich über den Untertiteln.
 - **Look:** `CineStage` (Leuchten, Vignette, weiche Schatten, Handkamera), Figuren `Human` mit Atmen/Gesten,
   Spezialfiguren als eigene, sorgfältig gebaute Modelle (wie `SantaFigure`), Bokeh-Lichter, 3D-Schnee/Partikel,
   Nachtszenen wirklich dunkel (`env` klein), Wisch-Übergänge (`WhipIn`) statt weißem Blitz.
@@ -21,6 +27,15 @@ Jede neue Folge wird genauso gebaut wie Folge 6 (`Folge6Weihnachtsmann`, Ordner 
 - **Ablauf:** Dialog schreiben -> Stimme erzeugen -> Rausch-Prüfung -> Aussprache-Prüfung (0 Abweichungen) ->
   Modelle mit `ModelCheck` prüfen -> Kontaktbogen aus jeder Einstellung prüfen und nachbessern -> rendern
   (`--gl=swangle`) -> Rausch-Prüfung + ffprobe + Bilder aus dem fertigen Video prüfen -> commit + push.
+
+## TikTok-Statistik nutzen (Windsor-Tool, Konto "Psychologie der Werbung")
+- Vor jeder neuen Folge die Zahlen ansehen: Connector `tiktok_organic`, Felder u. a. `video_views_count`,
+  `video_average_time_watched`, `video_full_watched_rate`, `video_shares`, `video_view_retention_second/percentage`.
+- Erkenntnisse (Stand 8.11.2026, Teil 1–6): In den ersten 3 s gehen die meisten weg. Bester Hook bisher Teil 5
+  (50 % nach 3 s, Ø 11 s geschaut) – steile Behauptung sofort. Wer nach ~10 s noch da ist, bleibt meist bis zum
+  Ende -> kurz halten (35–45 s). Erzählte Geschichte (Teil 6) wird am häufigsten geteilt.
+- Beim Hochladen IMMER eine Beschreibung schreiben (Hook-Satz + Frage + 👇 + "Teil N der Werbelügen" + passende
+  Hashtags) – Teil 6 ohne Beschreibung hatte die wenigsten Aufrufe.
 
 ## Ton: nie Rauschen
 - Nach JEDEM Rendern mit Ton die Rausch-Prüfung laufen lassen:
