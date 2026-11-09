@@ -18,18 +18,19 @@
    "lines": [
     {
      "who": "lena",
-     "display": "Deine Kaffeepause ist eigentlich Werbung.",
-     "spoken": "Deine Kaffeepause ist eigentlich Werbung.",
+     "display": "Stopp! Deine Kaffeepause wurde dir verkauft!",
+     "spoken": "Stopp! Deine Kaffeepause wurde dir verkauft!",
      "tail": 0.18,
-     "rate": "+16%",
-     "pause": 0.15
+     "rate": "+18%",
+     "pitch": "+2Hz",
+     "pause": 0.12
     },
     {
      "who": "lena",
-     "display": "Bezahlt von Kaffee-Ländern aus Lateinamerika.",
-     "spoken": "Bezahlt von Kaffee-Ländern aus Lateinamerika.",
+     "display": "Von Kaffee-Ländern aus Lateinamerika.",
+     "spoken": "Von Kaffee-Ländern aus Lateinamerika.",
      "tail": 0.18,
-     "rate": "+8%",
+     "rate": "+10%",
      "pitch": "-3Hz"
     }
    ]

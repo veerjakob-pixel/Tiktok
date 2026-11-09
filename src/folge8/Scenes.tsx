@@ -234,56 +234,99 @@ const WORKERS = [
   { top: "#6D597A", hair: "#C8A060", hs: "long" as const, skin: "#EDC3A3" },
 ];
 
-// =============== Szene 1 – Hook: dampfende Tasse, Stempel WERBUNG!, Lena, zurückspulen ===============
+// =============== Szene 1 – Hook: STOPP!, Tasse knallt hin, Bohnen explodieren, Stempel VERKAUFT!, Lena ===============
 export const Scene1: React.FC<SceneProps> = ({ from }) => {
   const t0 = from / FPS;
   const T = TS(0);
   return (
     <AbsoluteFill>
-      <Cut T={T} a={0} b={2.7}>
-        <CupHookShot />
-        <Slam at={T(1.93)} style={{ left: 0, right: 0, top: 640, display: "flex", justifyContent: "center" }}>
-          <Stamp text="WERBUNG!" size={160} rotate={-10} />
+      <Cut T={T} a={0} b={0.85}>
+        <StopShot />
+      </Cut>
+      <Cut T={T} a={0.85} b={3.2}>
+        <CupHookShot words={[0.89, 1.26, 2.05, 2.41].map((s) => T(s - 0.85))} />
+        <Slam at={T(2.41 - 0.85) + 8} style={{ left: 0, right: 0, top: 1500, display: "flex", justifyContent: "center" }}>
+          <Stamp text="VERKAUFT!" size={150} rotate={-10} />
         </Slam>
       </Cut>
-      <Cut T={T} a={2.7} b={6.219 + 1}>
-        <LenaRewindShot t0={t0 + T(2.7) / FPS} rewindAt={T(5.55 - 2.7)} cardAt={T(3.59 - 2.7)} />
+      <Cut T={T} a={3.2} b={6.34 + 1}>
+        <LenaRewindShot t0={t0 + T(3.2) / FPS} rewindAt={T(5.7 - 3.2)} cardAt={T(3.74 - 3.2)} />
       </Cut>
     </AbsoluteFill>
   );
 };
 
-const CupHookShot: React.FC = () => {
+// Bild 0: riesiges STOPP!, Alarm-Rot blinkt, alles wackelt
+const StopShot: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const z = spring({ frame, fps, config: { damping: 16, stiffness: 240 } });
-  const cam: V3 = [0.15, 0.85, interpolate(z, [0, 1], [7, 3.0]) - frame * 0.005];
+  const s = spring({ frame, fps, config: { damping: 8, stiffness: 420 } });
+  const flash = frame % 6 < 3;
+  const sx = Math.sin(frame * 2.3) * 22 * Math.max(0, 1 - frame / 20);
+  const sy = Math.cos(frame * 3.1) * 18 * Math.max(0, 1 - frame / 20);
+  return (
+    <AbsoluteFill style={{ background: flash ? "#D90429" : "#1A0006", transform: `translate(${sx}px, ${sy}px)` }}>
+      <AbsoluteFill style={{ background: "repeating-conic-gradient(from 0deg, rgba(255,255,255,0.10) 0deg 10deg, transparent 10deg 20deg)", transform: `scale(2.4) rotate(${frame * 3}deg)` }} />
+      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
+        <div style={{ fontSize: 260, transform: `scale(${s}) rotate(${-8 + Math.sin(frame) * 3}deg)` }}>✋</div>
+        <div
+          style={{
+            transform: `scale(${interpolate(s, [0, 1], [2.2, 1], clamp)}) rotate(-6deg)`,
+            fontFamily: "Anton",
+            fontSize: 300,
+            lineHeight: 1,
+            color: flash ? "#FFFFFF" : "#FFD60A",
+            WebkitTextStroke: "10px #1A0006",
+            textShadow: "0 18px 0 rgba(0,0,0,0.5)",
+          }}
+        >
+          STOPP!
+        </div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+const CupHookShot: React.FC<{ words: number[] }> = ({ words }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  // Tasse fällt von oben und knallt auf den Tisch, Kamera rast heran
+  const drop = spring({ frame, fps, config: { damping: 9, stiffness: 380 } });
+  const z = spring({ frame: frame - 2, fps, config: { damping: 14, stiffness: 260 } });
+  const cam = add([0.15, 0.85, interpolate(z, [0, 1], [5.5, 2.9]) - frame * 0.006], shake3(frame, 3, 12, 0.18));
+  const burst = interpolate(frame, [3, 30], [0, 1], clamp);
+  const alarm = 0.18 + 0.14 * Math.max(0, Math.sin(frame * 0.6));
+  const pop = (k: number) => (frame >= words[k] ? spring({ frame: frame - words[k], fps, config: { damping: 9, stiffness: 300 } }) : 0);
   return (
     <AbsoluteFill>
       <WarmBg />
-      <CineStage cam={cam} look={[0, 0.05, 0]} fov={34} lift={-90} bloom={0.5} exposure={0.9} env={0.5} key1="#FFE8C8" keyI={1.5} rim="#FFB870" rimI={1.4} amb={0.35} floor={0}>
-        <BokehLights frame={frame} />
+      <CineStage cam={cam} look={[0, 0.05, 0]} fov={34} lift={-90} bloom={0.5} exposure={0.9} env={0.5} key1="#FFE8C8" keyI={1.5} rim="#FF5A3A" rimI={1.8} amb={0.35} floor={0}>
+        <BokehLights frame={frame} colors={["#FF8A6B", "#FFD27A", "#FF4D4D"]} />
         <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <circleGeometry args={[3, 48]} />
           <meshPhysicalMaterial color="#5A3820" roughness={0.4} clearcoat={0.6} />
         </mesh>
-        <CoffeeCup rotation={[0, -0.6 + frame * 0.01, 0]} />
-        <Steam frame={frame} position={[0, 0.36, 0]} scale={0.8} />
-        {[
-          [-0.6, 0.03, 0.4],
-          [0.55, 0.03, 0.5],
-          [0.7, 0.03, -0.2],
-          [-0.45, 0.03, -0.35],
-        ].map((p, i) => (
-          <Bean key={i} position={p as V3} rotation={[0, i * 1.3, 0]} scale={1.2} />
-        ))}
+        <CoffeeCup position={[0, (1 - drop) * 2.5, 0]} rotation={[0, -0.6 + frame * 0.012, (1 - drop) * 0.6]} />
+        <Steam frame={frame} position={[0, 0.36, 0]} scale={0.8} strength={drop} />
+        {/* Bohnen fliegen beim Aufprall in alle Richtungen */}
+        {Array.from({ length: 16 }).map((_, i) => {
+          const a = (i / 16) * Math.PI * 2;
+          const r = 0.2 + burst * (0.8 + (i % 4) * 0.25);
+          const h = 0.1 + Math.sin(burst * Math.PI) * (0.6 + (i % 3) * 0.3);
+          return <Bean key={i} position={[Math.cos(a) * r, h, Math.sin(a) * r]} rotation={[frame * 0.3 + i, i, frame * 0.2]} scale={1.3} />;
+        })}
       </CineStage>
-      <div style={{ position: "absolute", top: 210, left: 0, right: 0 }}>
-        <Txt size={100} color="#FFFFFF" style={{ WebkitTextStroke: "4px #3B1F0E" }}>
+      {/* pulsierendes Alarm-Rot am Rand */}
+      <AbsoluteFill style={{ background: `radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(217,4,41,${alarm}) 85%)` }} />
+      <div style={{ position: "absolute", top: 190, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Txt size={104} color="#FFFFFF" style={{ transform: `scale(${pop(1)})`, WebkitTextStroke: "5px #3B1F0E" }}>
           DEINE KAFFEEPAUSE
         </Txt>
-        <Txt size={110} color="#FFC37A" style={{ WebkitTextStroke: "4px #3B1F0E" }}>
-          IST WERBUNG?
+        <Txt size={96} color="#FFC37A" style={{ transform: `scale(${pop(2)})`, WebkitTextStroke: "5px #3B1F0E" }}>
+          WURDE DIR
+        </Txt>
+        <Txt size={170} color="#FFD60A" style={{ transform: `scale(${pop(3)}) rotate(-4deg)`, WebkitTextStroke: "6px #3B1F0E" }}>
+          VERKAUFT!
         </Txt>
       </div>
     </AbsoluteFill>

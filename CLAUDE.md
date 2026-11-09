@@ -10,6 +10,11 @@ Jede neue Folge wird genauso gebaut wie Folge 6 (`Folge6Weihnachtsmann`, Ordner 
   `sceneSeconds` prüfen und bei Bedarf kürzen), 7 Szenen, alle ~2 s ein neues Bild.
   Dafür knapp erzählen: Hook 2 Sätze, pro Station der Geschichte 1–2 kurze Sätze, Schluss 3 Sätze. Jede Einstellung zeigt HANDLUNG (Figur läuft,
   etwas wird gezeichnet/gemalt, Dinge fliegen, Farbe kommt dazu), nicht nur Standbilder.
+- **Hook ÜBERTRIEBEN (Wunsch ab Folge 8, gilt immer):** Der Hook muss richtig laut und auffällig sein, wie in
+  Folge 8 (`StopShot` + `CupHookShot` in src/folge8/Scenes.tsx): Bild 0 = riesiges Wort ("STOPP!") auf
+  blinkendem Alarm-Rot, Wackeln, Knall-Ton ab Frame 0; danach knallt das Hauptobjekt ins Bild, Dinge fliegen
+  explosionsartig weg, Wörter schlagen einzeln ein (passend zur Stimme), roter pulsierender Rand, großer
+  Stempel. Gesprochen: Ausruf + steile Behauptung ("Stopp! Deine Kaffeepause wurde dir verkauft!").
 - **Hook:** ab Bild 0 harter Zoom + großer Bildschirm-Text mit der Frage. Der ERSTE gesprochene Satz ist eine
   steile, überraschende Behauptung (wie Folge 5: "Ein Mann hat Frauen zum Rauchen gebracht." oder
   "Coca-Cola hat den Weihnachtsmann nicht erfunden."), keine langsame Einleitung. Großer Stempel ("NEIN!",

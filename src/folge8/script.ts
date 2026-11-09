@@ -21,8 +21,8 @@ const clicks = (from: number, n: number, step: number): Sfx[] => Array.from({ le
 
 // Sekunden ab Szenenstart (passend zu den Schnitten in Scenes.tsx)
 export const SFX: Sfx[][] = [
-  // Hook: Zoom auf die Tasse, Stempel WERBUNG!, Lena, zurückspulen
-  [{ t: 0, type: "whoosh" }, { t: 0.1, type: "hit" }, { t: 0.73, type: "riser" }, { t: 1.93, type: "hit" }, { t: 1.95, type: "boom" }, { t: 2.7, type: "whoosh" }, { t: 5.55, type: "rewind" }],
+  // Hook: STOPP! (Knall ab Bild 0), Tasse knallt hin, Wörter schlagen ein, Stempel VERKAUFT!, Lena, zurückspulen
+  [{ t: 0, type: "hit" }, { t: 0.02, type: "boom" }, { t: 0.85, type: "whoosh" }, { t: 0.95, type: "boom" }, { t: 1.26, type: "click" }, { t: 1.21, type: "riser" }, { t: 2.05, type: "click" }, { t: 2.41, type: "hit" }, { t: 2.43, type: "boom" }, { t: 3.2, type: "whoosh" }, { t: 5.7, type: "rewind" }],
   // Buffalo 1902: Fabrik, Pfiff, Pause
   [{ t: 0.05, type: "boom" }, { t: 2.4, type: "whoosh" }, { t: 4.99, type: "kaching" }],
   // Kaffee wird teuer, Säcke im Lager
@@ -37,7 +37,7 @@ export const SFX: Sfx[][] = [
   [{ t: 0.59, type: "click" }, { t: 1.51, type: "click" }, { t: 2.46, type: "kaching" }, { t: 3.45, type: "riser" }, { t: 4.65, type: "hit" }, { t: 4.67, type: "boom" }, { t: 5.3, type: "whoosh" }, { t: 5.8, type: "click" }],
 ];
 
-const PLANNED = [6.219, 6.241, 5.116, 8.525, 5.291, 5.204, 7.558];
+const PLANNED = [6.34, 6.241, 5.116, 8.525, 5.291, 5.204, 7.558];
 export const K = timing.sceneSeconds.map((x, i) => x / PLANNED[i]);
 export const TS = (i: number) => (s: number) => Math.round(s * FPS * K[i]);
 
