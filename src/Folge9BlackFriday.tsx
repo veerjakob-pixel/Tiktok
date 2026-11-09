@@ -94,7 +94,7 @@ const MidCta: React.FC = () => {
           )}
         </div>
       </div>
-      {frame >= 58 && pill("rgba(255,255,255,0.95)", "💬 Hättest du's gewusst?", bubble, { color: "#1D2433", fontSize: 54 })}
+      {frame >= 58 && pill("rgba(255,255,255,0.95)", "💬 Was kaufst du dieses Jahr?", bubble, { color: "#1D2433", fontSize: 54 })}
     </AbsoluteFill>
   );
 };

@@ -18,19 +18,19 @@
    "lines": [
     {
      "who": "lena",
-     "display": "Du feierst ein Schimpfwort!",
-     "spoken": "Du feierst ein Schimpfwort!",
+     "display": "Black Friday? Du wirst zweimal reingelegt!",
+     "spoken": "Black Friday? Du wirst zweimal reingelegt!",
      "tail": 0.18,
      "rate": "+16%",
      "pitch": "+2Hz",
-     "pause": 0.15
+     "pause": 0.12
     },
     {
      "who": "lena",
-     "display": "Black Friday war ein Fluch der Polizei!",
-     "spoken": "Black Friday war ein Fluch der Polizei!",
+     "display": "Beim Namen. Und beim Preis.",
+     "spoken": "Beim Namen. Und beim Preis.",
      "tail": 0.18,
-     "rate": "+10%",
+     "rate": "+12%",
      "pitch": "-2Hz"
     }
    ]
@@ -39,16 +39,16 @@
    "lines": [
     {
      "who": "florian",
-     "display": "Philadelphia, Ende der 1950er-Jahre.",
-     "spoken": "Philadelphia, Ende der Fünfzigerjahre.",
+     "display": "Philadelphia, in den 1950ern.",
+     "spoken": "Philadelphia, in den Fünfzigern.",
      "tail": 0.18,
-     "rate": "+12%",
+     "rate": "+14%",
      "pause": 0.1
     },
     {
      "who": "florian",
-     "display": "Thanksgiving ist vorbei. Massen strömen in die Stadt.",
-     "spoken": "Thanksgiving ist vorbei. Massen strömen in die Stadt.",
+     "display": "Thanksgiving ist vorbei. Die Stadt platzt.",
+     "spoken": "Thanksgiving ist vorbei. Die Stadt platzt.",
      "tail": 0.18,
      "rate": "+18%"
     }
@@ -58,55 +58,16 @@
    "lines": [
     {
      "who": "florian",
-     "display": "Einkäufer, Football-Fans und totaler Stau.",
-     "spoken": "Einkäufer, Football-Fans und totaler Stau.",
+     "display": "Stau, Gedränge und Ladendiebe.",
+     "spoken": "Stau, Gedränge und Ladendiebe.",
      "tail": 0.18,
-     "rate": "+20%",
+     "rate": "+12%",
      "pause": 0.1
     },
     {
      "who": "florian",
-     "display": "Die Polizei nennt den Tag: Black Friday.",
-     "spoken": "Die Polizei nennt den Tag: Black Friday.",
-     "tail": 0.18,
-     "rate": "+10%",
-     "pitch": "-3Hz"
-    }
-   ]
-  },
-  {
-   "lines": [
-    {
-     "who": "florian",
-     "display": "Die Händler hassen den Namen.",
-     "spoken": "Die Händler hassen den Namen.",
-     "tail": 0.18,
-     "rate": "+16%",
-     "pause": 0.1
-    },
-    {
-     "who": "florian",
-     "display": "Im Jahr 1961 versuchen sie es mit Big Friday. Niemand macht mit.",
-     "spoken": "Im Jahr neunzehnhunderteinundsechzig versuchen sie es mit Big Friday. Niemand macht mit.",
-     "tail": 0.18,
-     "rate": "+16%"
-    }
-   ]
-  },
-  {
-   "lines": [
-    {
-     "who": "florian",
-     "display": "Zwanzig Jahre später taucht eine neue Geschichte auf.",
-     "spoken": "Zwanzig Jahre später taucht eine neue Geschichte auf.",
-     "tail": 0.18,
-     "rate": "+14%",
-     "pause": 0.1
-    },
-    {
-     "who": "florian",
-     "display": "Die Läden kämen an diesem Tag aus den roten in die schwarzen Zahlen.",
-     "spoken": "Die Läden kämen an diesem Tag aus den roten in die schwarzen Zahlen.",
+     "display": "Die Polizei flucht: Black Friday!",
+     "spoken": "Die Polizei flucht: Black Friday!",
      "tail": 0.18,
      "rate": "+8%",
      "pitch": "-3Hz"
@@ -116,20 +77,19 @@
   {
    "lines": [
     {
-     "who": "lena",
-     "display": "Klingt logisch, oder?",
-     "spoken": "Klingt logisch, oder?",
+     "who": "florian",
+     "display": "Den Händlern ist das peinlich.",
+     "spoken": "Den Händlern ist das peinlich.",
      "tail": 0.18,
-     "rate": "+12%",
-     "pause": 0.12
+     "rate": "+16%",
+     "pause": 0.1
     },
     {
-     "who": "lena",
-     "display": "Aber diese Erklärung kam erst viel später.",
-     "spoken": "Aber diese Erklärung kam erst viel später.",
+     "who": "florian",
+     "display": "Später heißt es plötzlich: schwarze Zahlen, also Gewinn!",
+     "spoken": "Später heißt es plötzlich: schwarze Zahlen, also Gewinn!",
      "tail": 0.18,
-     "rate": "+6%",
-     "pitch": "-3Hz"
+     "rate": "+16%"
     }
    ]
   },
@@ -137,10 +97,50 @@
    "lines": [
     {
      "who": "lena",
-     "display": "Du wirst einen Namen nicht los? Erzähle eine neue Geschichte dazu. Genau das ist der Trick.",
-     "spoken": "Du wirst einen Namen nicht los? Erzähle eine neue Geschichte dazu. Genau das ist der Trick.",
+     "display": "Und die Schnäppchen? Verbraucherschützer haben geprüft:",
+     "spoken": "Und die Schnäppchen? Verbraucherschützer haben geprüft:",
      "tail": 0.18,
-     "rate": "+14%",
+     "rate": "+18%",
+     "pause": 0.12
+    },
+    {
+     "who": "lena",
+     "display": "98 von 100 Angeboten gab's sonst genauso billig.",
+     "spoken": "Achtundneunzig von hundert Angeboten gab's sonst genauso billig.",
+     "tail": 0.18,
+     "rate": "+12%",
+     "pitch": "-2Hz"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "lena",
+     "display": "Erst Preisverlauf checken, dann kaufen.",
+     "spoken": "Erst Preisverlauf checken, dann kaufen.",
+     "tail": 0.18,
+     "rate": "+12%",
+     "pause": 0.12
+    },
+    {
+     "who": "lena",
+     "display": "Der Trick?",
+     "spoken": "Der Trick?",
+     "tail": 0.18,
+     "rate": "+14%"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "lena",
+     "display": "Ein schöner Name und ein rotes Schild verkaufen alles.",
+     "spoken": "Ein schöner Name und ein rotes Schild verkaufen alles.",
+     "tail": 0.18,
+     "rate": "+12%",
+     "pitch": "-2Hz",
      "pause": 0.15
     },
     {

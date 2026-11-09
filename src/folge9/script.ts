@@ -4,7 +4,7 @@ import dialog from "../../scripts/folge9/dialog.json";
 import timing from "../../public/voiceover-folge9-timing.json";
 
 export const SCENES: SceneDef[] = dialog.scenes.map((sc, i) => ({
-  id: ["hook", "philadelphia", "stau-polizei", "big-friday-1961", "schwarze-zahlen", "erst-spaeter", "trick"][i],
+  id: ["hook", "philadelphia", "stau-polizei", "schwarze-zahlen", "schnaeppchen", "tipp", "trick"][i],
   text: sc.lines.map((l) => l.display).join(" "),
   seconds: timing.sceneSeconds[i],
 }));
@@ -20,23 +20,23 @@ export type Sfx = { t: number; type: SfxType };
 
 // Sekunden ab Szenenstart (passend zu den Schnitten in Scenes.tsx und den Wortzeiten der Stimme)
 export const SFX: Sfx[][] = [
-  // Hook: Menge kracht gegen den Bildschirm (Glas splittert), Wörter schlagen ein, Bulldogge flucht, FLUCH!, zurückspulen
-  [{ t: 0, type: "hit" }, { t: 0.02, type: "boom" }, { t: 0.22, type: "click" }, { t: 0.77, type: "click" }, { t: 0.92, type: "hit" }, { t: 0.94, type: "boom" }, { t: 1.95, type: "whoosh" }, { t: 2.0, type: "riser" }, { t: 3.16, type: "hit" }, { t: 3.18, type: "boom" }, { t: 4.2, type: "rewind" }],
-  // Philadelphia 1950er, Menschenmassen
-  [{ t: 0.05, type: "boom" }, { t: 2.6, type: "whoosh" }, { t: 4.1, type: "click" }],
-  // Stau, Polizist, BLACK FRIDAY
-  [{ t: 0.04, type: "click" }, { t: 0.85, type: "click" }, { t: 1.88, type: "hit" }, { t: 2.85, type: "whoosh" }, { t: 3.22, type: "riser" }, { t: 4.42, type: "hit" }, { t: 4.44, type: "boom" }],
-  // Händler hassen den Namen, 1961 BIG FRIDAY, Flop
-  [{ t: 0.16, type: "click" }, { t: 1.7, type: "whoosh" }, { t: 2.17, type: "click" }, { t: 3.87, type: "riser" }, { t: 5.07, type: "hit" }, { t: 5.09, type: "boom" }],
-  // 1981: neue Geschichte, rote -> schwarze Zahlen
-  [{ t: 0.05, type: "boom" }, { t: 2.85, type: "whoosh" }, { t: 4.67, type: "click" }, { t: 5.3, type: "kaching" }],
-  // Lena: Klingt logisch? Erst viel später
-  [{ t: 0.45, type: "click" }, { t: 1.8, type: "whoosh" }, { t: 2.27, type: "riser" }, { t: 3.47, type: "hit" }, { t: 3.49, type: "boom" }],
-  // Formel, der Trick, Folgen
-  [{ t: 0.77, type: "click" }, { t: 2.98, type: "click" }, { t: 3.75, type: "kaching" }, { t: 4.33, type: "riser" }, { t: 5.53, type: "hit" }, { t: 5.55, type: "boom" }, { t: 6.25, type: "whoosh" }, { t: 6.75, type: "click" }],
+  // Hook: Glas splittert (Knall ab Bild 0), Wörter schlagen ein, 1) Name 2) Preis (Geld fliegt), zurückspulen
+  [{ t: 0, type: "hit" }, { t: 0.02, type: "boom" }, { t: 1.16, type: "click" }, { t: 1.66, type: "click" }, { t: 0.99, type: "riser" }, { t: 2.19, type: "hit" }, { t: 2.21, type: "boom" }, { t: 2.9, type: "whoosh" }, { t: 3.3, type: "click" }, { t: 4.86, type: "kaching" }, { t: 4.88, type: "hit" }, { t: 5.6, type: "rewind" }],
+  // Philadelphia 1950er, Thanksgiving vorbei, Stadt platzt
+  [{ t: 0.05, type: "boom" }, { t: 2.2, type: "whoosh" }, { t: 2.29, type: "click" }, { t: 3.72, type: "hit" }],
+  // Stau, Gedränge, Ladendiebe -> Polizei flucht: BLACK FRIDAY!
+  [{ t: 0.04, type: "click" }, { t: 0.77, type: "click" }, { t: 1.46, type: "hit" }, { t: 2.4, type: "whoosh" }, { t: 2.53, type: "riser" }, { t: 3.73, type: "hit" }, { t: 3.75, type: "boom" }],
+  // peinlich -> schwarze Zahlen, Gewinn
+  [{ t: 0.17, type: "click" }, { t: 1.7, type: "whoosh" }, { t: 1.78, type: "click" }, { t: 3.14, type: "kaching" }, { t: 4.38, type: "kaching" }],
+  // Schnäppchen? Preisverlauf, -50 %, 98 von 100, KEIN SCHNÄPPCHEN
+  [{ t: 0.5, type: "click" }, { t: 1.35, type: "whoosh" }, { t: 2.0, type: "kaching" }, { t: 3.77, type: "hit" }, { t: 5.87, type: "riser" }, { t: 7.07, type: "hit" }, { t: 7.09, type: "boom" }],
+  // Tipp: Preisverlauf checken, Haken, kaufen; DER TRICK?
+  [{ t: 0.1, type: "whoosh" }, { t: 1.16, type: "kaching" }, { t: 2.04, type: "click" }, { t: 2.9, type: "whoosh" }, { t: 3.22, type: "hit" }, { t: 3.24, type: "boom" }],
+  // schöner Name + rotes Schild = verkauft alles, Folgen
+  [{ t: 0.69, type: "click" }, { t: 1.84, type: "click" }, { t: 2.67, type: "kaching" }, { t: 3.3, type: "whoosh" }, { t: 3.8, type: "click" }],
 ];
 
-const PLANNED = [4.738, 5.909, 5.452, 6.442, 6.539, 4.95, 8.49];
+const PLANNED = [6.004, 4.959, 4.786, 5.17, 7.891, 4.009, 5.66];
 export const K = timing.sceneSeconds.map((x, i) => x / PLANNED[i]);
 export const TS = (i: number) => (s: number) => Math.round(s * FPS * K[i]);
 

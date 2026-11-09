@@ -6,12 +6,17 @@ Jede neue Folge wird gebaut wie Folge 9 (`Folge9BlackFriday`, Ordner `src/folge9
   mehr Werbelügen."). Florian erzählt dazwischen die Geschichte chronologisch mit Ort + Zeit
   ("Kleinasien, vor über 1600 Jahren.", "New York, im Jahr 1863."), kurze Sätze, Spannung, Wendepunkt.
   Keine Frage-Antwort-Ping-Pongs. Nur gesicherte Fakten, Legenden als "Der Legende nach" kennzeichnen.
-- **Länge** ca. 35–45 s (Stimme ohne Pausen am Ende höchstens ~44 s; nach dem Erzeugen die Summe von
+- **Länge** 35–40 s, MAXIMAL 40 s (Wunsch ab Folge 9; Stimme höchstens ~38,5 s; nach dem Erzeugen die Summe von
   `sceneSeconds` prüfen und bei Bedarf kürzen), 7 Szenen, alle ~2 s ein neues Bild.
   Dafür knapp erzählen: Hook 2 Sätze, pro Station der Geschichte 1–2 kurze Sätze, Schluss 3 Sätze. Jede Einstellung zeigt HANDLUNG (Figur läuft,
   etwas wird gezeichnet/gemalt, Dinge fliegen, Farbe kommt dazu), nicht nur Standbilder.
+- **Greifbar machen (Wunsch ab Folge 9):** Reine Wissens-Fakten ("woher kommt der Name") liked keiner. Jede Folge
+  braucht einen Bezug zum Leben/Geld des Zuschauers ("Du wirst reingelegt", "das kostet dich Geld") + einen
+  konkreten Nutzen am Ende (Tipp zum Merken/Speichern, z. B. "Erst Preisverlauf checken, dann kaufen") +
+  eine Kommentar-Frage, die jeder beantworten kann ("Was kaufst du dieses Jahr?"). Zahlen aus Studien mit Quelle
+  klein einblenden.
 - **Hook PROVOKANT (Wunsch ab Folge 9, gilt immer):** Nicht einfach nur "STOPP!" – der erste Satz greift den
-  Zuschauer direkt an ("Du ..."), wie Folge 9: "Du feierst ein Schimpfwort! Black Friday war ein Fluch der Polizei!"
+  Zuschauer direkt an ("Du ..."), wie Folge 9: "Black Friday? Du wirst zweimal reingelegt! Beim Namen. Und beim Preis."
   (oder Folge 7: "Du stinkst aus dem Mund."). Muss trotzdem wahr sein. Bild ab Frame 0: etwas kracht gegen den
   Bildschirm (Glas splittert, `Crack` + `CrashShot` in src/folge9/ToonScenes.tsx), weißer Blitz, Wackeln, Knall-Ton,
   Wörter schlagen einzeln ein (passend zur Stimme), roter pulsierender Rand; danach eine wütende/schockierte Figur
@@ -39,6 +44,7 @@ Jede neue Folge wird gebaut wie Folge 9 (`Folge9BlackFriday`, Ordner `src/folge9
 ## TikTok-Statistik nutzen (Windsor-Tool, Konto "Psychologie der Werbung")
 - Vor jeder neuen Folge die Zahlen ansehen: Connector `tiktok_organic`, Felder u. a. `video_views_count`,
   `video_average_time_watched`, `video_full_watched_rate`, `video_shares`, `video_view_retention_second/percentage`.
+- Rendern mit `--concurrency=4` (mehr Kerne gibt es hier nicht, sonst bricht es ab).
 - Erkenntnisse (Stand 8.11.2026, Teil 1–6): In den ersten 3 s gehen die meisten weg. Bester Hook bisher Teil 5
   (50 % nach 3 s, Ø 11 s geschaut) – steile Behauptung sofort. Wer nach ~10 s noch da ist, bleibt meist bis zum
   Ende -> kurz halten (35–45 s). Erzählte Geschichte (Teil 6) wird am häufigsten geteilt.
@@ -64,6 +70,9 @@ Jede neue Folge wird gebaut wie Folge 9 (`Folge9BlackFriday`, Ordner `src/folge9
 - Aussprache IMMER prüfen: `python3 scripts/check_speech.py public/<stimme>.mp3 scripts/<folge>/dialog.json`
   (Whisper schreibt ab, Ergebnis soll 0 Abweichungen sein). Schreibweisen vorher testen mit
   `python3 scripts/probe_speech.py <stimme> <tempo> "Variante 1" "Variante 2"`.
+- Lena/Florian (Multilingual-Stimmen) sprechen nach englischen Wörtern mitten im Satz weiter mit englischem Akzent
+  ("am Black Friday zweimal reingelegt" -> "reingeliked"). Englische Wörter in einen eigenen kurzen Satz stellen
+  ("Black Friday? Du wirst ...", "Thanksgiving ist vorbei.").
 - Bekannte Ausspracheprobleme bei Florian: "Coca-Cola" -> im gesprochenen Text "Koka-Kola", "Cola" -> "Kola",
   "Nast" -> "Nahst", "Bart" -> "Bahrt"; Jahreszahl nicht allein an den Satzanfang ("New York, im Jahr ...").
 - Erzählen statt Interview: Tempo/Tonhöhe pro Satz variieren (`rate`, `pitch`, `pause` in dialog.json).
