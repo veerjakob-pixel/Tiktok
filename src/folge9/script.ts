@@ -20,8 +20,8 @@ export type Sfx = { t: number; type: SfxType };
 
 // Sekunden ab Szenenstart (passend zu den Schnitten in Scenes.tsx und den Wortzeiten der Stimme)
 export const SFX: Sfx[][] = [
-  // Hook: STOPP! (Knall ab Bild 0), Tüten knallen hin, Wörter schlagen ein, GESCHÖNT!, Lena, zurückspulen
-  [{ t: 0, type: "hit" }, { t: 0.02, type: "boom" }, { t: 0.85, type: "whoosh" }, { t: 0.95, type: "boom" }, { t: 1.09, type: "click" }, { t: 1.85, type: "click" }, { t: 1.47, type: "riser" }, { t: 2.67, type: "hit" }, { t: 2.69, type: "boom" }, { t: 3.55, type: "whoosh" }, { t: 6.0, type: "rewind" }],
+  // Hook: Menge kracht gegen den Bildschirm (Glas splittert), Wörter schlagen ein, Bulldogge flucht, FLUCH!, zurückspulen
+  [{ t: 0, type: "hit" }, { t: 0.02, type: "boom" }, { t: 0.22, type: "click" }, { t: 0.77, type: "click" }, { t: 0.92, type: "hit" }, { t: 0.94, type: "boom" }, { t: 1.95, type: "whoosh" }, { t: 2.0, type: "riser" }, { t: 3.16, type: "hit" }, { t: 3.18, type: "boom" }, { t: 4.2, type: "rewind" }],
   // Philadelphia 1950er, Menschenmassen
   [{ t: 0.05, type: "boom" }, { t: 2.6, type: "whoosh" }, { t: 4.1, type: "click" }],
   // Stau, Polizist, BLACK FRIDAY
@@ -36,7 +36,7 @@ export const SFX: Sfx[][] = [
   [{ t: 0.77, type: "click" }, { t: 2.98, type: "click" }, { t: 3.75, type: "kaching" }, { t: 4.33, type: "riser" }, { t: 5.53, type: "hit" }, { t: 5.55, type: "boom" }, { t: 6.25, type: "whoosh" }, { t: 6.75, type: "click" }],
 ];
 
-const PLANNED = [6.641, 5.909, 5.452, 6.442, 6.539, 4.95, 8.49];
+const PLANNED = [4.738, 5.909, 5.452, 6.442, 6.539, 4.95, 8.49];
 export const K = timing.sceneSeconds.map((x, i) => x / PLANNED[i]);
 export const TS = (i: number) => (s: number) => Math.round(s * FPS * K[i]);
 

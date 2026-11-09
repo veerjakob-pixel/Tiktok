@@ -1,5 +1,4 @@
-// Folge 9 im gezeichneten Look (Zeichentrick-Stil): gleiche Geschichte, Schnitte und Töne wie Scenes.tsx,
-// aber mit eigenen Tierfiguren (Lena = Füchsin, Florian = Bär, Polizist = Bulldogge, Händler = Dachs, Buchhalter = Eule).
+// Folge 9 im gezeichneten Look (Zeichentrick-Stil) mit eigenen Tierfiguren (Lena = Füchsin, Florian = Bär, Polizist = Bulldogge, Händler = Dachs, Buchhalter = Eule).
 import React from "react";
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { Stamp } from "../folge3/Graphics";
@@ -8,7 +7,8 @@ import { Cut, Slam, Txt } from "../folge4/Scenes";
 import { FPS } from "../folge3/script";
 import { speakingAt, TS, Who } from "./script";
 import { Animal, Bag, Car, Coin, CounterFg, Glow, INK, OfficeBg, P, R, ShopBg, Species, StreetBg, Tag, ToonCam, ToonPose, ToonPost } from "./Toon";
-import { SceneProps } from "./Scenes";
+
+export type SceneProps = { dur: number; from: number };
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
@@ -100,78 +100,156 @@ const CROWD: { s: Species; coat: string; hat?: "bowler" | "fedora" | "none" }[] 
 ];
 const BAGS = ["#C8102E", "#1F6FB2", "#F2C14E", "#2A9D8F", "#E76F51"];
 
-// =============== Szene 1 – Hook ===============
+// =============== Szene 1 – Hook: Menge kracht gegen den Bildschirm, "DU FEIERST EIN SCHIMPFWORT!",
+// Bulldoggen-Polizist flucht "BLACK FRIDAY!", Stempel FLUCH!, zurückspulen ===============
 export const ToonScene1: React.FC<SceneProps> = ({ from }) => {
-  const t0 = from / FPS;
   const T = TS(0);
   return (
     <AbsoluteFill>
-      <Cut T={T} a={0} b={0.85}>
-        <StopShot />
+      <Cut T={T} a={0} b={1.95}>
+        <CrashShot words={[0, 0.22, 0.77, 0.92].map((s) => T(s))} />
       </Cut>
-      <Cut T={T} a={0.85} b={3.55}>
-        <RushShot words={[0.9, 1.85, 2.67].map((s) => T(s - 0.85))} />
-        <Slam at={T(2.67 - 0.85) + 6} style={{ left: 0, right: 0, top: 1480, display: "flex", justifyContent: "center" }}>
-          <Stamp text="MYTHOS!" size={150} rotate={-10} />
-        </Slam>
+      <Cut T={T} a={1.95} b={4.738 + 1}>
+        <CurseShot words={[2.04, 3.16].map((s) => T(s - 1.95))} stampAt={T(3.16 - 1.95) + 8} rewindAt={T(4.2 - 1.95)} />
       </Cut>
-      <Cut T={T} a={3.55} b={6.641 + 1}>
-        <LenaRewind t0={t0 + T(3.55) / FPS} rewindAt={T(6.0 - 3.55)} cardAt={T(3.87 - 3.55)} />
-      </Cut>
+      <div style={{ display: "none" }}>{from}</div>
     </AbsoluteFill>
   );
 };
 
-const StopShot: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const s = spring({ frame, fps, config: { damping: 8, stiffness: 420 } });
-  const flash = frame % 6 < 3;
-  const sx = Math.sin(frame * 2.3) * 22 * Math.max(0, 1 - frame / 20);
+// Gesprungenes Glas: Risse vom Aufprallpunkt aus (feste Werte, kein Zufall)
+const Crack: React.FC<{ x: number; y: number; grow: number }> = ({ x, y, grow }) => {
+  const rays = Array.from({ length: 14 }).map((_, i) => {
+    const a = (i / 14) * Math.PI * 2 + (i % 3) * 0.13;
+    const len = (420 + (i % 4) * 260) * grow;
+    const mid = len * 0.45;
+    const kink = ((i % 2) * 2 - 1) * 0.18;
+    return `M ${x} ${y} L ${x + Math.cos(a) * mid} ${y + Math.sin(a) * mid} L ${x + Math.cos(a + kink) * len} ${y + Math.sin(a + kink) * len}`;
+  });
+  const rings = [90, 190, 320].map((r, k) => {
+    const pts = Array.from({ length: 15 }).map((_, i) => {
+      const a = (i / 14) * Math.PI * 2;
+      const rr = r * grow * (1 + ((i + k) % 3) * 0.12);
+      return `${x + Math.cos(a) * rr},${y + Math.sin(a) * rr}`;
+    });
+    return `M ${pts.join(" L ")}`;
+  });
   return (
-    <AbsoluteFill style={{ background: flash ? "#D90429" : "#0B0B0F", transform: `translate(${sx}px, 0)` }}>
-      <AbsoluteFill style={{ background: "repeating-conic-gradient(from 0deg, rgba(255,255,255,0.10) 0deg 10deg, transparent 10deg 20deg)", transform: `scale(2.4) rotate(${frame * 3}deg)` }} />
-      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
-        <div style={{ fontSize: 260, transform: `scale(${s}) rotate(${-8 + Math.sin(frame) * 3}deg)` }}>✋</div>
-        <div style={{ transform: `scale(${interpolate(s, [0, 1], [2.2, 1], clamp)}) rotate(-6deg)`, fontFamily: "Anton", fontSize: 300, lineHeight: 1, color: flash ? "#FFFFFF" : "#FFD60A", WebkitTextStroke: "10px #1A0006", textShadow: "0 18px 0 rgba(0,0,0,0.5)" }}>STOPP!</div>
-      </AbsoluteFill>
-      <ToonPost warm={0} />
-    </AbsoluteFill>
+    <svg width={1080} height={1920} style={{ position: "absolute", left: 0, top: 0 }}>
+      {[...rays, ...rings].map((d, i) => (
+        <g key={i}>
+          <path d={d} stroke="rgba(0,0,0,0.55)" strokeWidth={9} fill="none" strokeLinejoin="round" />
+          <path d={d} stroke="rgba(255,255,255,0.95)" strokeWidth={4} fill="none" strokeLinejoin="round" />
+        </g>
+      ))}
+      <circle cx={x} cy={y} r={46 * grow} fill="rgba(255,255,255,0.35)" stroke="#fff" strokeWidth={4} />
+    </svg>
   );
 };
 
-// Tiere stürmen das Kaufhaus, Preisschilder fliegen
-const RushShot: React.FC<{ words: number[] }> = ({ words }) => {
+const CrashShot: React.FC<{ words: number[] }> = ({ words }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const pop = (k: number) => (frame >= words[k] ? spring({ frame: frame - words[k], fps, config: { damping: 9, stiffness: 300 } }) : 0);
-  const burst = interpolate(frame, [0, 30], [0, 1], clamp);
-  const alarm = 0.2 + 0.15 * Math.max(0, Math.sin(frame * 0.6));
+  const pop = (k: number) => (frame >= words[k] ? spring({ frame: frame - words[k], fps, config: { damping: 8, stiffness: 320 } }) : 0);
+  // Menge rast auf die Kamera zu und knallt ans Glas (Bild 0 = Aufprall)
+  const hit = spring({ frame, fps, config: { damping: 7, stiffness: 500 } });
+  const crack = interpolate(frame, [0, 4], [0.3, 1], clamp);
+  const flash = frame < 8 && frame % 4 < 2;
+  const alarm = 0.25 + 0.2 * Math.max(0, Math.sin(frame * 0.7));
+  const shake = Math.max(0, 1 - frame / 14) * 30 + (frame >= words[3] ? Math.max(0, 1 - (frame - words[3]) / 10) * 24 : 0);
   return (
-    <AbsoluteFill>
-      <ToonCam from={[540, 1150, 1.25]} to={[540, 1250, 1.05]} dur={80} shake={10} shakeAt={2}>
-        <StreetBg snow={false} />
-        {Array.from({ length: 9 }).map((_, i) => {
-          const c = CROWD[i % CROWD.length];
-          const x = 60 + i * 120 + Math.sin(i * 2) * 30;
-          const y = 1760 - (i % 3) * 70 - frame * 2.2;
-          return (
-            <Animal key={i} s={c.s} o={{ coat: c.coat, hat: c.hat }} x={x} y={y} scale={0.8 - (i % 3) * 0.06} seed={10 + i} pose={{ walk: frame * 0.5 + i, armR: 120, bendR: 20, talk: 0.7, brow: 1 }} handR={<Bag color={BAGS[i % 5]} scale={0.8} />} />
-          );
+    <AbsoluteFill style={{ transform: `translate(${Math.sin(frame * 2.9) * shake}px, ${Math.cos(frame * 3.7) * shake}px)` }}>
+      <ToonCam from={[540, 1060, 1.9]} to={[540, 1060, 2.05]} dur={60}>
+        <g style={{ filter: "blur(4px)" }}>
+          <StreetBg snow={false} />
+        </g>
+        {/* hintere Reihe drängelt */}
+        {[200, 420, 660, 880].map((x, i) => {
+          const c = CROWD[(i + 3) % CROWD.length];
+          return <Animal key={x} s={c.s} o={{ coat: c.coat, hat: c.hat }} x={x} y={1560} scale={0.8} seed={70 + i} pose={{ talk: 0.8, brow: 1.2, armR: 140, bendR: 20, armL: 120, bendL: 30, walk: frame * 0.6 + i }} handR={<Bag color={BAGS[i % 5]} scale={0.8} />} />;
         })}
-        {Array.from({ length: 14 }).map((_, i) => {
-          const a = (i / 14) * Math.PI * 2;
-          const r = 80 + burst * (380 + (i % 4) * 90);
-          return <Tag key={i} text={["-50%", "-70%", "-90%"][i % 3]} x={540 + Math.cos(a) * r} y={1050 + Math.sin(a) * r * 0.9 - burst * 120} rot={frame * 6 + i * 40} scale={1.1} />;
+        {/* vorne: Hase klatscht ans Glas, Gesicht platt gedrückt */}
+        <g transform={`translate(540 ${1720 + (1 - hit) * 300}) scale(${1.6 + (1 - hit) * -0.6}, ${1.6 - hit * 0.08})`}>
+          <Animal s="rabbit" o={{ coat: "#7A2E2E", hat: "bowler" }} seed={3} pose={{ talk: 1, brow: 1.4, armL: 165, bendL: 0, armR: 165, bendR: 0, look: 0 }} />
+        </g>
+        {Array.from({ length: 10 }).map((_, i) => {
+          const a = (i / 10) * Math.PI * 2;
+          const r = 230 + interpolate(frame, [0, 40], [0, 520], clamp);
+          return <Tag key={i} text={["-50%", "-70%", "-90%"][i % 3]} x={540 + Math.cos(a) * r} y={1000 + Math.sin(a) * r} rot={frame * 9 + i * 36} scale={0.9} />;
         })}
       </ToonCam>
-      <AbsoluteFill style={{ background: `radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(217,4,41,${alarm}) 85%)` }} />
+      {flash && <AbsoluteFill style={{ background: "rgba(255,255,255,0.3)" }} />}
+      <AbsoluteFill style={{ background: `radial-gradient(ellipse at 50% 50%, transparent 35%, rgba(217,4,41,${alarm}) 85%)` }} />
+      <Crack x={600} y={900} grow={crack} />
       <ToonPost />
-      <div style={{ position: "absolute", top: 190, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <Txt size={96} color="#FFFFFF" style={{ transform: `scale(${pop(0)})`, WebkitTextStroke: "5px #0B0B0F" }}>DIE GESCHICHTE VOM</Txt>
-        <Txt size={150} color="#FFD60A" style={{ transform: `scale(${pop(1)}) rotate(-3deg)`, WebkitTextStroke: "6px #0B0B0F" }}>BLACK FRIDAY</Txt>
-        <Txt size={120} color="#FF4D5E" style={{ transform: `scale(${pop(2)}) rotate(3deg)`, WebkitTextStroke: "6px #0B0B0F" }}>IST GESCHÖNT!</Txt>
+      <div style={{ position: "absolute", top: 170, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: 30 }}>
+          <Txt size={170} color="#FFFFFF" style={{ transform: `scale(${pop(0)}) rotate(-4deg)`, WebkitTextStroke: "7px #0B0B0F" }}>DU</Txt>
+          <Txt size={150} color="#FFD60A" style={{ transform: `scale(${pop(1)}) rotate(3deg)`, WebkitTextStroke: "7px #0B0B0F" }}>FEIERST</Txt>
+        </div>
+        <Txt size={110} color="#FFFFFF" style={{ transform: `scale(${pop(2)})`, WebkitTextStroke: "6px #0B0B0F" }}>EIN</Txt>
+        <Txt size={150} color="#FF2D3A" style={{ transform: `scale(${pop(3) * (1 + Math.max(0, Math.sin(frame * 0.9)) * 0.05)}) rotate(-3deg)`, WebkitTextStroke: "7px #FFFFFF" }}>SCHIMPFWORT!</Txt>
       </div>
+    </AbsoluteFill>
+  );
+};
+
+// Bulldoggen-Polizist ganz nah, wütend, Fluch-Sprechblase
+const CurseShot: React.FC<{ words: number[]; stampAt: number; rewindAt: number }> = ({ words, stampAt, rewindAt }) => {
+  const frame = useCurrentFrame();
+  const { fps, durationInFrames } = useVideoConfig();
+  const pop = (k: number) => (frame >= words[k] ? spring({ frame: frame - words[k], fps, config: { damping: 8, stiffness: 320 } }) : 0);
+  const rw = interpolate(frame, [rewindAt, rewindAt + 14], [0, 1], clamp);
+  const yell = frame >= words[0] && frame < rewindAt;
+  const fist = Math.sin(frame * 0.9);
+  const shake = frame >= words[1] ? Math.max(0, 1 - (frame - words[1]) / 12) * 22 : yell ? 4 : 0;
+  const bubble = pop(0);
+  return (
+    <AbsoluteFill style={{ filter: `sepia(${rw * 0.85}) blur(${rw * 2}px)`, transform: `translate(${Math.sin(frame * 3.1) * shake}px, ${Math.cos(frame * 2.3) * shake}px)` }}>
+      <ToonCam from={[540, 1180, 2.0]} to={[540, 1150, 2.3]} dur={durationInFrames}>
+        <g style={{ filter: "blur(3px)" }}>
+          <StreetBg />
+          <Car x={150} y={1620} color="#C8102E" driver="rabbit" honk seed={2} />
+          <Car x={980} y={1640} color="#2A9D8F" flip driver="raccoon" honk seed={5} />
+        </g>
+        <Glow x={540} y={1000} r={500} red o={0.35 + 0.25 * Math.max(0, Math.sin(frame * 0.5))} />
+        <Animal
+          s="dog"
+          o={{ coat: "#1B2A4A", pants: "#1B2A4A", hat: "police", tie: "#0B0F18", shirt: "#E9EEF2" }}
+          x={540}
+          y={1640}
+          scale={1.25}
+          seed={7}
+          pose={{ talk: yell ? 0.6 + 0.4 * Math.abs(Math.sin(frame * 0.8)) : 0, brow: -1.5, smile: -1, armR: 150 + fist * 15, bendR: 30 + fist * 20, armL: 40, bendL: 90, tilt: Math.sin(frame * 0.7) * 4 }}
+        />
+      </ToonCam>
+      {/* Fluch-Sprechblase mit Zeichen */}
+      {frame < rewindAt && (
+        <div style={{ position: "absolute", left: 30, top: 480, transform: `scale(${bubble * 0.85}) rotate(-6deg)`, transformOrigin: "80% 100%" }}>
+          <div style={{ background: "#fff", border: `6px solid ${INK}`, borderRadius: 60, padding: "18px 40px", fontFamily: "Anton", fontSize: 110, color: "#D90429", WebkitTextStroke: "2px #0B0B0F", whiteSpace: "nowrap" }}>
+            #@%&!!
+          </div>
+          <div style={{ position: "absolute", right: 120, bottom: -46, width: 0, height: 0, borderLeft: "30px solid transparent", borderRight: "30px solid transparent", borderTop: `56px solid ${INK}` }} />
+        </div>
+      )}
+      <AbsoluteFill style={{ background: `radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(217,4,41,${0.25 + 0.15 * Math.max(0, Math.sin(frame * 0.6))}) 85%)`, opacity: 1 - rw }} />
+      <ToonPost />
+      {frame < rewindAt && (
+        <div style={{ position: "absolute", top: 180, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <div style={{ transform: `scale(${pop(0)}) rotate(-3deg)` }}>
+            <BlackStamp text="BLACK FRIDAY" size={120} rotate={0} />
+          </div>
+          <Txt size={100} color="#FFD60A" style={{ marginTop: 26, transform: `scale(${pop(1)}) rotate(2deg)`, WebkitTextStroke: "6px #0B0B0F" }}>
+            = FLUCH DER POLIZEI
+          </Txt>
+        </div>
+      )}
+      {frame < rewindAt && (
+        <Slam at={stampAt} style={{ left: 0, right: 0, top: 1420, display: "flex", justifyContent: "center" }}>
+          <Stamp text="FLUCH!" size={170} rotate={-10} />
+        </Slam>
+      )}
+      {frame >= rewindAt && <Vhs label="1959" />}
     </AbsoluteFill>
   );
 };
@@ -182,23 +260,6 @@ const Vhs: React.FC<{ label: string }> = ({ label }) => {
     <AbsoluteFill style={{ pointerEvents: "none" }}>
       <AbsoluteFill style={{ background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0 3px, transparent 3px 7px)" }} />
       <div style={{ position: "absolute", top: 200, right: 60, fontFamily: "monospace", fontWeight: 900, fontSize: 74, color: "#fff", textShadow: "3px 0 #ff2a6d, -3px 0 #05d9e8", opacity: frame % 20 < 14 ? 1 : 0.2 }}>◀◀ {label}</div>
-    </AbsoluteFill>
-  );
-};
-
-const LenaRewind: React.FC<{ t0: number; rewindAt: number; cardAt: number }> = ({ t0, rewindAt, cardAt }) => {
-  const frame = useCurrentFrame();
-  const rw = interpolate(frame, [rewindAt, rewindAt + 18], [0, 1], clamp);
-  return (
-    <AbsoluteFill style={{ filter: `sepia(${rw * 0.85}) contrast(${1 + rw * 0.1}) blur(${rw * 2}px)` }}>
-      <LenaShot t0={t0} pose={{ brow: 0.8, look: 0.2 }} zoom={[1.6, 1.75]} />
-      {frame < rewindAt && <NameTag name="Lena" color="#C8402E" />}
-      {frame < rewindAt && (
-        <Card at={cardAt} top={330} size={52} bg="#0B0B0F" color="#fff" rotate={-2}>
-          ⚫ schwarze Zahlen? ❌ Nein!
-        </Card>
-      )}
-      {frame >= rewindAt && <Vhs label="1959" />}
     </AbsoluteFill>
   );
 };

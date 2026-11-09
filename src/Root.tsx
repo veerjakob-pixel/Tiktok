@@ -16,7 +16,6 @@ import { Folge8Story } from "./folge8/StoryImage";
 import { ModelCheck8 } from "./folge8/Check";
 import { calculateMetadata as calculateFolge9, Folge9BlackFriday } from "./Folge9BlackFriday";
 import { Folge9Story } from "./folge9/StoryImage";
-import { ModelCheck9 } from "./folge9/Check";
 import { ToonCheck9 } from "./folge9/ToonCheck";
 import { calculateMetadata as calculateFolge3, Folge3Diamant, FOLGE3_DEFAULTS } from "./Folge3Diamant";
 
@@ -127,18 +126,7 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{ total: 45 }}
         calculateMetadata={calculateFolge9}
       />
-      <Composition
-        id="Folge9BlackFridayToon"
-        component={Folge9BlackFriday}
-        durationInFrames={45 * FPS}
-        fps={FPS}
-        width={1080}
-        height={1920}
-        defaultProps={{ total: 45, toon: true }}
-        calculateMetadata={calculateFolge9}
-      />
       <Still id="Folge9Story" component={Folge9Story} width={1080} height={1920} />
-      <Still id="ModelCheck9" component={ModelCheck9} width={540} height={960} defaultProps={{ view: "front" }} />
       <Still id="ToonCheck9" component={ToonCheck9} width={1080} height={1920} />
       <Still id="ModelCheck8" component={ModelCheck8} width={540} height={960} defaultProps={{ view: "front" }} />
       <Still id="ModelCheck" component={ModelCheck} width={540} height={960} defaultProps={{ view: "front", laugh: 0 }} />

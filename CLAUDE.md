@@ -1,7 +1,7 @@
 # Hinweise für alle Folgen (Werbelügen-Videos)
 
-## Vorlage: Folge 6 ist der Standard für ALLE neuen Folgen
-Jede neue Folge wird genauso gebaut wie Folge 6 (`Folge6Weihnachtsmann`, Ordner `src/folge6/`, `scripts/folge6/`):
+## Vorlage: Folge 9 ist der Standard für ALLE neuen Folgen
+Jede neue Folge wird gebaut wie Folge 9 (`Folge9BlackFriday`, Ordner `src/folge9/`, `scripts/folge9/`; Aufbau wie Folge 6):
 - **Geschichte erzählen, kein Interview:** Lena macht den Hook (1–3 Sätze) und den Schluss (Trick + "Folg mir für
   mehr Werbelügen."). Florian erzählt dazwischen die Geschichte chronologisch mit Ort + Zeit
   ("Kleinasien, vor über 1600 Jahren.", "New York, im Jahr 1863."), kurze Sätze, Spannung, Wendepunkt.
@@ -10,11 +10,12 @@ Jede neue Folge wird genauso gebaut wie Folge 6 (`Folge6Weihnachtsmann`, Ordner 
   `sceneSeconds` prüfen und bei Bedarf kürzen), 7 Szenen, alle ~2 s ein neues Bild.
   Dafür knapp erzählen: Hook 2 Sätze, pro Station der Geschichte 1–2 kurze Sätze, Schluss 3 Sätze. Jede Einstellung zeigt HANDLUNG (Figur läuft,
   etwas wird gezeichnet/gemalt, Dinge fliegen, Farbe kommt dazu), nicht nur Standbilder.
-- **Hook ÜBERTRIEBEN (Wunsch ab Folge 8, gilt immer):** Der Hook muss richtig laut und auffällig sein, wie in
-  Folge 8 (`StopShot` + `CupHookShot` in src/folge8/Scenes.tsx): Bild 0 = riesiges Wort ("STOPP!") auf
-  blinkendem Alarm-Rot, Wackeln, Knall-Ton ab Frame 0; danach knallt das Hauptobjekt ins Bild, Dinge fliegen
-  explosionsartig weg, Wörter schlagen einzeln ein (passend zur Stimme), roter pulsierender Rand, großer
-  Stempel. Gesprochen: Ausruf + steile Behauptung ("Stopp! Deine Kaffeepause wurde dir verkauft!").
+- **Hook PROVOKANT (Wunsch ab Folge 9, gilt immer):** Nicht einfach nur "STOPP!" – der erste Satz greift den
+  Zuschauer direkt an ("Du ..."), wie Folge 9: "Du feierst ein Schimpfwort! Black Friday war ein Fluch der Polizei!"
+  (oder Folge 7: "Du stinkst aus dem Mund."). Muss trotzdem wahr sein. Bild ab Frame 0: etwas kracht gegen den
+  Bildschirm (Glas splittert, `Crack` + `CrashShot` in src/folge9/ToonScenes.tsx), weißer Blitz, Wackeln, Knall-Ton,
+  Wörter schlagen einzeln ein (passend zur Stimme), roter pulsierender Rand; danach eine wütende/schockierte Figur
+  ganz nah mit Sprechblase (z. B. Fluchzeichen "#@%&!!") und großer Stempel.
 - **Hook:** ab Bild 0 harter Zoom + großer Bildschirm-Text mit der Frage. Der ERSTE gesprochene Satz ist eine
   steile, überraschende Behauptung (wie Folge 5: "Ein Mann hat Frauen zum Rauchen gebracht." oder
   "Coca-Cola hat den Weihnachtsmann nicht erfunden."), keine langsame Einleitung. Großer Stempel ("NEIN!",
@@ -22,16 +23,18 @@ Jede neue Folge wird genauso gebaut wie Folge 6 (`Folge6Weihnachtsmann`, Ordner 
 - **Mitte (ca. 47 % der Länge): Like + Folgen + Kommentieren** einblenden (`MidCta` in Folge6Weihnachtsmann.tsx:
   Herz "❤️ Like", Finger tippt auf "+ Folgen" -> "✓ Folge ich", Sprechblase "💬 Hättest du's gewusst?"),
   mit Klick-Tönen, im Bereich über den Untertiteln.
-- **Look:** `CineStage` (Leuchten, Vignette, weiche Schatten, Handkamera), Figuren `Human` mit Atmen/Gesten,
-  Spezialfiguren als eigene, sorgfältig gebaute Modelle (wie `SantaFigure`), Bokeh-Lichter, 3D-Schnee/Partikel,
-  Nachtszenen wirklich dunkel (`env` klein), Wisch-Übergänge (`WhipIn`) statt weißem Blitz.
+- **Look (ab Folge 9 Standard): gezeichneter Zeichentrick-Stil** (`src/folge9/Toon.tsx`): eigene Tierfiguren mit
+  Kleidung (`Animal`: Lena = Füchsin, Florian = Bär, Nebenfiguren Bulldogge, Dachs, Eule, Hase, Waschbär, Ente,
+  Biber), warmes goldenes Licht (`Glow`), Tusche-Konturen + weiche Schattierung (`P`, `E`, `R`), Filmkorn, feine
+  Zeilen, Staub im Licht (`ToonPost`), langsame Kamerafahrt über die Zeichnung (`ToonCam`). Keine fremden Figuren
+  nachbauen, immer eigene. Figuren mit `ToonCheck9` prüfen. Rendern ohne `--gl=swangle`, ca. 10 Minuten.
+  (Alter 3D-Look bis Folge 8: `CineStage`, `Human`, `WhipIn`.)
 - **Ton:** eigene spannende Musik aus reinen Tönen (`make_sounds.py ... folge6` als Vorlage, Lautstärke 0.1),
   Riser-Ton ~1,2 s vor jeder Auflösung/jedem Stempel, Effekte wie in Folge 6.
 - **Untertitel, Fortschrittsbalken, Serien-Label, Format 1080x1920** wie bisher; Story-Bild als Still
   (`Folge<N>Story`, gespeichert als `out/folge<N>-story.png`).
 - **Ablauf:** Dialog schreiben -> Stimme erzeugen -> Rausch-Prüfung -> Aussprache-Prüfung (0 Abweichungen) ->
-  Modelle mit `ModelCheck` prüfen -> Kontaktbogen aus jeder Einstellung prüfen und nachbessern -> rendern
-  (`--gl=swangle`) -> Rausch-Prüfung + ffprobe + Bilder aus dem fertigen Video prüfen -> commit + push.
+  Figuren mit `ToonCheck9` prüfen -> Kontaktbogen aus jeder Einstellung prüfen und nachbessern -> rendern -> Rausch-Prüfung + ffprobe + Bilder aus dem fertigen Video prüfen -> commit + push.
 
 ## TikTok-Statistik nutzen (Windsor-Tool, Konto "Psychologie der Werbung")
 - Vor jeder neuen Folge die Zahlen ansehen: Connector `tiktok_organic`, Felder u. a. `video_views_count`,
@@ -74,7 +77,9 @@ Jede neue Folge wird genauso gebaut wie Folge 6 (`Folge6Weihnachtsmann`, Ordner 
   seitlich und als Nahaufnahme rendern und anschauen, bevor sie ins Video kommen.
 - Vor dem langen Rendern Vorschaubilder aus JEDER Einstellung anschauen (Kontaktbogen) und alles
   Merkwürdige (verformte Figuren, abgeschnittene Köpfe, zu hell/dunkel, verdeckte Gesichter) beheben.
-- Kino-Look ab Folge 6: `CineStage` (src/folge6/Stage.tsx), Figuren `Human`, Weihnachtsmann `SantaFigure`.
+- Kino-Look Folge 6–8: `CineStage` (src/folge6/Stage.tsx), Figuren `Human`, Weihnachtsmann `SantaFigure`.
+- Gezeichneter Look ab Folge 9: `src/folge9/Toon.tsx` (Figuren `Animal`, Hintergründe `StreetBg`, `ShopBg`, `OfficeBg`).
+- KI-Bildgenerator (Everygen) braucht ein bezahltes Abo – ohne Abo alles selbst per SVG zeichnen.
 
 ## Umgebung
 - Cloud-Umgebung "Tiktok" erlaubt speech.platform.bing.com (Stimme) und Hugging Face (Whisper-Modell für die Aussprache-Prüfung).

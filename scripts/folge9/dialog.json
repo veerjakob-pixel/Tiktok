@@ -18,20 +18,20 @@
    "lines": [
     {
      "who": "lena",
-     "display": "Stopp! Die Geschichte vom Black Friday ist geschönt!",
-     "spoken": "Stopp! Die Geschichte vom Black Friday ist geschönt!",
+     "display": "Du feierst ein Schimpfwort!",
+     "spoken": "Du feierst ein Schimpfwort!",
      "tail": 0.18,
-     "rate": "+18%",
+     "rate": "+16%",
      "pitch": "+2Hz",
-     "pause": 0.12
+     "pause": 0.15
     },
     {
      "who": "lena",
-     "display": "Mit schwarzen Zahlen hat der Name nichts zu tun.",
-     "spoken": "Mit schwarzen Zahlen hat der Name nichts zu tun.",
+     "display": "Black Friday war ein Fluch der Polizei!",
+     "spoken": "Black Friday war ein Fluch der Polizei!",
      "tail": 0.18,
      "rate": "+10%",
-     "pitch": "-3Hz"
+     "pitch": "-2Hz"
     }
    ]
   },
