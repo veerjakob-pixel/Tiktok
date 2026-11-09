@@ -6,10 +6,12 @@ import { buildPages, FPS, timeWords } from "./folge3/script";
 import { CalmSubtitles, ProgressBar, SeriesLabel, SpeakerTag } from "./folge3/Overlays";
 import { buildTimeline, K, SCENES, SFX, SPEAKERS } from "./folge9/script";
 import { Scene1, Scene2, Scene3, Scene4, Scene5, Scene6, Scene7, SceneProps } from "./folge9/Scenes";
+import { ToonScene1, ToonScene2, ToonScene3, ToonScene4, ToonScene5, ToonScene6, ToonScene7 } from "./folge9/ToonScenes";
 import timing from "../public/voiceover-folge9-timing.json";
 
 // Folge 9 "Black Friday – die erfundene Geschichte": aufgebaut wie Folge 6–8 (Geschichte, Kino-Look, Mitte: Like/Folgen).
-export type Folge9Props = { total: number };
+// toon = gezeichneter Look (Zeichentrick-Stil mit Tierfiguren) statt 3D
+export type Folge9Props = { total: number; toon?: boolean };
 
 const VOICE = "voiceover-folge9.mp3";
 const MUSIC = "music-folge9.mp3"; // eigene, spannende Musik (Lautstärke wie Folge 6)
@@ -24,6 +26,7 @@ export const calculateMetadata: CalculateMetadataFunction<Folge9Props> = async (
 };
 
 const SCENE_COMPONENTS: React.FC<SceneProps>[] = [Scene1, Scene2, Scene3, Scene4, Scene5, Scene6, Scene7];
+const TOON_COMPONENTS: React.FC<SceneProps>[] = [ToonScene1, ToonScene2, ToonScene3, ToonScene4, ToonScene5, ToonScene6, ToonScene7];
 const SFX_FILE = {
   whoosh: "sfx-whoosh.mp3",
   boom: "sfx-boom.mp3",
@@ -98,7 +101,7 @@ const MidCta: React.FC = () => {
   );
 };
 
-export const Folge9BlackFriday: React.FC<Folge9Props> = ({ total }) => {
+export const Folge9BlackFriday: React.FC<Folge9Props> = ({ total, toon = false }) => {
   const timeline = React.useMemo(() => {
     const secs = [...timing.sceneSeconds];
     const sum = secs.reduce((a, b) => a + b, 0);
@@ -127,7 +130,7 @@ export const Folge9BlackFriday: React.FC<Folge9Props> = ({ total }) => {
   return (
     <AbsoluteFill style={{ backgroundColor: "#000" }}>
       {timeline.map((scene, i) => {
-        const Comp = SCENE_COMPONENTS[i];
+        const Comp = (toon ? TOON_COMPONENTS : SCENE_COMPONENTS)[i];
         return (
           <Sequence key={scene.id} name={`Szene ${i + 1} – ${scene.id}`} from={scene.from} durationInFrames={scene.duration}>
             {i > 0 ? (
