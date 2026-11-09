@@ -14,6 +14,9 @@ import { Folge7Story } from "./folge7/StoryImage";
 import { calculateMetadata as calculateFolge8, Folge8Kaffeepause } from "./Folge8Kaffeepause";
 import { Folge8Story } from "./folge8/StoryImage";
 import { ModelCheck8 } from "./folge8/Check";
+import { calculateMetadata as calculateFolge9, Folge9BlackFriday } from "./Folge9BlackFriday";
+import { Folge9Story } from "./folge9/StoryImage";
+import { ModelCheck9 } from "./folge9/Check";
 import { calculateMetadata as calculateFolge3, Folge3Diamant, FOLGE3_DEFAULTS } from "./Folge3Diamant";
 
 export const RemotionRoot: React.FC = () => {
@@ -113,6 +116,18 @@ export const RemotionRoot: React.FC = () => {
         calculateMetadata={calculateFolge8}
       />
       <Still id="Folge8Story" component={Folge8Story} width={1080} height={1920} />
+      <Composition
+        id="Folge9BlackFriday"
+        component={Folge9BlackFriday}
+        durationInFrames={45 * FPS}
+        fps={FPS}
+        width={1080}
+        height={1920}
+        defaultProps={{ total: 45 }}
+        calculateMetadata={calculateFolge9}
+      />
+      <Still id="Folge9Story" component={Folge9Story} width={1080} height={1920} />
+      <Still id="ModelCheck9" component={ModelCheck9} width={540} height={960} defaultProps={{ view: "front" }} />
       <Still id="ModelCheck8" component={ModelCheck8} width={540} height={960} defaultProps={{ view: "front" }} />
       <Still id="ModelCheck" component={ModelCheck} width={540} height={960} defaultProps={{ view: "front", laugh: 0 }} />
       <Still id="Folge6Story" component={Folge6Story} width={1080} height={1920} />

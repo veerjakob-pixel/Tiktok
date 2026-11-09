@@ -1,0 +1,156 @@
+{
+ "voices": {
+  "florian": {
+   "voice": "de-DE-FlorianMultilingualNeural",
+   "rate": "+16%",
+   "pitch": "+0Hz"
+  },
+  "lena": {
+   "voice": "de-DE-SeraphinaMultilingualNeural",
+   "rate": "+14%",
+   "pitch": "+0Hz"
+  }
+ },
+ "gap": 0.1,
+ "scenePause": 0.18,
+ "scenes": [
+  {
+   "lines": [
+    {
+     "who": "lena",
+     "display": "Stopp! Die Geschichte vom Black Friday ist geschönt!",
+     "spoken": "Stopp! Die Geschichte vom Black Friday ist geschönt!",
+     "tail": 0.18,
+     "rate": "+18%",
+     "pitch": "+2Hz",
+     "pause": 0.12
+    },
+    {
+     "who": "lena",
+     "display": "Mit schwarzen Zahlen hat der Name nichts zu tun.",
+     "spoken": "Mit schwarzen Zahlen hat der Name nichts zu tun.",
+     "tail": 0.18,
+     "rate": "+10%",
+     "pitch": "-3Hz"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "Philadelphia, Ende der 1950er-Jahre.",
+     "spoken": "Philadelphia, Ende der Fünfzigerjahre.",
+     "tail": 0.18,
+     "rate": "+12%",
+     "pause": 0.1
+    },
+    {
+     "who": "florian",
+     "display": "Thanksgiving ist vorbei. Massen strömen in die Stadt.",
+     "spoken": "Thanksgiving ist vorbei. Massen strömen in die Stadt.",
+     "tail": 0.18,
+     "rate": "+18%"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "Einkäufer, Football-Fans und totaler Stau.",
+     "spoken": "Einkäufer, Football-Fans und totaler Stau.",
+     "tail": 0.18,
+     "rate": "+20%",
+     "pause": 0.1
+    },
+    {
+     "who": "florian",
+     "display": "Die Polizei nennt den Tag: Black Friday.",
+     "spoken": "Die Polizei nennt den Tag: Black Friday.",
+     "tail": 0.18,
+     "rate": "+10%",
+     "pitch": "-3Hz"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "Die Händler hassen den Namen.",
+     "spoken": "Die Händler hassen den Namen.",
+     "tail": 0.18,
+     "rate": "+16%",
+     "pause": 0.1
+    },
+    {
+     "who": "florian",
+     "display": "Im Jahr 1961 versuchen sie es mit Big Friday. Niemand macht mit.",
+     "spoken": "Im Jahr neunzehnhunderteinundsechzig versuchen sie es mit Big Friday. Niemand macht mit.",
+     "tail": 0.18,
+     "rate": "+16%"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "Zwanzig Jahre später taucht eine neue Geschichte auf.",
+     "spoken": "Zwanzig Jahre später taucht eine neue Geschichte auf.",
+     "tail": 0.18,
+     "rate": "+14%",
+     "pause": 0.1
+    },
+    {
+     "who": "florian",
+     "display": "Die Läden kämen an diesem Tag aus den roten in die schwarzen Zahlen.",
+     "spoken": "Die Läden kämen an diesem Tag aus den roten in die schwarzen Zahlen.",
+     "tail": 0.18,
+     "rate": "+8%",
+     "pitch": "-3Hz"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "lena",
+     "display": "Klingt logisch, oder?",
+     "spoken": "Klingt logisch, oder?",
+     "tail": 0.18,
+     "rate": "+12%",
+     "pause": 0.12
+    },
+    {
+     "who": "lena",
+     "display": "Aber diese Erklärung kam erst viel später.",
+     "spoken": "Aber diese Erklärung kam erst viel später.",
+     "tail": 0.18,
+     "rate": "+6%",
+     "pitch": "-3Hz"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "lena",
+     "display": "Du wirst einen Namen nicht los? Erzähle eine neue Geschichte dazu. Genau das ist der Trick.",
+     "spoken": "Du wirst einen Namen nicht los? Erzähle eine neue Geschichte dazu. Genau das ist der Trick.",
+     "tail": 0.18,
+     "rate": "+14%",
+     "pause": 0.15
+    },
+    {
+     "who": "lena",
+     "display": "Folg mir für mehr Werbelügen.",
+     "spoken": "Folg mir für mehr Werbelügen.",
+     "tail": 0.18,
+     "rate": "+16%"
+    }
+   ]
+  }
+ ]
+}
