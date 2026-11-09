@@ -1,0 +1,155 @@
+{
+ "voices": {
+  "florian": {
+   "voice": "de-DE-FlorianMultilingualNeural",
+   "rate": "+16%",
+   "pitch": "+0Hz"
+  },
+  "lena": {
+   "voice": "de-DE-SeraphinaMultilingualNeural",
+   "rate": "+14%",
+   "pitch": "+0Hz"
+  }
+ },
+ "gap": 0.1,
+ "scenePause": 0.18,
+ "scenes": [
+  {
+   "lines": [
+    {
+     "who": "lena",
+     "display": "Deine Kaffeepause ist eigentlich Werbung.",
+     "spoken": "Deine Kaffeepause ist eigentlich Werbung.",
+     "tail": 0.18,
+     "rate": "+16%",
+     "pause": 0.15
+    },
+    {
+     "who": "lena",
+     "display": "Bezahlt von Kaffee-Ländern aus Lateinamerika.",
+     "spoken": "Bezahlt von Kaffee-Ländern aus Lateinamerika.",
+     "tail": 0.18,
+     "rate": "+8%",
+     "pitch": "-3Hz"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "Buffalo, im Jahr 1902.",
+     "spoken": "Baffalo, im Jahr neunzehnhundertzwei.",
+     "tail": 0.18,
+     "rate": "+12%",
+     "pause": 0.1
+    },
+    {
+     "who": "florian",
+     "display": "Der Legende nach erlaubt eine Fabrik ihren Arbeitern eine Pause mit Kaffee.",
+     "spoken": "Der Legende nach erlaubt eine Fabrik ihren Arbeitern eine Pause mit Kaffee.",
+     "tail": 0.18,
+     "rate": "+18%"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "Fünfzig Jahre später wird Kaffee plötzlich teuer.",
+     "spoken": "Fünfzig Jahre später wird Kaffee plötzlich teuer.",
+     "tail": 0.18,
+     "rate": "+16%",
+     "pause": 0.1
+    },
+    {
+     "who": "florian",
+     "display": "Die Kaffee-Länder fürchten um ihr Geschäft.",
+     "spoken": "Die Kaffee-Länder fürchten um ihr Geschäft.",
+     "tail": 0.18,
+     "rate": "+8%",
+     "pitch": "-3Hz"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "New York, im Jahr 1952. Ein Bündnis der Kaffee-Länder startet eine Werbekampagne.",
+     "spoken": "New York, im Jahr neunzehnhundertzweiundfünfzig. Ein Bündnis der Kaffee-Länder startet eine Werbekampagne.",
+     "tail": 0.18,
+     "rate": "+18%",
+     "pause": 0.12
+    },
+    {
+     "who": "florian",
+     "display": "Der Spruch: Gönne dir eine Kaffeepause!",
+     "spoken": "Der Spruch: Gönne dir eine Kaffeepause!",
+     "tail": 0.18,
+     "rate": "+6%",
+     "pitch": "-3Hz"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "florian",
+     "display": "Im Radio, in Zeitungen, auf Plakaten.",
+     "spoken": "Im Radio, in Zeitungen, auf Plakaten.",
+     "tail": 0.18,
+     "rate": "+18%",
+     "pause": 0.1
+    },
+    {
+     "who": "florian",
+     "display": "Bald gehört die Kaffeepause in jedes Büro.",
+     "spoken": "Bald gehört die Kaffeepause in jedes Büro.",
+     "tail": 0.18,
+     "rate": "+16%"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "lena",
+     "display": "Du denkst, es geht um deine Erholung.",
+     "spoken": "Du denkst, es geht um deine Erholung.",
+     "tail": 0.18,
+     "rate": "+14%",
+     "pause": 0.12
+    },
+    {
+     "who": "lena",
+     "display": "Es ging um mehr verkauften Kaffee.",
+     "spoken": "Es ging um mehr verkauften Kaffee.",
+     "tail": 0.18,
+     "rate": "+6%",
+     "pitch": "-3Hz"
+    }
+   ]
+  },
+  {
+   "lines": [
+    {
+     "who": "lena",
+     "display": "Gib einer Gewohnheit einen Namen, und sie verkauft sich. Genau das ist der Trick.",
+     "spoken": "Gib einer Gewohnheit einen Namen, und sie verkauft sich. Genau das ist der Trick.",
+     "tail": 0.18,
+     "rate": "+14%",
+     "pause": 0.15
+    },
+    {
+     "who": "lena",
+     "display": "Folg mir für mehr Werbelügen.",
+     "spoken": "Folg mir für mehr Werbelügen.",
+     "tail": 0.18,
+     "rate": "+16%"
+    }
+   ]
+  }
+ ]
+}

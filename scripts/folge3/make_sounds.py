@@ -1,5 +1,5 @@
 """Erzeugt ruhige Hintergrundmusik und Soundeffekte (Wusch, Knall, Klick) nur per Code.
-Aufruf: python3 scripts/folge3/make_sounds.py public [folge4|folge6|folge7|clean]  (braucht numpy + ffmpeg)"""
+Aufruf: python3 scripts/folge3/make_sounds.py public [folge4|folge6|folge7|folge8|clean]  (braucht numpy + ffmpeg)"""
 import sys, subprocess, numpy as np
 OUT = sys.argv[1] if len(sys.argv) > 1 else "public"
 SR = 44100
@@ -176,6 +176,11 @@ if len(sys.argv) > 2 and sys.argv[2] == "folge6":
 if len(sys.argv) > 2 and sys.argv[2] == "folge7":
     # e-Moll / C / a-Moll / H-Dur, 96 BPM – düster-klinisch, treibend
     save("music-folge7.mp3", music_tense(46, bpm=96, chords=[[40, 59, 64, 67], [36, 55, 60, 64], [33, 57, 60, 64], [35, 59, 63, 66]]), stereo=True)
+    print("fertig"); sys.exit()
+
+if len(sys.argv) > 2 and sys.argv[2] == "folge8":
+    # Kaffeehaus-Jazz, leicht angespannt (Dm7 - G7 - Cmaj7 - A7), 100 BPM
+    save("music-folge8.mp3", music_tense(47, bpm=100, chords=[[38, 53, 57, 60], [43, 53, 59, 62], [36, 52, 55, 59], [45, 55, 61, 64]]), stereo=True)
     print("fertig"); sys.exit()
 
 if len(sys.argv) > 2 and sys.argv[2] == "clean":
